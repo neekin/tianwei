@@ -1,0 +1,17 @@
+body{
+ background: #00397B; 
+ 
+}
+#app{
+    min-height:700px;
+    min-width: 1000px;
+}
+a {
+    font-size: 16px;
+    color: #f49c00;
+    font-family: "PingFangSC-Regular";
+  }
+
+  .block-center{
+      margin: 0 auto;
+  }
