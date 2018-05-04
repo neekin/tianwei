@@ -11,7 +11,6 @@
            <input type="password" placeholder="请输入密码"> <span class='fa fa-lock'></span> 
           </div>
           <div class="w">
-             
               <router-link to='/forgetpassword'>
                  忘记密码?
               </router-link>
@@ -20,7 +19,9 @@
              <button @click='login'>登陆</button>
           </div>
        </div>
-       <error-tip v-if='msg' :msg="msg"></error-tip>
+       <error-tip v-if='msg'>
+         {{msg}}
+       </error-tip>
    </div>
 </template>
 <script>
@@ -36,10 +37,10 @@ export default {
   },
   methods: {
     login() {
-      var _this = this;
-      _this.msg = "请填写登陆密码";
-      setTimeout(function() {
-        _this.msg = "";
+      // var _this = this;
+      this.msg = "请填写登陆密码";
+      setTimeout(()=> {
+        this.msg = "";
       }, 2000);
     }
   }

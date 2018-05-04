@@ -1,19 +1,19 @@
 <template>
 <div class="stepone">
- <div style='margin-top:120px' class='username block-center'>
+      <div style='margin-top:120px' class='username block-center'>
            <span>用户名:</span> <input type="text">               
            </div>
            <div class='checkcode block-center'>
               <span>验证码:</span> <input type="text">
                <div class="checkcodeimg">123</div>
-               <i class='el-icon-refresh' @click='refreshCode'></i>
+               <i class='fa fa-refresh' @click='refreshCode'></i>
            </div>
 </div>
       
 </template>
 <script>
 export default {
-  name:'StepOne',
+  name:'Step1',
   methods:{
     refreshCode() {
       alert("刷新成功");

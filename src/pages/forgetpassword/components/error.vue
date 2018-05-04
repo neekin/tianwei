@@ -1,18 +1,22 @@
 <template>
-    <div v-if='msg'>
-        {{msg}}
+    <div class='errormsg'>
+         <slot></slot>
     </div>
 </template>
 <script>
 export default {
-  name:'ErrorTip',
-  props:['msg']
+  name:'ErrorMsg'
 }
 </script>
 
 
 <style scoped>
-div{
-    color:red;
+.errormsg{
+    width: 300px;
+    margin:20px auto 0;
+    font-family: "MicrosoftYaHei";
+	font-size: 14px;
+	color: #CE4141;
 }
+
 </style>

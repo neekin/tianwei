@@ -29,18 +29,22 @@ export default {
     };
   },
   methods: {
-    change() {
+    change(){
+      for(var i=this.balls.length-1;i>0;i--)
+         {
+            this.balls[i].active = false;
+         }
       for (var i = 0; i < this.indexActive; i++) {
-        this.balls[i].active = true;
-      }
+                this.balls[i].active = true;  
+        }
     }
   },
   mounted() {
       this.change();
   },
   watch:{
-      indexActive(oldvalue,newvalue){
-          this.change();
+      indexActive(newvalue,oldvalue){
+        this.change();
       }
   }
 };

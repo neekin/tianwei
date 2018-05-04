@@ -1,17 +1,11 @@
 <template>
   <div class='tipmsg'>
-     {{TipMsg}}
+   <slot></slot>
   </div>
 </template>
 <script>
 export default {
-  name:'ErrorTip',
-  props:['msg'],
-  data(){
-      return{
-          TipMsg:this.msg
-      }
-  }
+  name:'ErrorTip'
 }
 </script>
 <style scoped>
