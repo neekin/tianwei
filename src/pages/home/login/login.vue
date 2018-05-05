@@ -19,42 +19,59 @@
              <button @click='login'>登陆</button>
           </div>
        </div>
-       <error-tip v-if='msg'>
+       <error-tip v-if='msg' :statu='statu'>
          {{msg}}
        </error-tip>
    </div>
 </template>
 <script>
 import ErrorTip from "./components/error";
-// import Base64 from '@/api/Base64.js'
+import Base64 from "@/api/Base64";
+import StringUpdater from "@/api/string_update";
+import qs from "qs";
 // var str = Base64.encode('123123')
 
 export default {
   name: "login",
   data: function() {
-    return { 
+    return {
       msg: "",
-      username:"",
-      password:""
-       };
+      username: "",
+      password: "",
+      statu: 0
+    };
   },
   components: {
     ErrorTip
   },
   methods: {
-      login() {      
-      //  var username = Base64.encode(this.username);
-      //  var pwd = Base64.encode(this.password);
-      //  console.log(username);
-      //  console.log(pwd);
-       this.$http.post(this.$api.login(),{
-
-       })
-       setTimeout(()=> {
-          this.msg = "";
-        }, 2000);
-        }
+    login() {
+      setTimeout(() => {
+        this.msg = "";
+        this.statu = 0;
+      }, 2000);
+      if (this.username == "" || this.password == "") {
+        this.msg = "请输入用户名或密码";
+        return;
+      }
+      var Account = StringUpdater.update(Base64.encode(this.username));
+      var Pwd = StringUpdater.update(Base64.encode(this.password));
+      var data = { Account, Pwd };
+      this.$http
+        .post(this.$api.login(), data)
+        .then(res => {
+          if (res.data.code == 1) {
+            this.statu = res.data.code;
+            this.$store.commit('updateToken',res.data.token);
+            this.$router.push('/');
+          }
+          this.msg = res.data.message;
+        })
+        .catch(err => {
+          this.msg = res.data.message;
+        });
     }
+  }
 };
 </script>
 <style  scoped>
@@ -66,7 +83,7 @@ export default {
 .login {
   height: 600px;
   width: 500px;
-  margin:20px auto 0;
+  margin: 20px auto 0;
 }
 .logo {
   height: 115px;

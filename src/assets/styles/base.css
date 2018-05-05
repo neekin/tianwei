@@ -1,12 +1,17 @@
-body{
- background: #00397B; 
+body {
+    background: #00397B;
 }
+
 a {
     font-size: 16px;
     color: #f49c00;
     font-family: "PingFangSC-Regular";
-  }
+}
 
-  .block-center{
-      margin: 0 auto;
-  }
+a:hover {
+    color: #fff;
+}
+
+.block-center {
+    margin: 0 auto;
+}
