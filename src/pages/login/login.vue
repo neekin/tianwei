@@ -5,10 +5,10 @@
           <h3>用户登陆</h3>
           <hr style='width:442px;margin:0 auto 42px auto;border:none;border-top:1px solid #14395B;'>
           <div class="input">
-             <input type="text" placeholder="请输入用户名"> <span class='fa fa-user'></span>
+             <input v-model='username' type="text" placeholder="请输入用户名"> <span class='fa fa-user'></span>
           </div>
           <div class="input">
-           <input type="password" placeholder="请输入密码"> <span class='fa fa-lock'></span> 
+           <input v-model='password' type="password" placeholder="请输入密码"> <span class='fa fa-lock'></span> 
           </div>
           <div class="w">
               <router-link to='/forgetpassword'>
@@ -26,24 +26,35 @@
 </template>
 <script>
 import ErrorTip from "./components/error";
+// import Base64 from '@/api/Base64.js'
+// var str = Base64.encode('123123')
 
 export default {
   name: "login",
   data: function() {
-    return { msg: "" };
+    return { 
+      msg: "",
+      username:"",
+      password:""
+       };
   },
   components: {
     ErrorTip
   },
   methods: {
-    login() {
-      // var _this = this;
-      this.msg = "请填写登陆密码";
-      setTimeout(()=> {
-        this.msg = "";
-      }, 2000);
+      login() {      
+      //  var username = Base64.encode(this.username);
+      //  var pwd = Base64.encode(this.password);
+      //  console.log(username);
+      //  console.log(pwd);
+       this.$http.post(this.$api.login(),{
+
+       })
+       setTimeout(()=> {
+          this.msg = "";
+        }, 2000);
+        }
     }
-  }
 };
 </script>
 <style  scoped>

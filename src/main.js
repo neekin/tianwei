@@ -4,7 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import axios from 'axios'
-
+import Api  from '@/api/api'
 import './assets/styles/reset.css'
 import './assets/styles/base.css'
 import './assets/styles/font-awesome/css/font-awesome.css'
@@ -12,6 +12,7 @@ import './assets/styles/font-awesome/css/font-awesome.css'
 Vue.config.productionTip = false
 
 Vue.prototype.$http = axios
+Vue.prototype.$api = Api
 
 /* eslint-disable no-new */
 new Vue({

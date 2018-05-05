@@ -1,10 +1,5 @@
 body{
  background: #00397B; 
- 
-}
-#app{
-    min-height:700px;
-    min-width: 1000px;
 }
 a {
     font-size: 16px;
