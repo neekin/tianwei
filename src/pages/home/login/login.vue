@@ -1,6 +1,6 @@
 <template>
    <div class="login">
-       <div class="logo"></div>
+       <div class="loginlogo"></div>
        <div class="loginform">
           <h3>用户登陆</h3>
           <hr style='width:442px;margin:0 auto 42px auto;border:none;border-top:1px solid #14395B;'>
@@ -28,9 +28,6 @@
 import ErrorTip from "./components/error";
 import Base64 from "@/api/Base64";
 import StringUpdater from "@/api/string_update";
-import qs from "qs";
-// var str = Base64.encode('123123')
-
 export default {
   name: "login",
   data: function() {
@@ -56,14 +53,13 @@ export default {
       }
       var Account = StringUpdater.update(Base64.encode(this.username));
       var Pwd = StringUpdater.update(Base64.encode(this.password));
-      var data = { Account, Pwd };
       this.$http
-        .post(this.$api.login(), data)
+        .post(this.$api.login(), { Account, Pwd })
         .then(res => {
           if (res.data.code == 1) {
             this.statu = res.data.code;
-            this.$store.commit('updateToken',res.data.token);
-            this.$router.push('/');
+            this.$store.commit("updateToken", res.data.token);
+            this.$router.push("/");
           }
           this.msg = res.data.message;
         })
@@ -85,13 +81,7 @@ export default {
   width: 500px;
   margin: 20px auto 0;
 }
-.logo {
-  height: 115px;
-  width: 360px;
-  background-color: white;
-  margin: 0 auto;
-  margin-bottom: 42px;
-}
+
 .loginform {
   height: 440px;
   width: 500px;
@@ -101,7 +91,6 @@ export default {
   padding-top: 36px;
   box-sizing: border-box;
 }
-
 .loginform h3 {
   text-align: center;
   line-height: 31px;
@@ -131,7 +120,6 @@ export default {
   top: 0;
   left: 0;
   background: #f49c00;
-
   outline: none;
   border: none;
   box-shadow: none;

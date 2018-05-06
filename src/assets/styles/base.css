@@ -1,5 +1,14 @@
 body {
-    background: #00397B;
+    background-color: #00397B;
+    background-image: url(../images/bg.png);
+    background-repeat: no-repeat;
+    background-position: center right;
+    background-attachment:fixed;
+    max-width: 1920px;   
+
+}
+html{
+    background-color: #00397B;
 }
 
 a {
@@ -15,3 +24,25 @@ a:hover {
 .block-center {
     margin: 0 auto;
 }
+
+.loginlogo {
+    height: 115px;
+    width: 360px;
+    background:url('../images/logow.png') no-repeat;
+    background-size: cover;
+    margin: 0 auto;
+    margin-bottom: 42px;
+  }
+
+  .headnav{
+      height:54px;
+      box-shadow: 0 2px 8px 0 rgba(0,0,0,0.12);
+      line-height: 54px;
+  }
+  .logo {
+    width: 152px;
+    height: 33px;
+    background:url('../images/logow.png') no-repeat center center;
+    background-size: 100%;
+    display: inline-block;
+  }

@@ -71,14 +71,13 @@ export default {
   margin: 88px auto 0;
   position: relative;
 }
+
+.logo {
+    width: 169px;
+    height: 54px;
+  }
 .forget a {
   font-size: 16px;
-}
-.logo {
-  width: 169px;
-  height: 54px;
-  background: #fff;
-  display: inline-block;
 }
 .title {
   font-family: "Microsoft YaHei";
