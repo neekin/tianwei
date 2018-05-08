@@ -3,7 +3,7 @@
     <headnav></headnav>
     <sidebar></sidebar>
     <container>
-         <basemanage></basemanage>
+         <rolemanage></rolemanage>
     </container>
    
   </div>
@@ -12,14 +12,14 @@
 import headnav from "../components/headnav";
 import sidebar from "../components/sidebar";
 import container from "../components/container";
-import basemanage from './basemanage/basemanage'
+import rolemanage from './rolemanage/rolemanage'
 export default {
-  name: "base",
+  name: "role",
   components: {
     headnav,
     sidebar,
     container,
-    basemanage
+    rolemanage
   }
 };
 </script>

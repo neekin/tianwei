@@ -4,6 +4,7 @@ import ForgetPassword from '@/pages/home/forgetpassword/forgetpassword'
 
 import basemanage from '@/pages/systemmanage/base'
 import user from '@/pages/systemmanage/user'
+import role from '@/pages/systemmanage/role'
 
 export default [{
         path: '/',
@@ -24,12 +25,17 @@ export default [{
     },
     {
         path:'/basemanage',
-        name:'baseinfo',
+        name:'basemanage',
         component:basemanage
     } ,
     {
         path:'/user',
         name:'user',
         component:user
+    },
+    {
+        path:'/role',
+        name:'role',
+        component:role
     }
 ]

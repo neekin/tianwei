@@ -4,15 +4,15 @@
    </div>
    <p class='title'>天威大数据</p>
    <ul>
-       <li class='active'>客流数据</li>
+       <li class='active'> <router-link to='/'>客流数据</router-link></li>
        <li>商圈报告</li>
        <li>实时设备</li>  
    </ul>
       <p class='title'>系统管理</p>
    <ul>
-       <li><router-link to='basemanage'>基础信息</router-link></li>
-       <li>用户配置</li>
-       <li>角色配置</li>  
+       <li><router-link to='/basemanage'>基础信息</router-link></li>
+       <li><router-link to='/user'>用户配置</router-link></li>
+       <li><router-link to='/role'>角色配置</router-link> </li>  
    </ul>
    <div class="line"></div>
   </div>
@@ -63,12 +63,23 @@ export default {
   font-size: 16px;
   color: #ffffff;
 }
+.sidebar ul li a{
+  font-family: MicrosoftYaHei-Bold;
+  font-size: 16px;
+  color: #ffffff;
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+}
 .sidebar ul li::before {
   content: "";
   border-top: 1px solid #002D57;
   margin: 1px auto;
   width: 170px;
   display: block;
+}
+.sidebar ul li:hover{
+  cursor: pointer;
 }
 .sidebar ul li.active::before {
   border-top: 1px solid #f49c00;
