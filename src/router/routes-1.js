@@ -1,6 +1,7 @@
 import home from '@/pages/home/home'
 import login from '@/pages/home/login/login'
 import ForgetPassword from '@/pages/home/forgetpassword/forgetpassword'
+import Keliushuju from '@/pages/keliushuju'
 
 export default [{
         path: '/',
@@ -17,6 +18,12 @@ export default [{
         path: '/forgetpassword',
         name: 'forgetpassword',
         component: ForgetPassword,
+        meta: { noauth: true }
+    },
+    {
+        path: '/keliu',
+        name: 'keliu',
+        component: Keliushuju,
         meta: { noauth: true }
     }
 ]
