@@ -5,7 +5,6 @@
     <container>
          <basemanage></basemanage>
     </container>
-   
   </div>
 </template>
 <script>
@@ -14,7 +13,7 @@ import sidebar from "../components/sidebar";
 import container from "../components/container";
 import basemanage from './basemanage/basemanage'
 export default {
-  name: "base",
+  name: "based",
   components: {
     headnav,
     sidebar,

@@ -5,7 +5,8 @@
     <container>
          <usermanage></usermanage>
     </container>
-   
+   <!-- <add>新增消息</add> -->
+ 
   </div>
 </template>
 <script>
@@ -20,6 +21,9 @@ export default {
     sidebar,
     container,
     usermanage
+  },
+  methods:{
+
   }
 };
 </script>
