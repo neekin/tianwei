@@ -60,3 +60,8 @@ a:hover {
       background-repeat: no-repeat;
       background-position: center bottom;
   }
+  .role  .ivu-tree .ivu-tree-title {
+    font-family: MicrosoftYaHei !important;
+    font-size: 14px !important;
+    color: #ffffff !important;
+  }

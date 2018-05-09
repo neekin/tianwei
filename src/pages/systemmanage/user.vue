@@ -5,8 +5,6 @@
     <container>
          <usermanage></usermanage>
     </container>
-   <!-- <add>新增消息</add> -->
- 
   </div>
 </template>
 <script>

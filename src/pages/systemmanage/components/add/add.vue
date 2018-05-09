@@ -1,7 +1,7 @@
 <template>
 <div>
     <div class="mask" v-if='show'>
-        <div class="form">
+        <div class="form" :style='"width:"+formwidth+"px"'>
             <div class="title">
                 <slot name='title'>新增基础信息</slot>
                 <span @click='cancle' class="fa fa-close pull-right close"></span>
@@ -10,8 +10,8 @@
                   <component :is="form"></component>
             </slot>
 
-             <div>
-                <button @click='cancle'>取消</button><button>确定</button>
+             <div class='buttons'>
+                <button @click='cancle'>取消</button><button class='primary'>确定</button>
              </div>
             </div>
         </div>
@@ -23,14 +23,14 @@ import addbase from "./addbase";
 import adduser from "./adduser";
 export default {
   name: "add",
-  props: ["form",'show'],
+  props: ["form", "show",'formwidth'],
   components: {
     addbase,
     adduser
   },
   methods: {
-    cancle(){
-      this.$emit('hide')
+    cancle() {
+      this.$emit("hide");
     }
   }
 };
@@ -57,6 +57,7 @@ export default {
   font-family: MicrosoftYaHei;
   font-size: 14px;
   color: #ffffff;
+  position: relative;
 }
 .form .title {
   height: 50px;
@@ -69,5 +70,26 @@ export default {
 }
 .form .title .close {
   margin: 18px;
+}
+.form button {
+  width: 122px;
+  height: 38px;
+  background: #002b52;
+  border: 1px solid #ffffff;
+  border-radius: 3px;
+  outline: none;
+  font-family: MicrosoftYaHei;
+  font-size: 16px;
+  color: #ffffff;
+  margin: 25px;
+}
+.form button.primary{
+  background: #29BD99;
+}
+.form .buttons {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  text-align: center;
 }
 </style>

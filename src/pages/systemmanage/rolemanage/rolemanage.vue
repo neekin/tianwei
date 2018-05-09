@@ -1,6 +1,6 @@
 <template>
   <div>
-  <add :show='show' @hide='hide'>
+  <add :show='show' @hide='hide' :formwidth='394'>
         <span slot='title'>
            新建角色配置
         </span>
@@ -9,9 +9,8 @@
    <list @createnew='createnew'>
      <span slot='title'></span>
      <div slot="search">
-      姓名： <input type="text">
-      部门名称：<input type="text">
-      职务名称：<input type="text">
+      角色名： <input type="text">
+      选择时间：<input type="datetime">
      </div>
    </list>
   </div>

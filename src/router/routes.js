@@ -1,11 +1,14 @@
 import home from '@/pages/home/home'
 import login from '@/pages/home/login/login'
 import ForgetPassword from '@/pages/home/forgetpassword/forgetpassword'
-import Keliushuju from '@/pages/keliushuju'
 
 import basemanage from '@/pages/systemmanage/base'
 import user from '@/pages/systemmanage/user'
 import role from '@/pages/systemmanage/role'
+
+import guestdata from '@/pages/bigdata/guestData'
+import bcreport from '@/pages/bigdata/busCircleReport'
+import rtdevice from '@/pages/bigdata/realTimeDevice'
 
 export default [{
     path: '/',
@@ -42,9 +45,23 @@ export default [{
     path: '/role',
     name: 'role',
     component: role
-  }, {
-    path: '/keliu',
-    name: 'keliu',
-    component: Keliushuju
+  },
+
+
+
+  {
+    path: '/guestdata',
+    name: 'guestdata',
+    component: guestdata
+  },
+  {
+    path: '/bcreport',
+    name: 'bcreport',
+    component: bcreport
+  },
+  {
+    path: '/rtdevice',
+    name: 'rtdevice',
+    component: rtdevice
   }
 ]
