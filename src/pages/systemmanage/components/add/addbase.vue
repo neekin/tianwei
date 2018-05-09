@@ -33,5 +33,8 @@ export default {
 <style scoped>
 .input input,
 .input select {
+background-color:rgba(0,0,0,0.12);
+border: 1px solid rbga(255,255,255,0.12);
+border-radius: 3px;
 }
 </style>

@@ -8,11 +8,14 @@ import Api from '@/api/api'
 import './assets/styles/reset.css'
 import './assets/styles/base.css'
 import './assets/styles/font-awesome/css/font-awesome.css'
+import "iview/dist/styles/iview.css"
+import iView from 'iview'
 
 import store from './store'
 //全局设置请求头
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
+Vue.use(iView)
 
 //判断是否登录
 

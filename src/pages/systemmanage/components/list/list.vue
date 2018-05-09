@@ -10,18 +10,10 @@
     </div>
       <div class="table">
          <table>
-             <tr>
-                <th>ID</th>
-                <th>集团名称</th>
-                <th>SHOPID</th>
-                <th>城市分布</th>
-                <th>商圈特性</th>
-                <th>商业体类别</th>
-                <th>平台</th>
-                <th>运维</th>
-                <th>备注</th>
-                <th>操作</th>
-             </tr>
+           <slot name='list-title'>
+
+          
+            </slot>
              <tr>
                  <td>1</td>
                  <td></td>

@@ -9,7 +9,7 @@
     </add>
    <list @createnew='createnew'>
      <span slot='title'></span>
-     <div slot="search">
+     <div slot="search" class='search'>
       姓名： <input type="text">
       部门名称：<input type="text">
       职务名称：<input type="text">
@@ -41,6 +41,6 @@ export default {
   }
 };
 </script>
-<style>
+<style scoped>
 
 </style>
