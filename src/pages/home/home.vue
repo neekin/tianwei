@@ -6,7 +6,6 @@
     <container>
       <!-- <component :is='baseinfo'></component> -->
     </container>
-   
   </div>
 </template>
 <script>

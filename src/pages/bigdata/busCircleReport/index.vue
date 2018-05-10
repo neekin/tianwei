@@ -1,5 +1,5 @@
 <template>
-    <div>客流数据</div>
+  
 </template>
 
 <script>

@@ -4,9 +4,9 @@
    </div>
    <p class='title'>天威大数据</p>
    <ul>
-       <li class='active'> <router-link to='/'>客流数据</router-link></li>
-       <li>商圈报告</li>
-       <li>实时设备</li>  
+       <li class='active'> <router-link to='/guestdata'>客流数据</router-link></li>
+       <li><router-link to='/bcreport'>商圈报告</router-link></li>
+       <li><router-link to='/rtdevice'>实时设备</router-link></li>  
    </ul>
       <p class='title'>系统管理</p>
    <ul>
