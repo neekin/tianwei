@@ -6,7 +6,11 @@
         </span>
       <addrole slot='form'></addrole>
     </add>
-   <list @createnew='createnew'>
+   <list @createnew='createnew'
+         :newBtn='newBtn'
+         :delBtn='delBtn'
+         :importBtn='importBtn'
+   >
      <span slot='title'></span>
      <div slot="search">
       角色名： <input type="text">
@@ -22,7 +26,7 @@ import list from "../components/list/list"
 export default {
   name: "rolemanage",
   data() {
-    return { show: false };
+    return {show:false,newBtn:true,importBtn:true,delBtn:true}
   },
   methods: {
     createnew() {

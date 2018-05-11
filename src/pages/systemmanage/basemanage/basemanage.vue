@@ -6,7 +6,11 @@
         </span>
       <addbase slot='form'></addbase>
     </add>
-    <list @createnew='createnew' >
+    <list 
+    @createnew='createnew' 
+    :newBtn='newBtn'
+    :importBtn='importBtn'
+    >
       <div slot='search'>
         集团: <select name="" id="">
          
@@ -40,7 +44,7 @@ import list from "../components/list/list";
 export default {
   name: "baseinfo",
   data() {
-    return { show: false };
+     return {show:false,newBtn:true,importBtn:true,delBtn:false}
   },
   methods: {
     createnew() {
