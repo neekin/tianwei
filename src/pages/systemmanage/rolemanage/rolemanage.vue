@@ -8,6 +8,7 @@
 
 
    <list @createnew='createnew'
+         @delitems='delitems'
          :newBtn='newBtn'
          :delBtn='delBtn'
          :exportBtn='exportBtn'
@@ -25,12 +26,20 @@
 
       <slot slot='list-body'>
         <tr  v-for='item in result'>
-              <td>{{item.RoleId}}</td>
+              <td>  
+                <div class="checkbox">
+                <input type="checkbox" :value='item.RoleId' v-model='ids'>
+                <span class='fa fa-check'></span>
+                </div>{{item.num}}
+              </td>
               <td>{{item.RoleName}}</td>
               <td>{{item.UserName}}</td>
               <td>{{item.MenuName}}</td>
               <td>{{item.CtrDate}}</td>
-              <td><a>修改</a><a>删除</a></td>
+              <td>
+                  <a class='edit'><span class="fa fa-refresh"></span>修改</a>
+                  <a class='del' @click='delitems(item.RoleId)'><span class="fa fa-trash"></span> 删除</a>
+              </td>
         </tr>
       </slot>
      <span slot='title'></span>
@@ -48,12 +57,15 @@ import list from "../components/list/list"
 export default {
   name: "rolemanage",
   data() {
-    return {show:false,
+    return {
+      show:false,
+      confirmDel:false,
       newBtn:true,
       exportBtn:true,
       delBtn:true,
       result:[],
       total:0,
+      ids:[],
       form:'addrole',
       pageindex:1,
       pagesize:10,
@@ -94,6 +106,26 @@ export default {
          this.getlist();
          this.hide();
     },
+    delitems(ids){
+      var params = {
+        ids:[],
+        token:this.$store.state.token
+      };
+      if(!!ids)
+      {
+        params.ids.push(ids);
+      }else
+      {
+        params.ids = this.ids;
+      }
+      
+      this.$http.post(this.$api.delrole(),params).then(res=>{
+            if(res.data.code==1)
+            {
+              this.success()
+            }
+      })
+    }
   },
   mounted(){
       this.getlist();
@@ -101,7 +133,6 @@ export default {
   },
   components: {
     add,
-    addrole,
     list
   }
 };

@@ -65,3 +65,37 @@ a:hover {
     font-size: 14px !important;
     color: #ffffff !important;
   }
+   .checkbox{
+    display: inline-block;
+    height: 18px;
+    width: 18px;
+    vertical-align: middle;
+    background: rgba(0,86,172,0.4);
+    border: 1px solid rgba(56,160,255,0.4);
+    border-radius: 2px;
+    position: relative;
+    margin-right: 18px;
+   }
+  .checkbox input{
+     position: absolute;
+     height: 18px;
+     width: 18px;
+     top:0;
+     left:0;
+     z-index: 1;
+     opacity: 0;
+  } 
+
+  .checkbox span{
+    position: absolute;
+    top:0;
+    left:0;
+    color:#00397B;
+    display: none;
+    height: 18px;
+    width: 18px;
+    background-color: #fff
+  }
+  .checkbox input:checked ~ span{
+    display: inline-block;
+  }

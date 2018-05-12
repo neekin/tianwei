@@ -5,7 +5,7 @@
            <span class="fa fa-plus"></span>
            新建
           </button>
-          <button v-if='delBtn' class="del">
+          <button v-if='delBtn' class="del" @click='delitems'>
           	<span class='fa fa-trash'></span>
           	删除
           </button>
@@ -38,7 +38,10 @@ props:['newBtn','exportBtn','delBtn'],
 methods:{
     	createnew(){
     		  this.$emit("createnew");
-    	}
+    	},
+      delitems(){
+        this.$emit("delitems");
+      }
     }
 }
 </script>

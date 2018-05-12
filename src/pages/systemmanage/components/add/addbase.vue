@@ -4,7 +4,11 @@
            <span class='title'>集团：</span><input type="text">
          </div>
          <div class='input'>
-           <span class='title'>SHOPID：</span> <input type="text">  <span class='title'>平台：</span><select name="" id=""> <option value=""></option> </select>
+           <span class='title'>SHOPID：</span> <input type="text">
+           <span class='title'>平台：</span>
+               <select name="" id=""> 
+                <option value=""></option> 
+              </select>
          </div>
          <div class='input'>
            <span class='title'>城市分布：</span><select name="" id="">

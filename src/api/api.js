@@ -9,43 +9,42 @@ var Api = {
     login: function() { return this.getApi("/Home/Login") },
     logout:function(){},
     getshoplist(params){
-    	var url = this.getApi('/MBase/getShopList');
-        if(params){
-        	url+='?';
-        	for(var key in params)
-        	{
-        		url=url+key+'='+params[key]+'&';
-        	}
-        }
-        return url;
+      return this.getApi('/MBase/getShopList')+'?'+this.Params(params);
+
     },
     getrolelist(params){
-        var url = this.getApi('/Role/getRoleList');
-        if(params){
-        	url+='?';
-        	for(var key in params)
-        	{
-        		url=url+key+'='+params[key]+'&';
-        	}
-        }
-        return url;
+       return this.getApi('/Role/getRoleList')+'?'+this.Params(params);
     },
     getuserlist(params){
-       var url = this.getApi('/User/getUserList');
-        if(params){
-            url+='?';
-            for(var key in params)
-            {
-                url=url+key+'='+params[key]+'&';
-            }
-        }
-        return url; 
+        return this.getApi('/User/getUserList')+'?'+this.Params(params);
+    },
+    getdeptjobrole(){
+        return this.getApi('/Base/getDeptJobRole');
+    },
+    adduser(){
+        return this.getApi('/User/AddUptUser');
     },
     getmenulist(){
     	return this.getApi('/Home/getMenuList');
     },
     addrole(){
         return this.getApi('/Role/AddUptRole')
+    },
+    delrole(){
+        return this.getApi('/Role/DelRole')
+    },
+    Params(params){
+          var par = '';
+          if(params)
+          {
+            for(var key in params)
+            {
+                par=par+key+'='+params[key]+'&';
+            }
+           par =  par.slice(0,par.length-1)
+          }
+         
+           return par;
     }
 }
 

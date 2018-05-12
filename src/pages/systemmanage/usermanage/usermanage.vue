@@ -1,11 +1,10 @@
 <template>
   <div>
 
-    <add :show='show' @hide='hide'>
+    <add :show='show' :form='form' @hide='hide' @success='success'>
         <span slot='title'>
            新建用户配置
         </span>
-      <adduser slot='form'></adduser>
     </add>
    <list @createnew='createnew' 
          :newBtn='newBtn'
@@ -19,22 +18,26 @@
              <th>所属部门</th>
              <th>职务</th>
              <th>联系人</th>
-              <th>联系电话</th>
-
-               <th>操作</th>
+             <th>联系电话</th>
+             <th>操作</th>
           </tr>
       </slot>
 
       <slot slot='list-body'>
         <tr  v-for='item in result'>
-              <td>{{item.num}}</td>
+              <td>
+              
+               {{item.num}}</td>
               <td>{{item.PerName}}</td>
               <td>{{item.RoleName}}</td>
               <td>{{item.DeptName}}</td>
               <td>{{item.JobId}}</td>
               <td>{{item.PerName}}</td>
-               <td>{{item.UserPhone}}</td>
-              <td><a>修改</a><a>删除</a></td>
+              <td>{{item.UserPhone}}</td>
+              <td>
+                  <a class='edit'><span class="fa fa-refresh"></span>修改</a>
+                  <a class='del'><span class="fa fa-trash"></span> 删除</a>
+              </td>
         </tr>
       </slot>
 
@@ -54,7 +57,9 @@ import list from "../components/list/list";
 export default {
   name: "usermanage",
   data(){
-    return {show:false,
+    return {
+      form:'adduser',
+      show:false,
       newBtn:true,
       exportBtn:true,
       delBtn:true,
@@ -87,13 +92,16 @@ export default {
       }
 
       this.$http.get(this.$api.getuserlist(params)).then(res=>{
-        console.log(res);
            if(res.data.code ===1)
            {
             this.result = res.data.result;
             this.total = res.data.total
            }
       })
+    },
+    success(){
+      this.getlist();
+      this.hide();
     }
   },
   mounted(){
@@ -101,7 +109,6 @@ export default {
   },
   components: {
     add,
-    adduser,
     list
   }
 };

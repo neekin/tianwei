@@ -36,6 +36,7 @@ export default {
       this.$emit("hide");
     },
     addSome(){
+         // console.log( this.$refs.form)
            this.$refs.form.add();
     },
     success(){

@@ -42,7 +42,10 @@
               <td>{{item.JobId}}</td>
               <td>{{item.PerName}}</td>
                <td>{{item.UserPhone}}</td> -->
-              <td><a>修改</a><a>删除</a></td>
+              <td>
+                  <a class='edit'><span class="fa fa-refresh"></span>修改</a>
+                  <a class='del'><span class="fa fa-trash"></span> 删除</a>
+              </td>
         </tr>
       </slot>
 

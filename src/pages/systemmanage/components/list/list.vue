@@ -24,7 +24,8 @@
 <options :newBtn='newBtn'
          :exportBtn='exportBtn'
          :delBtn='delBtn'
-         @createnew='createnew'>
+         @createnew='createnew'
+         @delitems='delitems'>
   
 </options>
      
@@ -38,6 +39,9 @@ export default {
   methods: {
     createnew() {
       this.$emit("createnew");
+    },
+    delitems(){
+      this.$emit("delitems")
     }
   },
   components: {
@@ -88,4 +92,20 @@ export default {
   height: 50px;
   border-bottom: 1px solid #003b70;
 }
+
+.table td a{
+  display:inline-block;
+  width: 50px;
+  color:#fff;
+}
+.table td a.edit{
+  margin-right:10px;
+}
+.table td a.edit:hover{
+     color:#00C61E;
+}
+.table td a.del:hover{
+     color:#CF3945;
+}
+
 </style>

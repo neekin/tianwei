@@ -49,9 +49,7 @@ export default {
      })
     },
     add(){
-        //       "MenuId": [
-        //   0
-        // ]
+     
         var MenuId=[];
         for(var i=this.menus.length-1;i>=0;i--)
         {
@@ -79,8 +77,12 @@ export default {
         "RoleName": this.name,
         MenuId
       }
-      console.log(this.name);
-      console.log(this.menus);
+      if(!this.name)
+      {
+          alert('请写入角色名');
+          return ;
+      }
+
       this.$http.post(this.$api.addrole(),params).then(res=>{
         console.log(res);
         if(res.data.code===1){
