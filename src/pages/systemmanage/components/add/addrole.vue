@@ -1,10 +1,10 @@
 <template>
 <div>
   <div class="input">
-     角色名称：<input type="text" placeholder="请输入角色名">
+     角色名称：<input type="text" placeholder="请输入角色名" v-model='name'>
   </div>
    <div class='role'>
-        <Tree :data="data1" show-checkbox></Tree>
+        <Tree :data="menus" show-checkbox></Tree>
    </div>
 </div>
 </template>
@@ -13,39 +13,86 @@
 export default {
   data() {
     return {
-      data1: [
-        {
-          title: "parent 1",
-          expand: true,
-          children: [
-            {
-              title: "parent 1-1",
-              expand: true,
-              children: [
-                {
-                  title: "leaf 1-1-1"
-                },
-                {
-                  title: "leaf 1-1-2"
-                }
-              ]
-            },
-            {
-              title: "parent 1-2",
-              expand: true,
-              children: [
-                {
-                  title: "leaf 1-2-1"
-                },
-                {
-                  title: "leaf 1-2-1"
-                }
-              ]
-            }
-          ]
-        }
-      ]
+      menus:[],
+      name:''
     };
+  },
+  methods:{
+    getlist(){
+     this.$http.get(this.$api.getmenulist()+'?token='+this.$store.state.token).then(res=>{
+          var arr = [];
+           if(res.data.code==1){
+             var obj = {};
+             var menus = res.data.result;
+             for(var i=0;i<menus.length;i++)
+             {
+              menus[i].title = menus[i].MenuName;
+                  if(menus[i].PMenuId==0)
+                  {
+                    obj = menus[i];
+                    // obj.title = menus[i].MenuName;
+                    obj.children= [];
+                    for(var j = 0;j<menus.length;j++)
+                    {
+                           if(obj.MenuId == menus[j].PMenuId)
+                           {
+                            console.log(menus[j].PMenuId);
+                                    obj.children.push(menus[j]);
+                           }
+                    }
+                    arr.push(obj);
+                  }
+             }
+             this.menus = arr;
+
+           }
+     })
+    },
+    add(){
+        //       "MenuId": [
+        //   0
+        // ]
+        var MenuId=[];
+        for(var i=this.menus.length-1;i>=0;i--)
+        {
+             var obj = this.menus[i];
+              if(obj.checked)
+              {
+                   MenuId.push(obj.MenuId);
+
+              }
+              if(obj.children)
+                 {
+                    for(var j = obj.children.length-1;j>=0;j--)
+                    {
+                      var sobj = obj.children[j];
+                      if(sobj.checked)
+                      {
+                        MenuId.push(sobj.MenuId);
+                      }
+                    }
+                }
+        }
+   var params={
+        "token": this.$store.state.token,
+        "RoleId": 0,
+        "RoleName": this.name,
+        MenuId
+      }
+      console.log(this.name);
+      console.log(this.menus);
+      this.$http.post(this.$api.addrole(),params).then(res=>{
+        console.log(res);
+        if(res.data.code===1){
+           this.$emit('success')
+        }
+      })
+
+
+    }
+  },
+  mounted(){
+    this.getlist();
   }
 };
 </script>

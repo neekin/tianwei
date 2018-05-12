@@ -10,12 +10,39 @@
    <list @createnew='createnew' 
          :newBtn='newBtn'
          :delBtn='delBtn'
-         :importBtn='importBtn'>
+         :exportBtn='exportBtn'>
+      <slot slot='list-title'>
+          <tr>
+             <th>共{{total}}条</th>
+             <th>登陆账号</th>
+             <th>所属角色</th>
+             <th>所属部门</th>
+             <th>职务</th>
+             <th>联系人</th>
+              <th>联系电话</th>
+
+               <th>操作</th>
+          </tr>
+      </slot>
+
+      <slot slot='list-body'>
+        <tr  v-for='item in result'>
+              <td>{{item.num}}</td>
+              <td>{{item.PerName}}</td>
+              <td>{{item.RoleName}}</td>
+              <td>{{item.DeptName}}</td>
+              <td>{{item.JobId}}</td>
+              <td>{{item.PerName}}</td>
+               <td>{{item.UserPhone}}</td>
+              <td><a>修改</a><a>删除</a></td>
+        </tr>
+      </slot>
+
      <span slot='title'></span>
      <div slot="search" class='search'>
-      姓名： <input type="text">
-      部门名称：<input type="text">
-      职务名称：<input type="text">
+      姓名： <input type="text" v-model='search.PerName'>
+      部门名称：<input type="text" v-model='search.DeptName'>
+      职务名称：<input type="text" v-model='search.JobName'>
      </div>
    </list>
   </div>
@@ -27,7 +54,20 @@ import list from "../components/list/list";
 export default {
   name: "usermanage",
   data(){
-    return {show:false,newBtn:true,importBtn:true,delBtn:true}
+    return {show:false,
+      newBtn:true,
+      exportBtn:true,
+      delBtn:true,
+      result:[],
+      search:{
+          PerName:'',
+          DeptName:'',
+          JobName:''
+      },
+      pagesize:10,
+      pageindex:1,
+      total:0
+    }
   },
   methods: {
     createnew() {
@@ -35,7 +75,29 @@ export default {
     },
     hide() {
       this.show = false;
+    },
+    getlist(){
+      var params={
+        PerName:this.search.PerName,
+        DeptName:this.search.DeptName,
+        JobName:this.search.JobName,
+        pagesize:this.pagesize,
+        pageindex:this.pageindex,
+        token:this.$store.state.token
+      }
+
+      this.$http.get(this.$api.getuserlist(params)).then(res=>{
+        console.log(res);
+           if(res.data.code ===1)
+           {
+            this.result = res.data.result;
+            this.total = res.data.total
+           }
+      })
     }
+  },
+  mounted(){
+    this.getlist();
   },
   components: {
     add,

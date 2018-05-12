@@ -10,7 +10,7 @@
           	删除
           </button>
 
-          <button v-if='importBtn' class='import'>
+          <button v-if='exportBtn' class='export'>
               <span class='fa fa-cloud-download'></span>
                导出
           </button>
@@ -34,7 +34,7 @@
 </template>
 <script >
 export default{
-props:['newBtn','importBtn','delBtn'],
+props:['newBtn','exportBtn','delBtn'],
 methods:{
     	createnew(){
     		  this.$emit("createnew");
@@ -67,7 +67,7 @@ methods:{
 .options .create {
   background: #29bd99;
 }
-.options .import {
+.options .export {
   background: #189cd5;
 }
 .options .del{

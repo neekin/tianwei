@@ -7,11 +7,12 @@
                 <span @click='cancle' class="fa fa-close pull-right close"></span>
             </div>
             <slot name='form'>
-                  <component :is="form"></component>
+                  <component ref='form' :is="form" @success='success'></component>
             </slot>
 
              <div class='buttons'>
-                <button @click='cancle'>取消</button><button class='primary'>确定</button>
+                <button @click='cancle'>取消</button>
+                <button @click='addSome' class='primary'>确定</button>
              </div>
             </div>
         </div>
@@ -21,17 +22,26 @@
 <script>
 import addbase from "./addbase";
 import adduser from "./adduser";
+import addrole from "./addrole"
 export default {
   name: "add",
   props: ["form", "show",'formwidth'],
   components: {
     addbase,
-    adduser
+    adduser,
+    addrole
   },
   methods: {
     cancle() {
       this.$emit("hide");
+    },
+    addSome(){
+           this.$refs.form.add();
+    },
+    success(){
+      this.$emit('success');
     }
+
   }
 };
 </script>

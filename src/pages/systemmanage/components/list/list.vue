@@ -22,7 +22,7 @@
       </div>
 
 <options :newBtn='newBtn'
-         :importBtn='importBtn'
+         :exportBtn='exportBtn'
          :delBtn='delBtn'
          @createnew='createnew'>
   
@@ -34,7 +34,7 @@
 import search from "./search"
 import options from "./options"
 export default {
-  props:['newBtn','importBtn','delBtn'],
+  props:['newBtn','exportBtn','delBtn'],
   methods: {
     createnew() {
       this.$emit("createnew");
@@ -88,6 +88,4 @@ export default {
   height: 50px;
   border-bottom: 1px solid #003b70;
 }
-
-
 </style>
