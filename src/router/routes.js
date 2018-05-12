@@ -12,8 +12,9 @@ import rtdevice from '@/pages/bigdata/realTimeDevice'
 
 export default [{
     path: '/',
-    name: 'home',
-    component: home
+    redirect: '/guestdata'
+    // name: 'home',
+    // component: home
   },
   {
     path: '/login',

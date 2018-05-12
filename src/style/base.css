@@ -1,4 +1,9 @@
 /*清除浮动*/
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
 .clearfix::after,
 .clearfix::before {
   content: "";

@@ -5,18 +5,50 @@
         <container>
             <div class="content clearfix">
                 <div class="ct_left fl">
-                    <div class="report_cityDist">
-                        <div id="city" style="width:100%;height:100%"></div>
+                    <div class="report_cityDist pr">
+                        <div class="rp_title">
+                            <i class="iconfont icon-city"></i>城市分布情况</div>
+                        <div class="rp_echarts" id="city"></div>
                     </div>
-                    <div class="report_busCircle">商圈客流情况</div>
+                    <div class="report_busCircle">
+                        <div class="rp_title">
+                            <i class="iconfont icon-people"></i>
+                            城市分布情况
+                        </div>
+                        <div class="rp_echarts" id="city"></div>
+                    </div>
                 </div>
                 <div class="ct_right fr">
-                    <div class="report_top10">前十商业体绩效</div>
-                    <div class="report_bottom10">前十业态绩效</div>
+                    <div class="report_top10">
+                        <div class="rp_title">
+                            <i class="iconfont icon-home"></i>
+                            前十商业体绩效
+                        </div>
+                        <div class="rp_echarts" id="city"></div>
+                    </div>
+                    <div class="report_bottom10">
+                        <div class="rp_title">
+                            <i class="iconfont icon-iconfontcart"></i>
+                            前十业态绩效
+                        </div>
+                        <div class="rp_echarts" id="city"></div>
+                    </div>
                 </div>
                 <div class="ct_center ">
-                    <div class="report_keliu">客流量统计</div>
-                    <div class="report_paiming">客流量统计</div>
+                    <div class="report_keliu">
+                        <div class="rp_title">
+                            <i class="iconfont icon-city"></i>
+                            客流量统计
+                        </div>
+                        <div class="rp_echarts" id="city"></div>
+                    </div>
+                    <div class="report_paiming">
+                        <div class="rp_title">
+                            <i class="iconfont icon-city"></i>
+                            客流量统计
+                        </div>
+                        <div class="rp_echarts" id="city"></div>
+                    </div>
                 </div>
             </div>
         </container>
@@ -25,7 +57,7 @@
 
 <style lang="less" scoped>
 @import url("../../../style/base.less");
-
+@import url("../../../assets/fonts/iconfont.css");
 div {
   box-sizing: border-box;
 }
@@ -33,6 +65,7 @@ div {
   color: @fontColor;
   overflow: hidden;
   padding: 12px;
+  font-family: "Microsoft Yahei";
   > div[class^="ct_"] {
     > div[class^="report_"] {
       &:not(:first-child) {
@@ -40,6 +73,21 @@ div {
       }
       background-color: @boxbgc;
       border: 1px solid @borderColor;
+      > .rp_title {
+        position: absolute;
+        font-weight: bold;
+        font-size: 18px;
+        margin: 20px 0 0 14px;
+        > i {
+          font-weight: normal;
+          font-size: 20px;
+          margin: 0 5px;
+        }
+      }
+      > .rp_echarts {
+        width: 100%;
+        height: 100%;
+      }
     }
   }
   .ct_left {
@@ -76,7 +124,7 @@ div {
 </style>
 
 <script>
-import Base64 from "@/api/Base64";
+// import Base64 from "@/api/Base64";
 
 // 引入基本模板
 var echarts = require('echarts')
@@ -101,50 +149,96 @@ export default {
         return {
             data: {
                 city: {
+                    color: ['#faff81', '#50eaff', "#ffc53a"],
                     tooltip: {
                         trigger: 'item',
                         formatter: "{a} <br/>{b}: {c} ({d}%)"
                     },
                     legend: {
                         orient: 'vertical',
-                        bottom: 0,
-                        padding: 10,
-                        textStyle:{
-                            color: '#d2dae0'
+                        bottom: 25,
+                        textStyle: {
+                            color: '#d2dae0',
+                            fontSize: 18,
+                            padding: [14, 0],
                         },
                         data: ['一线城市', '二线城市', '三线城市']
                     },
-                    series: [
+                    graphic: {
+                        type: 'group',
+                        left: 'center',
+                        top: '33%',
+                        width: 120,
+                        height: 100,
+                        children: [{
+                            type: 'text',
+                            z: 100,
+                            top: '25%',
+                            left: 'center',
+                            style: {
+                                fill: '#fff',
+                                text: [
+                                    '单位：人次'
+                                ].join('\n'),
+                                font: '14px Microsoft YaHei'
+                            }
+                        },
                         {
-                            name: '访问来源',
-                            type: 'pie',
-                            radius: ['50%', '70%'],
-                            avoidLabelOverlap: false,
-                            label: {
-                                normal: {
-                                    show: false,
-                                    position: 'center'
-                                },
-                                emphasis: {
-                                    show: true,
-                                    textStyle: {
-                                        fontSize: '30',
-                                        fontWeight: 'bold'
-                                    }
-                                }
-                            },
-                            labelLine: {
-                                normal: {
-                                    show: false
-                                }
-                            },
-                            data: [
-                                { value: 335, name: '一线城市' },
-                                { value: 310, name: '二线城市' },
-                                { value: 234, name: '三线城市' }
-                            ]
+                            type: 'text',
+                            z: 100,
+                            top: '50%',
+                            left: 'center',
+                            style: {
+                                fill: '#fff',
+                                text: [
+                                    '9000万'
+                                ].join('\n'),
+                                font: '32px Microsoft YaHei',
+                                fontWeight: 'bold'
+                            }
+                        },
+                        {
+                            type: 'text',
+                            z: 100,
+                            top: '100%',
+                            left: 'center',
+                            style: {
+                                fill: '#fff',
+                                text: [
+                                    '最近三个月'
+                                ].join('\n'),
+                                font: '14px Microsoft YaHei',
+                            }
                         }
-                    ]
+                        ]
+                    },
+                    series: [{
+                        name: '城市分布情况',
+                        type: 'pie',
+                        center: ['50%', '40%'],
+                        radius: ['50%', '70%'],
+                        avoidLabelOverlap: false,
+                        label: {
+                            lineHeight: 56,
+                            normal: {
+                                show: false,
+                                position: 'center'
+                            },
+                        },
+                        data: [{
+                            value: 335,
+                            name: '一线城市'
+                        },
+                        {
+                            value: 310,
+                            name: '二线城市'
+                        },
+                        {
+                            value: 234,
+                            name: '三线城市'
+                        }
+                        ]
+                    }]
                 }
             },
             myChart: ''
