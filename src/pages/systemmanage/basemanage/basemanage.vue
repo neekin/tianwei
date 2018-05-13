@@ -61,11 +61,13 @@
 
 
     </list>
+    <notice :noticeshow='noticeshow'></notice>
   </div>
 </template>
 <script>
 import add from "@/pages/components/add/add";
-import list from "@/pages//components/list/list";
+import list from "@/pages/components/list/list";
+import notice from '@/pages/components/notice'
 export default {
   name: "baseinfo",
   data() {
@@ -73,6 +75,8 @@ export default {
       form: "addbase",
       show: false,
       newBtn: true,
+      noticeshow:false,
+      next:null,
       exportBtn: true,
       delBtn: false,
       edit:null,
@@ -140,7 +144,8 @@ export default {
   },
   components: {
     add,
-    list
+    list,
+    notice
   }
 };
 </script>

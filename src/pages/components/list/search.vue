@@ -1,7 +1,10 @@
 <template>
   <div class='search'>
-    <slot></slot>
-    <button @click="search"> <span class='fa fa-search'></span>查询</button>
+    <slot>
+       
+    </slot>
+     <button @click="search"> <span class='fa fa-search'></span>查询</button>
+  
   </div>
 </template>
 <script>
@@ -17,6 +20,9 @@ export default {
 <style scoped>
 .search {
   display: inline-block;
+  height:100px;
+  line-height: 100px;
+  /* overflow: hidden; */
 }
 .search input,
 .search select,
@@ -44,6 +50,6 @@ export default {
   color: #ffffff;
   border: none;
   outline: none;
-      line-height: 38px;
+  line-height: 38px;
 }
 </style>

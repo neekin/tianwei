@@ -8,6 +8,14 @@ var Api = {
     },
     login: function() { return this.getApi("/Home/Login") },
     logout: function() {},
+    getReTimeDeviceList(params) {
+        // GET /Device/getReTimeDeviceList
+        return this.getApi('/Device/getReTimeDeviceList') + '?' + this.Params(params);
+    },
+    exportReTimeDeviceList(params) {
+        //GET /Device/getReTimeDeviceListExport
+        return this.getApi('/Device/getReTimeDeviceListExport') + '?' + this.Params(params);
+    },
     getshopbase() {
         return this.getApi('/Base/getShopBase');
     },

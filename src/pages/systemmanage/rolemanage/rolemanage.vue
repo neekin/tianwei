@@ -52,12 +52,14 @@
       选择时间：<input type="datetime">
      </div>
    </list>
+   <notice :notice='noticeshow' :next='next'  @hide='hide'></notice>
   </div>
 </template>
 <script>
 import add from "@/pages/components/add/add";
 import list from "@/pages/components/list/list";
 import { formatDate } from "@/api/date";
+import notice from "@/pages/components/notice";
 export default {
   name: "rolemanage",
   data() {
@@ -66,11 +68,13 @@ export default {
       confirmDel: false,
       newBtn: true,
       exportBtn: true,
+      noticeshow: false,
+      next: null,
       delBtn: true,
       result: [],
       total: 0,
       ids: [],
-      edit:{},
+      edit: {},
       form: "addrole",
       pageindex: 1,
       pagesize: 10,
@@ -91,12 +95,13 @@ export default {
       this.edit.RoleId = 0;
       this.show = true;
     },
-    edititem(edit){
+    edititem(edit) {
       this.edit = edit;
       this.show = true;
     },
     hide() {
       this.show = false;
+      this.noticeshow = false;
     },
     getlist() {
       var params = {
@@ -133,6 +138,7 @@ export default {
     success() {
       this.getlist();
       this.hide();
+      this.next = null;
     },
     delitems(ids) {
       var params = {
@@ -144,12 +150,21 @@ export default {
       } else {
         params.ids = this.ids;
       }
-
-      this.$http.post(this.$api.delrole(), params).then(res => {
-        if (res.data.code == 1) {
-          this.success();
+      this.del(params);
+    },
+    del(params) {
+      this.noticeshow = true;
+      var _this = this;
+      this.next = function() {
+        if (!params.ids.length) {
+          return;
         }
-      });
+        _this.$http.post(_this.$api.delrole(), params).then(res => {
+          if (res.data.code == 1) {
+            _this.success();
+          }
+        });
+      };
     }
   },
   mounted() {
@@ -158,7 +173,8 @@ export default {
   },
   components: {
     add,
-    list
+    list,
+    notice
   },
   filters: {
     fmt(time) {

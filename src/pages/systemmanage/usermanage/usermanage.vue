@@ -56,23 +56,27 @@
       职务名称：<input type="text" v-model='search.JobName'>
      </div>
    </list>
+      <notice :notice='noticeshow' :next='next'  @hide='hide'></notice>
   </div>
 </template>
 <script>
 import add from "@/pages/components/add/add";
 import list from "@/pages/components/list/list";
+import notice from "@/pages/components/notice";
 export default {
   name: "usermanage",
   data() {
     return {
       form: "adduser",
       show: false,
+      noticeshow: false,
+      next: null,
       newBtn: true,
       exportBtn: true,
       delBtn: true,
       result: [],
       ids: [],
-      edit:{},
+      edit: {},
       search: {
         PerName: "",
         DeptName: "",
@@ -85,15 +89,17 @@ export default {
   },
   methods: {
     createnew() {
-      this.edit.UserId=0;
+      this.edit.UserId = 0;
       this.show = true;
     },
-    edititem(edit){
+    edititem(edit) {
       this.edit = edit;
-      this.show=true;
+      this.show = true;
     },
     hide() {
       this.show = false;
+      this.noticeshow = false;
+      this.next = null;
     },
     goPage(num) {
       this.pageindex = num;
@@ -126,11 +132,21 @@ export default {
       } else {
         params.ids = this.ids;
       }
-      this.$http.post(this.$api.deluser(), params).then(res => {
-        if (res.data.code == 1) {
-          this.success();
+      this.del(params);
+    },
+    del(params) {
+      this.noticeshow = true;
+      var _this = this;
+      this.next = function() {
+        if (!params.ids.length) {
+          return;
         }
-      });
+        _this.$http.post(_this.$api.delrole(), params).then(res => {
+          if (res.data.code == 1) {
+            _this.success();
+          }
+        });
+      };
     },
     exportitems() {
       var params = {
@@ -158,7 +174,8 @@ export default {
   },
   components: {
     add,
-    list
+    list,
+    notice
   }
 };
 </script>
