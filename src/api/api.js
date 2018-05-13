@@ -7,46 +7,43 @@ var Api = {
         return this.http + this.url + api;
     },
     login: function() { return this.getApi("/Home/Login") },
-    logout:function(){},
-    getshoplist(params){
-      return this.getApi('/MBase/getShopList')+'?'+this.Params(params);
+    logout: function() {},
+    getshoplist(params) {
+        return this.getApi('/MBase/getShopList') + '?' + this.Params(params);
 
     },
-    getrolelist(params){
-       return this.getApi('/Role/getRoleList')+'?'+this.Params(params);
+    getrolelist(params) {
+        return this.getApi('/Role/getRoleList') + '?' + this.Params(params);
     },
-    getuserlist(params){
-        return this.getApi('/User/getUserList')+'?'+this.Params(params);
+    getuserlist(params) {
+        return this.getApi('/User/getUserList') + '?' + this.Params(params);
     },
-    getdeptjobrole(){
+    getdeptjobrole() {
         return this.getApi('/Base/getDeptJobRole');
     },
-    adduser(){
+    adduser() {
         return this.getApi('/User/AddUptUser');
     },
-    getmenulist(){
-    	return this.getApi('/Home/getMenuList');
+    getmenulist() {
+        return this.getApi('/Home/getMenuList');
     },
-    addrole(){
+    addrole() {
         return this.getApi('/Role/AddUptRole')
     },
-    Params(params){
-          var par = '';
-          if(params)
-          {
-            for(var key in params)
-            {
-                par=par+key+'='+params[key]+'&';
+    Params(params) {
+        var par = '';
+        if (params) {
+            for (var key in params) {
+                par = par + key + '=' + params[key] + '&';
             }
-           par =  par.slice(0,par.length-1)
-          }
-         
-           return par;
-    }
-    getCity(){
+            par = par.slice(0, par.length - 1)
+        }
+
+        return par;
+    },
+    getCity() {
         return this.getApi('/BIData/getCityDistReport')
 
     }
 }
-
-module.exports = Api
+module.exports = Api;
