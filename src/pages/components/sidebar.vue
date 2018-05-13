@@ -14,7 +14,7 @@
    </ul>
       <p class='title'>系统管理</p>
    <ul>
-       <li><router-link to='/basemanage'><span class="fa fa-inbox"></span> 基础信息</router-link></li>
+       <li><router-link to='/base'><span class="fa fa-inbox"></span> 基础信息</router-link></li>
        <li><router-link to='/user'><span class="fa fa-drivers-license"></span> 用户配置</router-link></li>
        <li><router-link to='/role'> <span class="fa fa-cog"></span> 角色配置</router-link> </li>  
    </ul>

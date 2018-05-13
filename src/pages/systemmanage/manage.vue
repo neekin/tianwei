@@ -3,7 +3,7 @@
     <headnav></headnav>
     <sidebar></sidebar>
     <container>
-         <basemanage></basemanage>
+      <component :is="comid"></component>
     </container>
   </div>
 </template>
@@ -12,13 +12,29 @@ import headnav from "../components/headnav";
 import sidebar from "../components/sidebar";
 import container from "../components/container";
 import basemanage from './basemanage/basemanage'
+import role from './rolemanage/rolemanage'
+import user from './usermanage/usermanage'
 export default {
-  name: "based",
+  data(){
+    return{
+      comid:'user'
+    }
+  },
   components: {
     headnav,
     sidebar,
     container,
-    basemanage
+    basemanage,
+    role,
+    user
+  },
+  mounted(){
+    this.comid = this.$route.name
+  },
+  watch:{
+    '$route'(){
+      this.comid = this.$route.name
+    }
   }
 };
 </script>
