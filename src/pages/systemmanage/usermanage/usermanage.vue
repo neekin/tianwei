@@ -7,9 +7,14 @@
         </span>
     </add>
    <list @createnew='createnew' 
+         @search='getlist'
+          @delitems='delitems'
+         @exportitems='exportitems'
          :newBtn='newBtn'
          :delBtn='delBtn'
-         :exportBtn='exportBtn'>
+         :exportBtn='exportBtn'
+         @goPage='goPage'
+         >
       <slot slot='list-title'>
           <tr>
              <th>共{{total}}条</th>
@@ -24,9 +29,12 @@
       </slot>
 
       <slot slot='list-body'>
-        <tr  v-for='item in result'>
+        <tr  v-for='item in result' :key='item.num' >
               <td>
-              
+                 <div class="checkbox">
+                <input type="checkbox" :value='item.UserId' v-model='ids'>
+                <span class='fa fa-check'></span>
+                </div>
                {{item.num}}</td>
               <td>{{item.PerName}}</td>
               <td>{{item.RoleName}}</td>
@@ -36,7 +44,7 @@
               <td>{{item.UserPhone}}</td>
               <td>
                   <a class='edit'><span class="fa fa-refresh"></span>修改</a>
-                  <a class='del'><span class="fa fa-trash"></span> 删除</a>
+                   <a class='del' @click='delitems(item.UserId)'><span class="fa fa-trash"></span> 删除</a>
               </td>
         </tr>
       </slot>
@@ -52,27 +60,27 @@
 </template>
 <script>
 import add from "../components/add/add";
-import adduser from "../components/add/adduser";
 import list from "../components/list/list";
 export default {
   name: "usermanage",
-  data(){
+  data() {
     return {
-      form:'adduser',
-      show:false,
-      newBtn:true,
-      exportBtn:true,
-      delBtn:true,
-      result:[],
-      search:{
-          PerName:'',
-          DeptName:'',
-          JobName:''
+      form: "adduser",
+      show: false,
+      newBtn: true,
+      exportBtn: true,
+      delBtn: true,
+      result: [],
+      ids: [],
+      search: {
+        PerName: "",
+        DeptName: "",
+        JobName: ""
       },
-      pagesize:10,
-      pageindex:1,
-      total:0
-    }
+      pagesize: 10,
+      pageindex: 1,
+      total: 0
+    };
   },
   methods: {
     createnew() {
@@ -81,30 +89,65 @@ export default {
     hide() {
       this.show = false;
     },
-    getlist(){
-      var params={
-        PerName:this.search.PerName,
-        DeptName:this.search.DeptName,
-        JobName:this.search.JobName,
-        pagesize:this.pagesize,
-        pageindex:this.pageindex,
-        token:this.$store.state.token
-      }
-
-      this.$http.get(this.$api.getuserlist(params)).then(res=>{
-           if(res.data.code ===1)
-           {
-            this.result = res.data.result;
-            this.total = res.data.total
-           }
-      })
+    goPage(num) {
+      this.pageindex = num;
+      this.getlist();
     },
-    success(){
+    getlist() {
+      var params = {
+        PerName: this.search.PerName,
+        DeptName: this.search.DeptName,
+        JobName: this.search.JobName,
+        pagesize: this.pagesize,
+        pageindex: this.pageindex,
+        token: this.$store.state.token
+      };
+
+      this.$http.get(this.$api.getuserlist(params)).then(res => {
+        if (res.data.code === 1) {
+          this.result = res.data.result;
+          this.total = res.data.total;
+        }
+      });
+    },
+    delitems(ids) {
+      var params = {
+        ids: [],
+        token: this.$store.state.token
+      };
+      if (!!ids) {
+        params.ids.push(ids);
+      } else {
+        params.ids = this.ids;
+      }
+      this.$http.post(this.$api.deluser(), params).then(res => {
+        if (res.data.code == 1) {
+          this.success();
+        }
+      });
+    },
+    exportitems() {
+      var params = {
+        PerName: this.search.PerName,
+        DeptName: this.search.DeptName,
+        JobName: this.search.JobName,
+        pagesize: this.pagesize,
+        pageindex: this.pageindex,
+        token: this.$store.state.token
+      };
+
+      this.$http.get(this.$api.exportuserlist(params)).then(res => {
+        if (res.data.code === 1) {
+          window.open(res.data.result);
+        }
+      });
+    },
+    success() {
       this.getlist();
       this.hide();
     }
   },
-  mounted(){
+  mounted() {
     this.getlist();
   },
   components: {

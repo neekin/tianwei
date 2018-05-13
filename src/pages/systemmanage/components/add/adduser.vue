@@ -16,19 +16,19 @@
            <span class='title'>所属部门：</span> 
            <select style='margin-left:-1px' v-model='DeptID'>
                <option value="0">请选择~</option>}
-               <option v-for="(item,index) in Dept"  :value="item.DeptID">{{ item.DeptName }}</option>
+               <option v-for="item in Dept"  :key='item.DeptID' :value="item.DeptID">{{ item.DeptName }}</option>
            </select>
            <span class='title'>所属职务：</span> <select style='margin-left:-3px' v-model='JobID'>
              <option value="0">请选择~</option>}
             
-               <option v-for="(item,index) in Job"  :value="item.JobID">{{ item.JobName }}</option>
+               <option v-for="item in Job"  :key='item.JobID' :value="item.JobID">{{ item.JobName }}</option>
            </select>
          </div>
           <div class='input '>
            <span class='title'>所属角色：</span> 
            <select style='margin-left:-1px' v-model='RoleID'>
                <option value="0">请选择~</option>}
-             <option v-for="(item,index) in Role"  :value="item.RoleID">{{ item.RoleName }}</option>
+             <option v-for="item in Role"  :key='item.RoleID' :value="item.RoleID">{{ item.RoleName }}</option>
            </select>
         
          </div>

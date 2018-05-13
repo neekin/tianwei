@@ -1,22 +1,32 @@
 <template>
   <div>
-     <add :show='show' @hide='hide'>
+     <add :show='show' @hide='hide' :form='form'>
         <span slot='title'>
           新增基础信息
         </span>
-      <addbase slot='form'></addbase>
     </add>
     <list 
     @createnew='createnew' 
+    @search ='getlist'
+    @exportitems='exportitems'
+    @goPage='goPage'
     :newBtn='newBtn'
     :exportBtn='exportBtn'
     >
       <div slot='search'>
-        集团: <select name="" id="">
-         
+        集团：<select v-model='search.GroupName'>
+            <option value="">请选择</option>
         </select>
-        类别: <select name="" id=""></select>
-        运维: <select name="" id=""></select>
+        类别：
+        <select v-model="search.BusCategoryID">
+           <option value="">请选择</option>
+        </select>
+        运维：
+        <select v-model='search.Operation'>
+          <option value="">请选择</option>
+          <option value="0">未维护</option>
+           <option value="1">维护</option>
+        </select>
       </div>
       <slot slot='list-title'>
           <tr>
@@ -34,13 +44,13 @@
       </slot>
 
       <slot slot='list-body'>
-        <tr  v-for='item in result'>
-             <!--  <td>{{item.num}}</td>
+        <tr  v-for='item in result' :key='item.num'>
+              <td>{{item.num}}</td>
               <td>{{item.GroupName}}</td>
-              <td>{{item.SHOPID}}</td>
-              <td>{{item.DeptName}}</td>
-              <td>{{item.JobId}}</td>
-              <td>{{item.PerName}}</td>
+              <!-- <td>{{item.ShopId}}</td>
+              <td>{{item.CityDist}}</td>
+              <td>{{item.CityDist}}</td>
+              <td>{{item.CityDist}}</td>
                <td>{{item.UserPhone}}</td> -->
               <td>
                   <a class='edit'><span class="fa fa-refresh"></span>修改</a>
@@ -55,57 +65,75 @@
 </template>
 <script>
 import add from "../components/add/add";
-import addbase from "../components/add/addbase";
 import list from "../components/list/list";
 export default {
   name: "baseinfo",
   data() {
-     return {show:false,
-      newBtn:true,
-      exportBtn:true,
-      delBtn:false,
-      search:{
-              GroupName:'',
-              BusCategoryID:'',
-              Operation:'',
-              },
-              pagesize:10,
-              pageindex:1,
-             
-       result:[]
-        }
+    return {
+      form: "addbase",
+      show: false,
+      newBtn: true,
+      exportBtn: true,
+      delBtn: false,
+      search: {
+        GroupName: "",
+        BusCategoryID: "",
+        Operation: ""
+      },
+      pagesize: 10,
+      pageindex: 1,
+
+      result: []
+    };
   },
-  methods: {
+  methods: { 
+    goPage(num) {
+      this.pageindex = num;
+      this.getlist();
+    },
     createnew() {
       this.show = true;
     },
     hide() {
       this.show = false;
     },
-    getlist(){
-       // http://121.201.14.250:83/MBase/getShopList?GroupName=&BusCategoryID=&Operation=&pagesize=10&pageindex=1&token=FBFF067233A31ED094FB7B6EA306C8ACACA46950308B6920DFD3046477DB5BA1
-         var parasm = {
-           token:this.$store.state.token,
-           pageindex:this.pageindex,
-           pagesize:this.pagesize,
-           BusCategoryID:this.search.BusCategoryID,
-           GroupName:this.search.GroupName,
-           Operation:this.search.Operation
-         }
-         this.$http.get(this.$api.getshoplist(parasm)).then((res)=>{
-             if(res.data.code==1)
-             {
-              this.result = res.data.result
-             }
-         })
+    getlist() {
+      // http://121.201.14.250:83/MBase/getShopList?GroupName=&BusCategoryID=&Operation=&pagesize=10&pageindex=1&token=FBFF067233A31ED094FB7B6EA306C8ACACA46950308B6920DFD3046477DB5BA1
+      var parasm = {
+        token: this.$store.state.token,
+        pageindex: this.pageindex,
+        pagesize: this.pagesize,
+        BusCategoryID: this.search.BusCategoryID,
+        GroupName: this.search.GroupName,
+        Operation: this.search.Operation
+      };
+      this.$http.get(this.$api.getshoplist(parasm)).then(res => {
+        if (res.data.code == 1) {
+          this.result = res.data.result;
+        }
+      });
+    },
+    exportitems() {
+      var parasm = {
+        token: this.$store.state.token,
+        pageindex: this.pageindex,
+        pagesize: this.pagesize,
+        BusCategoryID: this.search.BusCategoryID,
+        GroupName: this.search.GroupName,
+        Operation: this.search.Operation
+      };
+      this.$http.get(this.$api.exportshoplist(params)).then(res => {
+        if (res.data.code === 1) {
+          window.open(res.data.result);
+        }
+      });
     }
   },
-  mounted(){
+  mounted() {
     this.getlist();
   },
   components: {
     add,
-    addbase,
     list
   }
 };

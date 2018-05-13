@@ -10,40 +10,71 @@
           	删除
           </button>
 
-          <button v-if='exportBtn' class='export'>
+          <button v-if='exportBtn' class='export'  @click='exportitems'>
               <span class='fa fa-cloud-download'></span>
                导出
           </button>
        </div>
 
-       <div class="pagination">
-           <button>上一页</button>
+       <div class="pagination" v-if='pageCount>1'>
+           <button @click='prevPage' v-if='cur>1'>上一页</button>
            <ul>
-               <li>1</li>
-                <li>2</li>
-                 <li>3</li>
+              <li v-for='n in pageCount' :key='n' @click='goPage(n)'  :class='{active:n==cur}'>{{n}}</li>
            </ul>
-              <button>下一页</button>
+              <button @click='nextPage' v-if='cur<pageCount'>下一页</button>
 
               <div class="gopage">
-                  跳转到第<input type="number">页
-                  <button>GO</button>
+                  跳转到第<input type="text" v-model="togo">页
+                  <button @click='gotoPage'>GO</button>
               </div>
        </div>
       </div>
 </template>
 <script >
-export default{
-props:['newBtn','exportBtn','delBtn'],
-methods:{
-    	createnew(){
-    		  this.$emit("createnew");
-    	},
-      delitems(){
-        this.$emit("delitems");
+export default {
+  props: ["newBtn", "exportBtn", "delBtn", "pageCount"],
+  data() {
+    return {
+      cur: 1,
+      togo: 0
+    };
+  },
+  methods: {
+    gotoPage() {
+      this.goPage(this.togo);
+    },
+    goPage(num) {
+      this.cur = num;
+      this.$emit("goPage", num);
+    },
+    prevPage() {
+      this.cur--;
+      if (this.cur <= 0) {
+        this.cur = 1;
       }
+      this.goPage(this.cur);
+    },
+    nextPage() {
+      this.cur++;
+      if (this.cur >= this.pageCount) {
+        this.cur = this.pageCount;
+      }
+      this.goPage(this.cur);
+    },
+    createnew() {
+      this.$emit("createnew");
+    },
+    delitems() {
+      this.$emit("delitems");
+    },
+    exportitems() {
+      this.$emit("exportitems");
     }
-}
+  },
+  mounted() {
+    // console.log(this.pageCount);
+  }
+};
 </script>
 <style scoped>
 .options {
@@ -54,7 +85,10 @@ methods:{
   margin: 6px;
   line-height: 100px;
 }
-
+.pagination li.active {
+  background-color: #fff;
+  color: #002b52;
+}
 .options button {
   border-radius: 3px;
   outline: none;
@@ -65,7 +99,7 @@ methods:{
   font-family: MicrosoftYaHei;
   font-size: 14px;
   line-height: 38px;
-  margin-right:15px;
+  margin-right: 15px;
 }
 .options .create {
   background: #29bd99;
@@ -73,8 +107,8 @@ methods:{
 .options .export {
   background: #189cd5;
 }
-.options .del{
-	background: #E25863;
+.options .del {
+  background: #e25863;
 }
 .options .optionsbtn {
   float: left;

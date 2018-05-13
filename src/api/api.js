@@ -8,12 +8,27 @@ var Api = {
     },
     login: function() { return this.getApi("/Home/Login") },
     logout: function() {},
+    getshopbase() {
+        return this.getApi('/Base/getShopBase');
+    },
     getshoplist(params) {
         return this.getApi('/MBase/getShopList') + '?' + this.Params(params);
-
+    },
+    addUptShop() {
+        return this.getApi('/MBase/AddUptShop')
     },
     getrolelist(params) {
         return this.getApi('/Role/getRoleList') + '?' + this.Params(params);
+    },
+    exportrolelist(params) {
+        return this.getApi('/Role/getRoleListExport') + '?' + this.Params(params);
+    },
+    exportshoplist() {
+        return this.getApi('/MBase/getShopListExport') + '?' + this.Params(params);
+    },
+    exportuserlist() {
+        return this.getApi('/User/getUserListExpor') + '?' + this.Params(params);
+        // GET /User/getUserListExpor
     },
     getuserlist(params) {
         return this.getApi('/User/getUserList') + '?' + this.Params(params);
@@ -29,6 +44,12 @@ var Api = {
     },
     addrole() {
         return this.getApi('/Role/AddUptRole')
+    },
+    delrole() {
+        return this.getApi('/Role/DelRole');
+    },
+    deluser() {
+        return this.getApi('/User/DelUser')
     },
     Params(params) {
         var par = '';

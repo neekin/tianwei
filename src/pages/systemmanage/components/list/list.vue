@@ -1,8 +1,8 @@
 <template>
   <div>
    <div class="header">
-      <search >
-        <div class="search">
+      <search @search='search'>
+        <div class="search" >
                    <slot name='search'></slot>    
         </div>
 
@@ -24,8 +24,11 @@
 <options :newBtn='newBtn'
          :exportBtn='exportBtn'
          :delBtn='delBtn'
+         :pageCount='pageCount'
+         @goPage='goPage'
          @createnew='createnew'
-         @delitems='delitems'>
+         @delitems='delitems'
+         @exportitems='exportitems'>
   
 </options>
      
@@ -35,13 +38,24 @@
 import search from "./search"
 import options from "./options"
 export default {
-  props:['newBtn','exportBtn','delBtn'],
+  props:['newBtn','exportBtn','delBtn','pageCount'],
   methods: {
+    goPage(num) {
+      console.log(num);
+      this.$emit("goPage", num);
+    },
     createnew() {
       this.$emit("createnew");
     },
     delitems(){
       this.$emit("delitems")
+    },
+    exportitems(){
+      this.$emit('exportitems')
+    },
+    search(){
+      console.log('list')
+      this.$emit('search')
     }
   },
   components: {

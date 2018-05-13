@@ -1,18 +1,26 @@
 <template>
   <div class='search'>
     <slot></slot>
-    <button> <span class='fa fa-search'></span> 查询</button>
+    <button @click="search"> <span class='fa fa-search'></span>查询</button>
   </div>
 </template>
 <script>
-export default {};
+export default {
+  methods:{
+    search(){
+        console.log('search');
+        this.$emit('search');
+    }
+  }
+}
 </script>
 <style scoped>
 .search {
   display: inline-block;
 }
 .search input,
-.search select {
+.search select,
+.search option {
   width: 185px;
   background-color: rgba(0, 86, 172, 0.4);
   border: 1px solid #176bb8;
@@ -23,6 +31,8 @@ export default {};
   font-family: MicrosoftYaHei;
   font-size: 14px;
   margin-right: 18px;
+  color:#fff;
+  text-indent: 10px;
 }
 .search button {
   width: 96px;
