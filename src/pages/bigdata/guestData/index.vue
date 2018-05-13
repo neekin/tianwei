@@ -59,67 +59,67 @@
 @import url("../../../style/base.less");
 @import url("../../../assets/fonts/iconfont.css");
 div {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 .content {
-  color: @fontColor;
-  overflow: hidden;
-  padding: 12px;
-  font-family: "Microsoft Yahei";
-  > div[class^="ct_"] {
-    > div[class^="report_"] {
-      &:not(:first-child) {
-        margin: 12px 0;
-      }
-      background-color: @boxbgc;
-      border: 1px solid @borderColor;
-      > .rp_title {
-        position: absolute;
-        font-weight: bold;
-        font-size: 18px;
-        margin: 20px 0 0 14px;
-        > i {
-          font-weight: normal;
-          font-size: 20px;
-          margin: 0 5px;
+    color: @fontColor;
+    overflow: hidden;
+    padding: 12px;
+    font-family: "Microsoft Yahei";
+    > div[class^="ct_"] {
+        > div[class^="report_"] {
+            &:not(:first-child) {
+                margin: 12px 0;
+            }
+            background-color: @boxbgc;
+            border: 1px solid @borderColor;
+            > .rp_title {
+                position: absolute;
+                font-weight: bold;
+                font-size: 18px;
+                margin: 20px 0 0 14px;
+                > i {
+                    font-weight: normal;
+                    font-size: 20px;
+                    margin: 0 5px;
+                }
+            }
+            > .rp_echarts {
+                width: 100%;
+                height: 100%;
+            }
         }
-      }
-      > .rp_echarts {
-        width: 100%;
-        height: 100%;
-      }
     }
-  }
-  .ct_left {
-    width: 324px;
-    height: 926px;
-    .report_cityDist {
-      height: 564px;
+    .ct_left {
+        width: 324px;
+        height: 926px;
+        .report_cityDist {
+            height: 564px;
+        }
+        .report_busCircle {
+            height: 352px;
+        }
     }
-    .report_busCircle {
-      height: 352px;
+    .ct_center {
+        height: 926px;
+        margin: 0 336px !important;
+        .report_keliu {
+            height: 616px;
+        }
+        .report_paiming {
+            height: 300px;
+        }
     }
-  }
-  .ct_center {
-    height: 926px;
-    margin: 0 336px !important;
-    .report_keliu {
-      height: 616px;
+    .ct_right {
+        width: 324px;
+        height: 926px;
+        .report_top10 {
+            height: 457px;
+        }
+        .report_bottom10 {
+            height: 458px;
+        }
     }
-    .report_paiming {
-      height: 300px;
-    }
-  }
-  .ct_right {
-    width: 324px;
-    height: 926px;
-    .report_top10 {
-      height: 457px;
-    }
-    .report_bottom10 {
-      height: 458px;
-    }
-  }
 }
 </style>
 
@@ -127,13 +127,13 @@ div {
 // import Base64 from "@/api/Base64";
 
 // 引入基本模板
-var echarts = require('echarts')
+var echarts = require("echarts");
 // // 引入柱状图组件
-require('echarts/lib/chart/bar')
-require('echarts/lib/chart/pie')
+require("echarts/lib/chart/bar");
+require("echarts/lib/chart/pie");
 // // 引入提示框和title组件
-require('echarts/lib/component/tooltip')
-require('echarts/lib/component/title')
+require("echarts/lib/component/tooltip");
+require("echarts/lib/component/title");
 
 import headnav from "../../components/headnav.vue";
 import sidebar from "../../components/sidebar";
@@ -147,119 +147,128 @@ export default {
     },
     data() {
         return {
+            token: "",
             data: {
                 city: {
-                    color: ['#faff81', '#50eaff', "#ffc53a"],
+                    color: ["#faff81", "#50eaff", "#ffc53a"],
                     tooltip: {
-                        trigger: 'item',
+                        trigger: "item",
                         formatter: "{a} <br/>{b}: {c} ({d}%)"
                     },
                     legend: {
-                        orient: 'vertical',
+                        orient: "vertical",
                         bottom: 25,
                         textStyle: {
-                            color: '#d2dae0',
+                            color: "#d2dae0",
                             fontSize: 18,
-                            padding: [14, 0],
+                            padding: [14, 0]
                         },
-                        data: ['一线城市', '二线城市', '三线城市']
+                        formatter: ""
                     },
                     graphic: {
-                        type: 'group',
-                        left: 'center',
-                        top: '33%',
+                        type: "group",
+                        left: "center",
+                        top: "33%",
                         width: 120,
                         height: 100,
-                        children: [{
-                            type: 'text',
-                            z: 100,
-                            top: '25%',
-                            left: 'center',
-                            style: {
-                                fill: '#fff',
-                                text: [
-                                    '单位：人次'
-                                ].join('\n'),
-                                font: '14px Microsoft YaHei'
+                        children: [
+                            {
+                                type: "text",
+                                z: 100,
+                                top: "25%",
+                                left: "center",
+                                style: {
+                                    fill: "#fff",
+                                    text: ["单位：人次"].join("\n"),
+                                    font: "14px Microsoft YaHei"
+                                }
+                            },
+                            {
+                                type: "text",
+                                z: 100,
+                                top: "50%",
+                                left: "center",
+                                style: {
+                                    fill: "#fff",
+                                    text: ["9000万"].join("\n"),
+                                    font: "32px Microsoft YaHei",
+                                    fontWeight: "bold"
+                                }
+                            },
+                            {
+                                type: "text",
+                                z: 100,
+                                top: "100%",
+                                left: "center",
+                                style: {
+                                    fill: "#fff",
+                                    text: ["最近三个月"].join("\n"),
+                                    font: "14px Microsoft YaHei"
+                                }
                             }
-                        },
-                        {
-                            type: 'text',
-                            z: 100,
-                            top: '50%',
-                            left: 'center',
-                            style: {
-                                fill: '#fff',
-                                text: [
-                                    '9000万'
-                                ].join('\n'),
-                                font: '32px Microsoft YaHei',
-                                fontWeight: 'bold'
-                            }
-                        },
-                        {
-                            type: 'text',
-                            z: 100,
-                            top: '100%',
-                            left: 'center',
-                            style: {
-                                fill: '#fff',
-                                text: [
-                                    '最近三个月'
-                                ].join('\n'),
-                                font: '14px Microsoft YaHei',
-                            }
-                        }
                         ]
                     },
-                    series: [{
-                        name: '城市分布情况',
-                        type: 'pie',
-                        center: ['50%', '40%'],
-                        radius: ['50%', '70%'],
-                        avoidLabelOverlap: false,
-                        label: {
-                            lineHeight: 56,
-                            normal: {
-                                show: false,
-                                position: 'center'
+                    series: [
+                        {
+                            name: "城市分布情况",
+                            type: "pie",
+                            center: ["50%", "40%"],
+                            radius: ["50%", "70%"],
+                            avoidLabelOverlap: false,
+                            label: {
+                                lineHeight: 56,
+                                normal: {
+                                    show: false,
+                                    position: "center"
+                                }
                             },
-                        },
-                        data: [{
-                            value: 335,
-                            name: '一线城市'
-                        },
-                        {
-                            value: 310,
-                            name: '二线城市'
-                        },
-                        {
-                            value: 234,
-                            name: '三线城市'
+                            data: []
                         }
-                        ]
-                    }]
+                    ]
                 }
             },
-            myChart: ''
-        }
+            cityChart: ""
+        };
     },
     methods: {
+        getCity() {
+            this.$http
+                .get(this.$api.getCity(), {
+                    params: {
+                        token: this.token
+                    }
+                })
+                .then(res => {
+                    if (res.data.code == 1) {
+                        console.log(res.data);
+                        for (let i in res.data.result.detail) {
+                            this.data.city.series[0].data.push({
+                                value: res.data.result.detail[i].count,
+                                name: i
+                            });
+                            this.data.city.legend.formatter = `    {name}    ${
+                                res.data.result.detail[i].percent
+                            }`;
+                        }
 
+                        console.log(this.data.city.series[0]);
+
+                        this.cityChart = echarts.init(
+                            document.getElementById("city")
+                        );
+                        this.cityChart.setOption(this.data.city);
+                    } else if (res.data.code == -1) {
+                        this.$router.push("/login");
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        }
     },
     mounted() {
-
-        // console.log(Base64.encode('F699BDA69E5A20A1EA4FA0799C1AADF368183BD8D86ACE0D69F17A147EC00C70'));
-        // this.$http.get(this.$api.getCountSumReport(), {
-        //     params: {
-        //         token: Base64.encode('F699BDA69E5A20A1EA4FA0799C1AADF368183BD8D86ACE0D69F17A147EC00C70')
-        //     }
-        // }).then(res => {
-        //     console.log(res);
-
-        this.cityChart = echarts.init(document.getElementById('city'));
-        this.cityChart.setOption(this.data.city)
-        // })
+        this.token = this.$store.state.token;
+        this.getCity();
     }
-}
+};
 </script>

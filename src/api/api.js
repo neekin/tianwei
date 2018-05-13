@@ -46,6 +46,9 @@ var Api = {
     },
     addrole(){
         return this.getApi('/Role/AddUptRole')
+    },
+    getCity(){
+        return this.getApi('/BIData/getCityDistReport')
     }
 }
 
