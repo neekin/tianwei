@@ -1,24 +1,24 @@
 <template>
 <div>
        <div class='input group'>
-           <span class='title'>登陆账号 <i>*</i>:</span><input type="text" v-model='UserName'>
-           <span class="title">姓名 <i>*</i>：</span> <input type="text" v-model='PerName'>
+           <span class='title'>登陆账号 <i>*</i>:</span><input type="text" v-model='addParams.UserName'>
+           <span class="title">姓名 <i>*</i>：</span> <input type="text" v-model='addParams.PerName'>
         </div>
          <div class='input'>
-           <span class='title'>登陆密码 <i>*</i>:</span><input v-model='UserPwd' type="password">
-           <span class="title">确认密码 <i>*</i>：</span> <input type="password" v-model='RePwd'>
+           <span class='title'>登陆密码 <i>*</i>:</span><input v-model='addParams.UserPwd' type="password">
+           <span class="title">确认密码 <i>*</i>：</span> <input type="password" v-model='addParams.RePwd'>
          </div>
          <div class='input'>
-           <span class='title'>联系方式：</span><input type="text" name="" v-model='UserPhone'>
-           <span class='title'>邮箱地址：</span> <input type="text" name="" v-model='UserEmail'>
+           <span class='title'>联系方式：</span><input type="text" name="" v-model='addParams.UserPhone'>
+           <span class='title'>邮箱地址：</span> <input type="text" name="" v-model='addParams.UserEmail'>
          </div>
          <div class='input '>
            <span class='title'>所属部门：</span> 
-           <select style='margin-left:-1px' v-model='DeptID'>
+           <select style='margin-left:-1px' v-model='addParams.DeptID'>
                <option value="0">请选择~</option>}
                <option v-for="item in Dept"  :key='item.DeptID' :value="item.DeptID">{{ item.DeptName }}</option>
            </select>
-           <span class='title'>所属职务：</span> <select style='margin-left:-3px' v-model='JobID'>
+           <span class='title'>所属职务：</span> <select style='margin-left:-3px' v-model='addParams.JobID'>
              <option value="0">请选择~</option>}
             
                <option v-for="item in Job"  :key='item.JobID' :value="item.JobID">{{ item.JobName }}</option>
@@ -26,122 +26,128 @@
          </div>
           <div class='input '>
            <span class='title'>所属角色：</span> 
-           <select style='margin-left:-1px' v-model='RoleID'>
+           <select style='margin-left:-1px' v-model='addParams.RoleID'>
                <option value="0">请选择~</option>}
              <option v-for="item in Role"  :key='item.RoleID' :value="item.RoleID">{{ item.RoleName }}</option>
            </select>
         
          </div>
          <div class='input'>
-           <span class='title'>备注：</span><textarea name="" id="" cols="30" rows="1" v-model='Remark'></textarea>
+           <span class='title'>备注：</span><textarea name="" id="" cols="30" rows="1" v-model='addParams.Remark'></textarea>
          </div>
 </div>
 </template>
 <script>
-  export default{
-    name:'adduser',
-    data(){
-      return {
-        UserName:'',
-        PerName:'',
-        UserPwd:'',
-        RePwd:'',
-        DeptID:0,
-        JobID:0,
-        RoleID:0,
-        UserPhone:'',
-        UserEmail:'',
-        Remark:'',
-        Dept:[],
-        Job:[],
-        Role:[]
-      }
-    },
-    methods:{
-     add(){
-      if(this.UserPwd!=this.RePwd)
-      {
-        alert('请填写正确的密码');
+export default {
+  name: "adduser",
+  props: ["edit"],
+  data() {
+    return {
+     addParams:{
+      UserId:0,
+      UserName: "",
+      PerName: "",
+      UserPwd: "",
+      RePwd: "",
+      DeptID: 0,
+      JobID: 0,
+      RoleID: 0,
+      UserPhone: "",
+      UserEmail: "",
+      Remark: "",
+     },
+      Dept: [],
+      Job: [],
+      Role: []
+    };
+  },
+  methods: {
+    add() {
+      if (this.addParams.UserPwd != this.addParams.RePwd) {
+        alert("请填写正确的密码");
         return;
       }
-       var params = {
-        UserName:this.UserName,
-        PerName:this.PerName,
-        UserPwd:this.UserPwd,
-        RePwd:this.RePwd,
-        DeptID:this.DeptID,
-        JobID:this.JobID,
-        RoleID:this.RoleID,
-        UserPhone:this.UserPhone,
-        UserEmail:this.UserEmail,
-        Remark:this.Remark,
-        token:this.$store.state.token
-       }
+      var params = {
+        UserId:this.addParams.UserId,
+        UserName: this.addParams.UserName,
+        PerName: this.addParams.PerName,
+        UserPwd: this.addParams.UserPwd,
+        RePwd: this.addParams.RePwd,
+        DeptID: this.addParams.DeptID,
+        JobID: this.addParams.JobID,
+        RoleID: this.addParams.RoleID,
+        UserPhone: this.addParams.UserPhone,
+        UserEmail: this.addParams.UserEmail,
+        Remark: this.addParams.Remark,
+        token: this.$store.state.token
+      };
 
-       this.$http.post(this.$api.adduser(),params).then(res=>{
-           if(res.data.code ===1)
-           {
-            this.$emit('success')
-           }
-       })
-
-
-
-     },
-     init(){
-      this.$http.get(this.$api.getdeptjobrole()+'?token='+this.$store.state.token).then(res=>{
-             this.Dept = res.data.result.Dept;
-             this.Job =res.data.result.Job;
-             this.Role = res.data.result.Role;
-      })
-     }
+      this.$http.post(this.$api.adduser(), params).then(res => {
+        if (res.data.code === 1) {
+          this.$emit("success");
+        }
+      });
     },
-    mounted(){
-      this.init();
+    init() {
+      this.$http
+        .get(this.$api.getdeptjobrole() + "?token=" + this.$store.state.token)
+        .then(res => {
+          this.Dept = res.data.result.Dept;
+          this.Job = res.data.result.Job;
+          this.Role = res.data.result.Role;
+        });
     }
+  },
+  mounted() {
+    if(this.edit.UserId!=0)
+    {
+      console.log('user',this.edit);
+      this.addParams = this.edit;
+    }
+    this.init();
   }
+};
 </script>
 <style>
 .input input,
-.input select
-{
-  height:38px;
+.input select {
+  height: 38px;
   width: 225px;
-  background: rgba(0,0,0,0.12);
-  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 3px;
   font-family: MicrosoftYaHei;
   font-size: 14px;
-  color: #FFFFFF;
+  color: #ffffff;
 }
-.input select option{
+.input select option {
   background-color: rgba(0, 42, 80, 0.96);
-   border: 1px solid rgba(255,255,255,0.12);
+  border: 1px solid rgba(255, 255, 255, 0.12);
 }
-.input{
+.input {
   margin: 25px auto;
   width: 700px;
 }
-.input .title{
+.input .title {
   width: 102px;
   display: inline-block;
   text-align: right;
-  padding:0 10px;
+  padding: 0 10px;
 }
-.input .title i{
-  color:red;
+.input .title i {
+  color: red;
 }
-.input .title:last-child{
-  margin-left:10px;
+.input .title:last-child {
+  margin-left: 10px;
 }
-.input textarea{
-  background: rgba(0,0,0,0.12);
-  border: 1px solid rgba(255,255,255,0.12);
+.input textarea {
+  background: rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 3px;
   font-family: MicrosoftYaHei;
   font-size: 14px;
-  color: #FFFFFF;
-  height:38px;
+  color: #ffffff;
+  height: 38px;
   line-height: 38px;
   overflow: hidden;
   width: 590px;

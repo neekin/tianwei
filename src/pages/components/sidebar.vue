@@ -4,15 +4,19 @@
    </div>
    <p class='title'>天威大数据</p>
    <ul>
-       <li class='active'> <router-link to='/guestdata'>客流数据</router-link></li>
-       <li><router-link to='/bcreport'>商圈报告</router-link></li>
-       <li><router-link to='/rtdevice'>实时设备</router-link></li>  
+       <li class='active'><router-link to='/guestdata'>
+        <span class="fa fa-bar-chart"></span> 客流数据
+       </router-link></li>
+       <li><router-link to='/bcreport'>
+         <span class="fa fa-file-text"></span> 商圈报告
+       </router-link></li>
+       <li><router-link to='/rtdevice'><span class="fa fa-sitemap"></span>   实时设备</router-link></li>  
    </ul>
       <p class='title'>系统管理</p>
    <ul>
-       <li><router-link to='/basemanage'>基础信息</router-link></li>
-       <li><router-link to='/user'>用户配置</router-link></li>
-       <li><router-link to='/role'>角色配置</router-link> </li>  
+       <li><router-link to='/basemanage'><span class="fa fa-inbox"></span> 基础信息</router-link></li>
+       <li><router-link to='/user'><span class="fa fa-drivers-license"></span> 用户配置</router-link></li>
+       <li><router-link to='/role'> <span class="fa fa-cog"></span> 角色配置</router-link> </li>  
    </ul>
    <div class="line"></div>
   </div>
@@ -82,16 +86,16 @@ export default {
 .sidebar ul li:hover{
   cursor: pointer;
 }
-.sidebar ul li.active::before {
+.sidebar ul li a.active::before {
   border-top: 1px solid #f49c00;
 }
 .sidebar ul li:hover::before {
   border-top: 1px solid #002e62;
 }
-.sidebar ul li.active {
+.sidebar ul li a.active {
   background: #f49c00;
 }
-.sidebar ul li:hover {
+.sidebar ul li a:hover {
   background: #002e62;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <add :show='show' :form='form' @hide='hide' @success='success'>
+    <add :show='show' :form='form' @hide='hide' @success='success' :edit='edit'>
         <span slot='title'>
            新建用户配置
         </span>
@@ -43,7 +43,7 @@
               <td>{{item.PerName}}</td>
               <td>{{item.UserPhone}}</td>
               <td>
-                  <a class='edit'><span class="fa fa-refresh"></span>修改</a>
+                   <a class='edit' @click="edititem(item)"><span class="fa fa-refresh"></span>修改</a>
                    <a class='del' @click='delitems(item.UserId)'><span class="fa fa-trash"></span> 删除</a>
               </td>
         </tr>
@@ -72,6 +72,7 @@ export default {
       delBtn: true,
       result: [],
       ids: [],
+      edit:{},
       search: {
         PerName: "",
         DeptName: "",
@@ -84,7 +85,12 @@ export default {
   },
   methods: {
     createnew() {
+      this.edit.UserId=0;
       this.show = true;
+    },
+    edititem(edit){
+      this.edit = edit;
+      this.show=true;
     },
     hide() {
       this.show = false;

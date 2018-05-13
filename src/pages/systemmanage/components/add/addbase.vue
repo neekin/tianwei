@@ -41,6 +41,7 @@
 <script>
 export default {
   name: "addbase",
+  props:['edit'],
   data() {
     return {
       BusCategory: [],
@@ -86,6 +87,10 @@ export default {
     }
   },
   mounted() {
+    if(this.edit!=null)
+    {
+      this.addParams = this.edit;
+    }
     this.init();
   }
 };
@@ -117,7 +122,7 @@ export default {
   display: inline-block;
   width: 120px;
   text-align: right;
-  padding-right: 30px;
+  padding-right: 25px;
 
   display: inline-block;
   height: 38px;

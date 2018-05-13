@@ -1,6 +1,6 @@
 <template>
   <div>
-     <add :show='show' @hide='hide' :form='form'>
+     <add :show='show' @hide='hide' :form='form' :edit='edit'>
         <span slot='title'>
           新增基础信息
         </span>
@@ -53,7 +53,7 @@
               <td>{{item.CityDist}}</td>
                <td>{{item.UserPhone}}</td> -->
               <td>
-                  <a class='edit'><span class="fa fa-refresh"></span>修改</a>
+                  <a class='edit' @click='edititem(item)'><span class="fa fa-refresh"></span>修改</a>
                   <a class='del'><span class="fa fa-trash"></span> 删除</a>
               </td>
         </tr>
@@ -75,6 +75,7 @@ export default {
       newBtn: true,
       exportBtn: true,
       delBtn: false,
+      edit:null,
       search: {
         GroupName: "",
         BusCategoryID: "",
@@ -82,7 +83,7 @@ export default {
       },
       pagesize: 10,
       pageindex: 1,
-
+      
       result: []
     };
   },
@@ -92,7 +93,12 @@ export default {
       this.getlist();
     },
     createnew() {
+      this.edit=null;
       this.show = true;
+    },
+    edititem(item){
+      this.edit = item;
+      this.show=true;
     },
     hide() {
       this.show = false;
