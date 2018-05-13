@@ -11,6 +11,7 @@
 <script>
 
 export default {
+  props:['edit'],
   data() {
     return {
       menus:[],
@@ -73,7 +74,7 @@ export default {
         }
    var params={
         "token": this.$store.state.token,
-        "RoleId": 0,
+        "RoleId": this.edit.RoleId,
         "RoleName": this.name,
         MenuId
       }
@@ -94,6 +95,11 @@ export default {
     }
   },
   mounted(){
+    console.log('roleid',this.edit)
+    if(this.edit.RoleId!=0)
+    {
+      this.name = this.edit.RoleName
+    }
     this.getlist();
   }
 };

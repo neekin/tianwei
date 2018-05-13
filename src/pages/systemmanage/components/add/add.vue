@@ -7,7 +7,7 @@
                 <span @click='cancle' class="fa fa-close pull-right close"></span>
             </div>
             <slot name='form'>
-                  <component ref='form' :is="form" @success='success'></component>
+                  <component ref='form' :is="form" @success='success' :edit='edit'></component>
             </slot>
 
              <div class='buttons'>
@@ -25,7 +25,7 @@ import adduser from "./adduser";
 import addrole from "./addrole"
 export default {
   name: "add",
-  props: ["form", "show",'formwidth'],
+  props: ["form", "show",'formwidth','edit'],
   components: {
     addbase,
     adduser,

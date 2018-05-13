@@ -18,7 +18,6 @@ axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded
 //全局拦截器 验证token验证是否失效
 axios.interceptors.response.use(
     response => {
-        console.log('全局拦截器', response)
         if (response.data.code === -1) {
             router.push('/login');
         }

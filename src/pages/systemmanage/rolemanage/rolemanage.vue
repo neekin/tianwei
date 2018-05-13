@@ -1,6 +1,6 @@
 <template>
   <div>
-  <add :show='show' :form='form' @hide='hide' :formwidth='394' @success='success'>
+  <add :show='show' :form='form' @hide='hide' :formwidth='394' @success='success' :edit='edit'>
         <span slot='title'>
            新建角色配置
         </span>
@@ -41,7 +41,7 @@
               <td>{{item.MenuName}}</td>
               <td>{{item.CtrDate | fmt}}</td>
               <td>
-                  <a class='edit'><span class="fa fa-refresh"></span>修改</a>
+                  <a class='edit' @click='edititem(item)'><span class="fa fa-refresh"></span>修改</a>
                   <a class='del' @click='delitems(item.RoleId)'><span class="fa fa-trash"></span> 删除</a>
               </td>
         </tr>
@@ -70,6 +70,7 @@ export default {
       result: [],
       total: 0,
       ids: [],
+      edit:{},
       form: "addrole",
       pageindex: 1,
       pagesize: 10,
@@ -87,6 +88,11 @@ export default {
       this.getlist();
     },
     createnew() {
+      this.edit.RoleId = 0;
+      this.show = true;
+    },
+    edititem(edit){
+      this.edit = edit;
       this.show = true;
     },
     hide() {
