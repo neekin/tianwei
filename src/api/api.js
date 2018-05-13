@@ -30,6 +30,7 @@ var Api = {
     addrole(){
         return this.getApi('/Role/AddUptRole')
     },
+<<<<<<< HEAD
     delrole(){
         return this.getApi('/Role/DelRole')
     },
@@ -45,6 +46,10 @@ var Api = {
           }
          
            return par;
+=======
+    getCity(){
+        return this.getApi('/BIData/getCityDistReport')
+>>>>>>> fb71308d90945dc2252b5f57c7ea4e0d5c289cf5
     }
 }
 
