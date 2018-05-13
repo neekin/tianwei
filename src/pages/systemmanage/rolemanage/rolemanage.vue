@@ -55,8 +55,8 @@
   </div>
 </template>
 <script>
-import add from "../components/add/add";
-import list from "../components/list/list";
+import add from "@/pages/components/add/add";
+import list from "@/pages/components/list/list";
 import { formatDate } from "@/api/date";
 export default {
   name: "rolemanage",

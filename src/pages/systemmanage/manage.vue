@@ -8,9 +8,9 @@
   </div>
 </template>
 <script>
-import headnav from "../components/headnav";
-import sidebar from "../components/sidebar";
-import container from "../components/container";
+import headnav from "@/pages/components/headnav";
+import sidebar from "@/pages/components/sidebar";
+import container from "@/pages/components/container";
 import basemanage from './basemanage/basemanage'
 import role from './rolemanage/rolemanage'
 import user from './usermanage/usermanage'
