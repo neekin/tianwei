@@ -13,9 +13,9 @@
                     <div class="report_busCircle">
                         <div class="rp_title">
                             <i class="iconfont icon-people"></i>
-                            城市分布情况
+                            商圈客流情况
                         </div>
-                        <div class="rp_echarts" id="city"></div>
+                        <div class="rp_echarts" id="people"></div>
                     </div>
                 </div>
                 <div class="ct_right fr">
@@ -59,67 +59,67 @@
 @import url("../../../style/base.less");
 @import url("../../../assets/fonts/iconfont.css");
 div {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 .content {
-    color: @fontColor;
-    overflow: hidden;
-    padding: 12px;
-    font-family: "Microsoft Yahei";
-    > div[class^="ct_"] {
-        > div[class^="report_"] {
-            &:not(:first-child) {
-                margin: 12px 0;
-            }
-            background-color: @boxbgc;
-            border: 1px solid @borderColor;
-            > .rp_title {
-                position: absolute;
-                font-weight: bold;
-                font-size: 18px;
-                margin: 20px 0 0 14px;
-                > i {
-                    font-weight: normal;
-                    font-size: 20px;
-                    margin: 0 5px;
-                }
-            }
-            > .rp_echarts {
-                width: 100%;
-                height: 100%;
-            }
+  color: @fontColor;
+  overflow: hidden;
+  padding: 12px;
+  font-family: "Microsoft Yahei";
+  > div[class^="ct_"] {
+    > div[class^="report_"] {
+      &:not(:first-child) {
+        margin: 12px 0;
+      }
+      background-color: @boxbgc;
+      border: 1px solid @borderColor;
+      > .rp_title {
+        position: absolute;
+        font-weight: bold;
+        font-size: 18px;
+        margin: 20px 0 0 14px;
+        > i {
+          font-weight: normal;
+          font-size: 20px;
+          margin: 0 5px;
         }
+      }
+      > .rp_echarts {
+        width: 100%;
+        height: 100%;
+      }
     }
-    .ct_left {
-        width: 324px;
-        height: 926px;
-        .report_cityDist {
-            height: 564px;
-        }
-        .report_busCircle {
-            height: 352px;
-        }
+  }
+  .ct_left {
+    width: 324px;
+    height: 926px;
+    .report_cityDist {
+      height: 564px;
     }
-    .ct_center {
-        height: 926px;
-        margin: 0 336px !important;
-        .report_keliu {
-            height: 616px;
-        }
-        .report_paiming {
-            height: 300px;
-        }
+    .report_busCircle {
+      height: 352px;
     }
-    .ct_right {
-        width: 324px;
-        height: 926px;
-        .report_top10 {
-            height: 457px;
-        }
-        .report_bottom10 {
-            height: 458px;
-        }
+  }
+  .ct_center {
+    height: 926px;
+    margin: 0 336px !important;
+    .report_keliu {
+      height: 616px;
     }
+    .report_paiming {
+      height: 300px;
+    }
+  }
+  .ct_right {
+    width: 324px;
+    height: 926px;
+    .report_top10 {
+      height: 457px;
+    }
+    .report_bottom10 {
+      height: 458px;
+    }
+  }
 }
 </style>
 
@@ -225,6 +225,34 @@ export default {
                             data: []
                         }
                     ]
+                },
+                people: {
+                    color: ["#817bed", "#55b3f3", "#1789ee"],
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: "{a} <br/>{b} : {c} ({d}%)"
+                    },
+                    series: [
+                        {
+                            name: '商圈客流情况',
+                            type: 'pie',
+                            radius: '75%',
+                            center: ['50%', '60%'],
+                            label: {
+                                normal: {
+                                    position: 'inner'
+                                }
+                            },
+                            data: [],
+                            itemStyle: {
+                                emphasis: {
+                                    shadowBlur: 10,
+                                    shadowOffsetX: 0,
+                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                }
+                            }
+                        }
+                    ]
                 }
             },
             charts: {}
@@ -256,14 +284,47 @@ export default {
                             });
                             this.data.city.legend.formatter = `    {name}    ${
                                 res.data.result.detail[i].percent
-                            }`;
+                                }`;
                         }
-
-                        console.log(this.data.city.series[0]);
                         this.charts.city.setOption(this.data.city);
                         this.charts.city.hideLoading();
                     } else if (res.data.code == -1) {
-                        console.log("123");
+                        this.$router.push("/login");
+                    } else {
+                        this.charts.city.hideLoading();
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        },
+        getPeople() {
+            this.charts.people = echarts.init(document.getElementById("people"));
+            this.charts.people.showLoading("default", {
+                text: "加载中...",
+                color: "#f49c00",
+                textColor: "#fff",
+                maskColor: "rgba(0, 0, 0, 0.5)",
+                zlevel: 0
+            });
+            this.$http
+                .get(this.$api.getPeople(), {
+                    params: {
+                        token: this.token
+                    }
+                })
+                .then(res => {
+                    console.log(res);
+                    if (res.data.code == 1) {
+                        for (let i in res.data.result.detail) {
+                            this.data.people.series[0].data.push({
+                                value: res.data.result.detail[i].count,
+                                name: `${i}  ${res.data.result.detail[i].percent}`
+                            });
+                        }
+                        this.charts.people.hideLoading();
+                        this.charts.people.setOption(this.data.people);
+                    } else if (res.data.code == -1) {
                         this.$router.push("/login");
                     } else {
                         this.charts.city.hideLoading();
@@ -277,14 +338,15 @@ export default {
     mounted() {
         this.token = this.$store.state.token;
         this.$http.interceptors.request.use(
-            function(config) {
+            function (config) {
                 return config;
             },
-            function(error) {
+            function (error) {
                 return Promise.reject(error);
             }
         );
         this.getCity();
+        this.getPeople();
     }
 };
 </script>
