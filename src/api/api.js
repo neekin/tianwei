@@ -2,7 +2,7 @@
 var Api = {
     http: 'http://',
     https: 'https://',
-    url: 'localhost:8080/api',
+    url: window.domian,
     getApi(api) {
         return this.http + this.url + api;
     },
