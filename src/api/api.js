@@ -2,7 +2,7 @@
 var Api = {
   http: 'http://',
   https: 'https://',
-  url: 'localhost:8080/api',
+  url: window.domian,
   getApi(api) {
     return this.http + this.url + api;
   },
@@ -23,6 +23,14 @@ var Api = {
   },
   getshoplist(params) {
     return this.getApi('/MBase/getShopList') + '?' + this.Params(params);
+  },
+  getgrouplist() {
+    // GET /MBase/getGropList
+    return this.getApi('/MBase/getGropList');
+  },
+  getmalllist() {
+    // GET /MBase/getMallList
+    return this.getApi('/MBase/getMallList');
   },
   addUptShop() {
     return this.getApi('/MBase/AddUptShop')
@@ -69,7 +77,6 @@ var Api = {
       }
       par = par.slice(0, par.length - 1)
     }
-
     return par;
   },
   getCity() {

@@ -61,6 +61,8 @@ export default {
                     if (res.data.code == 1) {
                         this.statu = res.data.code;
                         this.$store.commit("updateToken", res.data.token);
+                        // console.log(this.username);
+                        this.$store.commit('updateUserName',this.username);
                         this.$router.push("/");
                     }
                     this.msg = res.data.message;
@@ -82,6 +84,7 @@ export default {
                     if (res.data.code == 1) {
                         this.statu = res.data.code;
                         this.$store.commit("updateToken", res.data.token);
+                        this.$store.commit('updateUserName',this.username);
                         this.$router.push("/");
                     }
                     this.msg = res.data.message;
