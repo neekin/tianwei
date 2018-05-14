@@ -227,11 +227,19 @@ export default {
                     ]
                 }
             },
-            cityChart: ""
+            charts: {}
         };
     },
     methods: {
         getCity() {
+            this.charts.city = echarts.init(document.getElementById("city"));
+            this.charts.city.showLoading("default", {
+                text: "加载中...",
+                color: "#f49c00",
+                textColor: "#fff",
+                maskColor: "rgba(0, 0, 0, 0.5)",
+                zlevel: 0
+            });
             this.$http
                 .get(this.$api.getCity(), {
                     params: {
@@ -252,13 +260,13 @@ export default {
                         }
 
                         console.log(this.data.city.series[0]);
-
-                        this.cityChart = echarts.init(
-                            document.getElementById("city")
-                        );
-                        this.cityChart.setOption(this.data.city);
+                        this.charts.city.setOption(this.data.city);
+                        this.charts.city.hideLoading();
                     } else if (res.data.code == -1) {
+                        console.log("123");
                         this.$router.push("/login");
+                    } else {
+                        this.charts.city.hideLoading();
                     }
                 })
                 .catch(err => {
@@ -268,6 +276,14 @@ export default {
     },
     mounted() {
         this.token = this.$store.state.token;
+        this.$http.interceptors.request.use(
+            function(config) {
+                return config;
+            },
+            function(error) {
+                return Promise.reject(error);
+            }
+        );
         this.getCity();
     }
 };

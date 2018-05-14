@@ -72,7 +72,7 @@ export default {
 
         // token失效后自动登陆
         autoLogin() {
-            this.username = 'admin';
+            this.username = 'neekin';
             this.password = '123';
             var Account = StringUpdater.update(Base64.encode(this.username));
             var Pwd = StringUpdater.update(Base64.encode(this.password));
