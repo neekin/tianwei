@@ -26,12 +26,23 @@
          <div class='input '>
            <span class='title'>商业体类别：</span> 
            <select style='margin-left:-1px' v-model='addParams.BusCategoryID'>
-                            <option value="0">请选择~</option>}
-               <option v-for="item in BusCategory"  :key='item.BusCategoryID' :value="item.BusCategoryID">{{ item.BusCategory }}</option>
+              <option value="0">请选择~</option>
+               <option v-for="item in BusCategory"  :key='item.BusCategoryID' :value="item.BusCategoryID">
+               {{ item.BusCategory }}
+              </option>
            </select>
            <span class='title'>平台维护：</span>
-           <input type="radio" value='0' v-model='addParams.Operation' name='Operation'>
-           <input type="radio" value='1' v-model='addParams.Operation' name='Operation'>
+           <label>
+            <span class='radio'>
+                <input type="radio" value='0' v-model='addParams.Operation' name='Operation'>
+                <i></i>
+            </span>
+             是 </label>
+          <label> <span class='radio'>
+                <input type="radio" value='1' v-model='addParams.Operation' name='Operation'>
+                <i></i>
+            </span> 否 </label>
+           
          </div>
          <div class='input'>
            <span class='title'>备注：</span><textarea v-model='addParams.Remark' cols="30" rows="10"></textarea>
@@ -135,11 +146,43 @@ export default {
 .group input {
   width: 450px;
 }
-.input input[type="radio"] {
-  width: 16px;
+.input .radio{
+    position: relative;
+    display: inline-block;
+    height:16px;
+    width: 16px;
+    background: rgba(0,0,0,0.12);
+    border: 1px solid #FFFFFF;
+    border-radius: 50%;
+    padding:0;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+.input label{
+  margin: 0 20px;
+}
+.input .radio input{
+   width: 16px;
   height: 16px;
-  color: #0094ff;
-  margin-left: 50px;
+  position: absolute;
+  top:0;
+  left:0;
+  opacity: 0;
+  z-index: 1;
+}
+.input .radio i{
+  height:12px;
+  width: 12px;
+  background-color: #F49C00;
+  position: absolute;
+  left:1px;
+  top:1px;
+  border-radius: 50%;
+  opacity: 0;
+  z-index: 0;
+}
+.input .radio input:checked ~ i {
+  opacity: 1;
 }
 .input select {
   margin-left: 4px;

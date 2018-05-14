@@ -22,6 +22,14 @@ var Api = {
     getshoplist(params) {
         return this.getApi('/MBase/getShopList') + '?' + this.Params(params);
     },
+     getgrouplist(){
+        // GET /MBase/getGropList
+        return this.getApi('/MBase/getGropList');
+     },
+     getmalllist(){
+        // GET /MBase/getMallList
+        return this.getApi('/MBase/getMallList');
+     },
     addUptShop() {
         return this.getApi('/MBase/AddUptShop')
     },
