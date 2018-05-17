@@ -352,8 +352,6 @@ div {
 </style>
 
 <script>
-// import Base64 from "@/api/Base64";
-
 // 引入基本模板
 var echarts = require("echarts");
 // // 引入柱状图组件
