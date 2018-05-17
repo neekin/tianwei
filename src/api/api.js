@@ -1,89 +1,98 @@
 // http://121.201.14.250:83/swagger/ui/index
 var Api = {
-  http: 'http://',
-  https: 'https://',
+  http: "http://",
+  https: "https://",
   url: window.domian,
   getApi(api) {
     return this.http + this.url + api;
   },
-  login: function () {
-    return this.getApi("/Home/Login")
+  login: function() {
+    return this.getApi("/Home/Login");
   },
-  logout: function () {},
+  logout: function() {},
   getReTimeDeviceList(params) {
     // GET /Device/getReTimeDeviceList
-    return this.getApi('/Device/getReTimeDeviceList') + '?' + this.Params(params);
+    return (
+      this.getApi("/Device/getReTimeDeviceList") + "?" + this.Params(params)
+    );
   },
   exportReTimeDeviceList(params) {
     //GET /Device/getReTimeDeviceListExport
-    return this.getApi('/Device/getReTimeDeviceListExport') + '?' + this.Params(params);
+    return (
+      this.getApi("/Device/getReTimeDeviceListExport") +
+      "?" +
+      this.Params(params)
+    );
   },
   getshopbase() {
-    return this.getApi('/Base/getShopBase');
+    return this.getApi("/Base/getShopBase");
   },
   getshoplist(params) {
-    return this.getApi('/MBase/getShopList') + '?' + this.Params(params);
+    return this.getApi("/MBase/getShopList") + "?" + this.Params(params);
   },
   getgrouplist() {
     // GET /MBase/getGropList
-    return this.getApi('/MBase/getGropList');
+    return this.getApi("/MBase/getGropList");
   },
   getmalllist() {
     // GET /MBase/getMallList
-    return this.getApi('/MBase/getMallList');
+    return this.getApi("/MBase/getMallList");
   },
   addUptShop() {
-    return this.getApi('/MBase/AddUptShop')
+    return this.getApi("/MBase/AddUptShop");
   },
   getrolelist(params) {
-    return this.getApi('/Role/getRoleList') + '?' + this.Params(params);
+    return this.getApi("/Role/getRoleList") + "?" + this.Params(params);
   },
   exportrolelist(params) {
-    return this.getApi('/Role/getRoleListExport') + '?' + this.Params(params);
+    return this.getApi("/Role/getRoleListExport") + "?" + this.Params(params);
   },
   exportshoplist() {
-    return this.getApi('/MBase/getShopListExport') + '?' + this.Params(params);
+    return this.getApi("/MBase/getShopListExport") + "?" + this.Params(params);
   },
   exportuserlist() {
-    return this.getApi('/User/getUserListExpor') + '?' + this.Params(params);
+    return this.getApi("/User/getUserListExpor") + "?" + this.Params(params);
     // GET /User/getUserListExpor
   },
   getuserlist(params) {
-    return this.getApi('/User/getUserList') + '?' + this.Params(params);
+    return this.getApi("/User/getUserList") + "?" + this.Params(params);
   },
   getdeptjobrole() {
-    return this.getApi('/Base/getDeptJobRole');
+    return this.getApi("/Base/getDeptJobRole");
   },
   adduser() {
-    return this.getApi('/User/AddUptUser');
+    return this.getApi("/User/AddUptUser");
   },
   getmenulist() {
-    return this.getApi('/Home/getMenuList');
+    return this.getApi("/Home/getMenuList");
   },
   addrole() {
-    return this.getApi('/Role/AddUptRole')
+    return this.getApi("/Role/AddUptRole");
   },
   delrole() {
-    return this.getApi('/Role/DelRole');
+    return this.getApi("/Role/DelRole");
   },
   deluser() {
-    return this.getApi('/User/DelUser')
+    return this.getApi("/User/DelUser");
   },
   Params(params) {
-    var par = '';
+    var par = "";
     if (params) {
       for (var key in params) {
-        par = par + key + '=' + params[key] + '&';
+        par = par + key + "=" + params[key] + "&";
       }
-      par = par.slice(0, par.length - 1)
+      par = par.slice(0, par.length - 1);
     }
     return par;
   },
   getCity() {
-    return this.getApi('/BIData/getCityDistReport')
+    return this.getApi("/BIData/getCityDistReport");
   },
   getPeople() {
-    return this.getApi('/BIData/getBusCircleCharReport')
+    return this.getApi("/BIData/getBusCircleCharReport");
+  },
+  getPercent() {
+    return this.getApi("/BusData/getShopIndex");
   }
-}
+};
 module.exports = Api;

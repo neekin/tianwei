@@ -22,6 +22,9 @@ body {
 .fr {
   float: right;
 }
+.pr {
+  position: relative;
+}
 .triangle_up:after {
   content: "";
   position: absolute;
