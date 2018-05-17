@@ -1,32 +1,59 @@
 @borderColor: #145fa5;
 @boxbgc: #012b51;
 @fontColor: #f6f8f9;
+@contentColor: #afbcc9;
 /*清除浮动*/
-html,body{
-    margin: 0;
-    padding: 0;
+
+html,
+body {
+  margin: 0;
+  padding: 0;
 }
 
 .clearfix {
-    &::after,
-    &::before {
-        content: "";
-        display: block;
-        clear: both;
-        visibility: hidden;
-        height: 0;
-        line-height: 0;
-    }
+  &::after,
+  &::before {
+    content: "";
+    display: block;
+    clear: both;
+    visibility: hidden;
+    height: 0;
+    line-height: 0;
+  }
 }
 
 .clearfix {
-    *zoom: 1;
+  *zoom: 1;
 }
 
 .fl {
-    float: left;
+  float: left;
 }
 
 .fr {
-    float: right;
+  float: right;
+}
+
+.triangle_up:after {
+  content: "";
+  position: absolute;
+  margin-left: 10px;
+  margin-top: 2px;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 10px solid #e0535f;
+}
+
+.triangle_down:after {
+  content: "";
+  position: absolute;
+  margin-left: 10px;
+  margin-top: 2px;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 10px solid #00a719;
 }
