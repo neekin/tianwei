@@ -96,14 +96,126 @@
                             </div>
                             <div class="ch_content">
                                 <div class="pr mark fanrong">
-                                    <div class="cs_text">
-                                        <span style="font-size:20px">全年客流</span>
+                                    <div class="cs_text" style="text-align:center">
+                                        <i class="iconfont icon-zhuzhuangtu" style="font-size:50px"></i>
+                                        <div style="font-size:20px">全年客流</div>
                                     </div>
                                     <div class="cs_points" style="right:50px">
                                         <span style="font-size:36px">62,895,986</span>
                                         <span style="font-size:24px">人</span>
                                     </div>
                                 </div>
+                                <div class="pr mark fanrong">
+                                    <div class="cs_text" style="text-align:center">
+                                        <i class="iconfont icon-people" style="font-size:50px"></i>
+                                        <div style="font-size:20px">进店客流</div>
+                                    </div>
+                                    <div class="cs_points" style="right:50px">
+                                        <span style="font-size:36px">5,869,569</span>
+                                        <span style="font-size:24px">人</span>
+                                    </div>
+                                </div>
+                                <div class="pr mark fanrong">
+                                    <div class="cs_text" style="text-align:center">
+                                        <i class="iconfont icon-qian" style="font-size:50px"></i>
+                                        <div style="font-size:20px">商圈租金</div>
+                                    </div>
+                                    <div class="cs_points" style="right:50px">
+                                        <span style="font-size:36px">533元/平米/月</span>
+                                        <span style="font-size:24px">仅参考</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="echarts_keyData fl" style="width: 100%;">
+                        <div style="height: 100%;">
+                            <div class="ch_title pr">
+                                <span class="fl">购物中心关键指标和排名</span>
+                            </div>
+                            <div class="ch_content clearfix" style="padding: 60px 0 38px 0;height: 440px;">
+                                <div class="fl">
+                                    <div class="clearfix">
+                                        <i class="iconfont icon-jiangbei fl" style="color: #eb4590;"></i>
+                                        <div class="fl" style="margin-left:60px">
+                                            <div>城市评级</div>
+                                            <div style="color: #eb4590;">
+                                                <strong style="font-size:64px;line-height:85px">5</strong>
+                                                星
+                                            </div>
+                                        </div>
+                                        <div class="fr">
+                                            <div>城市经济评级</div>
+                                            <div style="font-size:30px;line-height:110px;font-weight:bold;">一级城市</div>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix">
+                                        <i class="iconfont icon-qian fl" style="color: #ffc84e;"></i>
+                                        <div class="fl" style="margin-left:60px">
+                                            <div>单人次租金比</div>
+                                            <div style="color: #ffc84e;">
+                                                <strong style="font-size:64px;line-height:85px">500</strong>
+                                                元
+                                            </div>
+                                        </div>
+                                        <div class="fr">
+                                            <div>全国排名</div>
+                                            <div style="font-size:30px;line-height:110px;font-weight:bold;">1</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="fl">
+                                    <div class="clearfix">
+                                        <i class="iconfont icon-people fl" style="color: #579def;"></i>
+                                        <div class="fl" style="margin-left:60px">
+                                            <div>全国客流</div>
+                                            <div style="color: #579def;">
+                                                <strong style="font-size:64px;line-height:85px">253454.8</strong>
+                                                万人
+                                            </div>
+                                        </div>
+                                        <div class="fr">
+                                            <div>全国排名</div>
+                                            <div style="font-size:30px;line-height:110px;font-weight:bold;">1</div>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix">
+                                        <i class="iconfont icon-zhuanhuajiedubaogao fl" style="color: #b774e1;"></i>
+                                        <div class="fl" style="margin-left:60px">
+                                            <div>进店转化率</div>
+                                            <div style="color: #b774e1;">
+                                                <strong style="font-size:64px;line-height:85px">89.3</strong>
+                                                %
+                                            </div>
+                                        </div>
+                                        <div class="fr">
+                                            <div>全国排名</div>
+                                            <div style="font-size:30px;line-height:110px;font-weight:bold;">12</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="echarts_compete fl" style="width: 100%;">
+                        <div>
+                            <div class="ch_title pr">
+                                <span class="fl">竞争数据</span>
+
+                            </div>
+                            <div class="ch_content">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="echarts_guestPercent fl" style="width: 100%;">
+                        <div>
+                            <div class="ch_title pr">
+                                <span class="fl">购物中心客流指标</span>
+
+                            </div>
+                            <div class="ch_content">
+
                             </div>
                         </div>
                     </div>
@@ -332,6 +444,8 @@ export default {
         height: 80%;
         margin: 70px auto;
         background-image: url("../../../assets/images/hotMap.png");
+        background-repeat: no-repeat;
+        background-size: cover;
     }
     font-family: "Microsoft Yahei";
     color: @fontColor;
@@ -535,8 +649,192 @@ export default {
             }
             .fanrong {
                 width: 80%;
-                margin: 20px auto;
+                margin: 55px auto;
                 height: 129px;
+                &:nth-child(1) {
+                    background-color: #c87ff3;
+                    background-image: linear-gradient(
+                            0,
+                            #ce8cf3 5%,
+                            transparent 5%,
+                            transparent
+                        ),
+                        linear-gradient(
+                            90deg,
+                            #ce8cf3 5%,
+                            transparent 5%,
+                            transparent
+                        ),
+                        linear-gradient(0, transparent 100%, #ce8cf3 100%),
+                        linear-gradient(90deg, transparent 100%, #ce8cf3 100%);
+                    background-size: 30px 25px;
+                    .cs_text {
+                        position: absolute;
+                        left: 111px;
+                        bottom: 24px;
+                        & > span:first-child {
+                            font-size: 36px;
+                            line-height: 47px;
+                        }
+                        & > span:last-child {
+                            font-size: 18px;
+                            line-height: 24px;
+                        }
+                    }
+                    .cs_points {
+                        position: absolute;
+                        right: 158px;
+                        bottom: 4px;
+                        & > span:first-child {
+                            font-size: 90px;
+                            line-height: 119px;
+                        }
+                        & > span:last-child {
+                            font-size: 36px;
+                            line-height: 47px;
+                        }
+                    }
+                }
+                &:nth-child(2) {
+                    background-color: #33c882;
+                    background-image: linear-gradient(
+                            0,
+                            #4dce94 5%,
+                            transparent 5%,
+                            transparent
+                        ),
+                        linear-gradient(
+                            90deg,
+                            #4dce94 5%,
+                            transparent 5%,
+                            transparent
+                        ),
+                        linear-gradient(0, transparent 100%, #4dce94 100%),
+                        linear-gradient(90deg, transparent 100%, #4dce94 100%);
+                    background-size: 30px 25px;
+                    .cs_text {
+                        position: absolute;
+                        left: 111px;
+                        bottom: 24px;
+                        & > span:first-child {
+                            font-size: 36px;
+                            line-height: 47px;
+                        }
+                        & > span:last-child {
+                            font-size: 18px;
+                            line-height: 24px;
+                        }
+                    }
+                    .cs_points {
+                        position: absolute;
+                        right: 158px;
+                        bottom: 4px;
+                        & > span:first-child {
+                            font-size: 90px;
+                            line-height: 119px;
+                        }
+                        & > span:last-child {
+                            font-size: 36px;
+                            line-height: 47px;
+                        }
+                    }
+                }
+                &:nth-child(3) {
+                    background-color: #f68d71;
+                    background-image: linear-gradient(
+                            0,
+                            #f6967c 5%,
+                            transparent 5%,
+                            transparent
+                        ),
+                        linear-gradient(
+                            90deg,
+                            #f6967c 5%,
+                            transparent 5%,
+                            transparent
+                        ),
+                        linear-gradient(0, transparent 100%, #f6967c 100%),
+                        linear-gradient(90deg, transparent 100%, #f6967c 100%);
+                    background-size: 30px 25px;
+                    .cs_text {
+                        position: absolute;
+                        left: 111px;
+                        bottom: 24px;
+                        & > span:first-child {
+                            font-size: 36px;
+                            line-height: 47px;
+                        }
+                        & > span:last-child {
+                            font-size: 18px;
+                            line-height: 24px;
+                        }
+                    }
+                    .cs_points {
+                        position: absolute;
+                        right: 158px;
+                        bottom: 4px;
+                        & > span:first-child {
+                            font-size: 90px;
+                            line-height: 119px;
+                        }
+                        & > span:last-child {
+                            font-size: 36px;
+                            line-height: 47px;
+                        }
+                    }
+                }
+            }
+        }
+        > div.echarts_compete {
+            .ch_title::before {
+                background-color: #d5187e;
+            }
+        }
+        > div.echarts_keyData {
+            .ch_title::before {
+                background-color: #189cd5;
+            }
+            .ch_content {
+                > div {
+                    width: 50%;
+                    height: 100%;
+                    padding: 0 26px;
+                    &:not(:nth-child(2n)) {
+                        border-right: 1px solid #204c74;
+                    }
+                    > div {
+                        &:not(:nth-child(2n)) {
+                            border-bottom: 1px solid #204c74;
+                        }
+                        width: 100%;
+                        height: 50%;
+                        padding: 40px 40px;
+                        text-align: center;
+                        > i {
+                            font-size: 80px;
+                            line-height: 90px;
+                            padding-top: 12px;
+                        }
+                        > div {
+                            &:last-child {
+                                width: 140px;
+                            }
+                            > div:first-child {
+                                font-size: 16px;
+                                line-height: 21px;
+                            }
+                            > div:last-child {
+                                font-size: 30px;
+                                line-height: 40px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        > div.echarts_guestPercent {
+            .ch_title::before {
+                background-color: #189cd5;
             }
         }
     }
