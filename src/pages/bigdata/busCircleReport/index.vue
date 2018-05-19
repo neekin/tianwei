@@ -29,7 +29,7 @@
 
                 <div class="content_charts clearfix">
                     <div class="charts_success fl">
-                        <div class="pr">
+                        <div class="pr mark">
                             <div class="cs_text">
                                 <span>点址成功指数</span>
                                 <span>（ 满分10分 ）</span>
@@ -41,7 +41,7 @@
                         </div>
                     </div>
                     <div class="charts_prosperity fl">
-                        <div class="pr">
+                        <div class="pr mark">
                             <div class="cs_text">
                                 <span>商圈繁荣指数</span>
                                 <span>（ 满分10分 ）</span>
@@ -65,7 +65,7 @@
                                 </span>
                             </div>
                             <div class="ch_content">
-
+                                <div id="hotMap"></div>
                             </div>
                         </div>
                     </div>
@@ -95,7 +95,15 @@
                                 <span class="fl">购物中心客群</span>
                             </div>
                             <div class="ch_content">
-                                <div class="ch_echarts" id="s"></div>
+                                <div class="pr mark fanrong">
+                                    <div class="cs_text">
+                                        <span style="font-size:20px">全年客流</span>
+                                    </div>
+                                    <div class="cs_points" style="right:50px">
+                                        <span style="font-size:36px">62,895,986</span>
+                                        <span style="font-size:24px">人</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -278,6 +286,53 @@ export default {
 @import url("../../../assets/fonts/iconfont.css");
 
 .content {
+    div[class*="mark"] {
+        width: 100%;
+        height: 100%;
+        background-color: #1ab2f3;
+        background-image: linear-gradient(
+                0,
+                #2cb8f3 5%,
+                transparent 5%,
+                transparent
+            ),
+            linear-gradient(90deg, #2cb8f3 5%, transparent 5%, transparent),
+            linear-gradient(0, transparent 100%, #2cb8f3 100%),
+            linear-gradient(90deg, transparent 100%, #2cb8f3 100%);
+        background-size: 30px 25px;
+        .cs_text {
+            position: absolute;
+            left: 111px;
+            bottom: 24px;
+            & > span:first-child {
+                font-size: 36px;
+                line-height: 47px;
+            }
+            & > span:last-child {
+                font-size: 18px;
+                line-height: 24px;
+            }
+        }
+        .cs_points {
+            position: absolute;
+            right: 158px;
+            bottom: 4px;
+            & > span:first-child {
+                font-size: 90px;
+                line-height: 119px;
+            }
+            & > span:last-child {
+                font-size: 36px;
+                line-height: 47px;
+            }
+        }
+    }
+    #hotMap {
+        width: 80%;
+        height: 80%;
+        margin: 70px auto;
+        background-image: url("../../../assets/images/hotMap.png");
+    }
     font-family: "Microsoft Yahei";
     color: @fontColor;
     .ch_content {
@@ -326,6 +381,7 @@ export default {
             padding: 15px;
             > div {
                 border: 1px solid #176bb8;
+                overflow: hidden;
             }
         }
         .charts_success,
@@ -337,7 +393,7 @@ export default {
             }
         }
         .charts_success {
-            > div {
+            div[class*="mark"] {
                 background-color: #1ab2f3;
                 background-image: linear-gradient(
                         0,
@@ -383,7 +439,7 @@ export default {
             }
         }
         .charts_prosperity {
-            > div {
+            > div[class*="mark"] {
                 background-color: #fc6e55;
                 background-image: linear-gradient(
                         0,
@@ -476,6 +532,11 @@ export default {
         > div.echarts_customer {
             .ch_title::before {
                 background-color: #50e3c2;
+            }
+            .fanrong {
+                width: 80%;
+                margin: 20px auto;
+                height: 129px;
             }
         }
     }
