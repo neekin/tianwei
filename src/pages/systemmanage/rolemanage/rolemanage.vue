@@ -2,7 +2,7 @@
   <div>
   <add :show='show' :form='form' @hide='hide' :formwidth='394' @success='success' :edit='edit'>
         <span slot='title'>
-           新建角色配置
+         {{formtitle}}
         </span>
     </add>
 
@@ -49,7 +49,8 @@
      <span slot='title'></span>
      <div slot="search">
       角色名： <input type="text" v-model='search.RoleName'>
-      选择时间：<input type="datetime">
+      <!-- 选择时间：<input type="datetime"> -->
+      <DatePicker type="daterange" placement="bottom-end" @on-change='getdate' placeholder="选择日期" style='width:200px;'></DatePicker>
      </div>
    </list>
    <notice :notice='noticeshow' :next='next'  @hide='hide'></notice>
@@ -71,6 +72,7 @@ export default {
       noticeshow: false,
       next: null,
       delBtn: true,
+      formtitle: "新建角色配置",
       result: [],
       total: 0,
       ids: [],
@@ -91,11 +93,17 @@ export default {
       this.pageindex = num;
       this.getlist();
     },
+    getdate(dates){
+     this.search.start=dates[0];
+     this.search.end = dates[1];
+    },
     createnew() {
+      this.formtitle = "新建角色配置";
       this.edit.RoleId = 0;
       this.show = true;
     },
     edititem(edit) {
+      this.formtitle = "修改角色配置";
       this.edit = edit;
       this.show = true;
     },
@@ -131,7 +139,9 @@ export default {
       };
       this.$http.get(this.$api.exportrolelist(params)).then(res => {
         if (res.data.code === 1) {
-          window.open(res.data.result);
+          var a = document.createElement('a');  
+          a.href = res.data.result;  
+          a.click();  
         }
       });
     },
@@ -149,6 +159,9 @@ export default {
         params.ids.push(ids);
       } else {
         params.ids = this.ids;
+      }
+      if (!this.ids.length || !params.ids.length) {
+        return;
       }
       this.del(params);
     },
@@ -169,7 +182,7 @@ export default {
   },
   mounted() {
     this.getlist();
-    console.log(this.result);
+    // console.log(this.result);
   },
   components: {
     add,
@@ -185,5 +198,33 @@ export default {
 };
 </script>
 <style>
+.ivu-date-picker {
+  width: 185px;
+  background-color: rgba(0, 86, 172, 0.4);
+  /* border: 1px solid #176bb8; */
+  border-radius: 3px;
+  /* height: 38px; */
+  outline: none;
+  border: none;
+  font-family: MicrosoftYaHei;
+}
+.ivu-date-picker input {
+  width: 100%;
+  height: 38px;
+  background: none;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  color: #fff;
+}
 
+.ivu-date-picker-header-label {
+  color: #2d8cf0;
+}
+.ivu-date-picker .ivu-select-dropdown {
+  background-color: #0056ac;
+}
+.ivu-date-picker-cells-cell-range em {
+  color: rgba(0, 86, 172, 0.4);
+}
 </style>

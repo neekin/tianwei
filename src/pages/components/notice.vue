@@ -6,6 +6,7 @@
        重要提示
     </div>
     <span class='fa fa-trash'></span>
+    <br>
     <p>你确定要删除这些内容吗？</p>
     <div class="options">
       <button @click='confirm' class='confirm'>确定</button>

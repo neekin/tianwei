@@ -3,7 +3,7 @@
 
     <add :show='show' :form='form' @hide='hide' @success='success' :edit='edit'>
         <span slot='title'>
-           新建用户配置
+           {{formtitle}}
         </span>
     </add>
    <list @createnew='createnew' 
@@ -36,10 +36,10 @@
                 <span class='fa fa-check'></span>
                 </div>
                {{item.num}}</td>
-              <td>{{item.PerName}}</td>
+              <td>{{item.UserName}}</td>
               <td>{{item.RoleName}}</td>
               <td>{{item.DeptName}}</td>
-              <td>{{item.JobId}}</td>
+              <td>{{item.JobName}}</td>
               <td>{{item.PerName}}</td>
               <td>{{item.UserPhone}}</td>
               <td>
@@ -74,6 +74,7 @@ export default {
       newBtn: true,
       exportBtn: true,
       delBtn: true,
+      formtitle:'新建用户配置',
       result: [],
       ids: [],
       edit: {},
@@ -89,10 +90,12 @@ export default {
   },
   methods: {
     createnew() {
+      this.formtitle = '新建用户配置'
       this.edit.UserId = 0;
       this.show = true;
     },
     edititem(edit) {
+      this.formtitle = '修改用户配置'
       this.edit = edit;
       this.show = true;
     },
@@ -132,6 +135,10 @@ export default {
       } else {
         params.ids = this.ids;
       }
+      if(!this.ids.length || !params.ids.length)
+      {
+             return;
+      }
       this.del(params);
     },
     del(params) {
@@ -157,10 +164,14 @@ export default {
         pageindex: this.pageindex,
         token: this.$store.state.token
       };
-
+      console.log(params);
+    debugger;
       this.$http.get(this.$api.exportuserlist(params)).then(res => {
         if (res.data.code === 1) {
-          window.open(res.data.result);
+          var a = document.createElement('a');  
+          a.href = res.data.result;  
+          a.click();  
+         
         }
       });
     },

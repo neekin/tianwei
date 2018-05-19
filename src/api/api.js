@@ -27,10 +27,11 @@ var Api = {
   getshopbase() {
     return this.getApi("/Base/getShopBase");
   },
+
   getshoplist(params) {
     return this.getApi("/MBase/getShopList") + "?" + this.Params(params);
   },
-  getgrouplist() {
+  getgroplist() {
     // GET /MBase/getGropList
     return this.getApi("/MBase/getGropList");
   },
@@ -47,12 +48,12 @@ var Api = {
   exportrolelist(params) {
     return this.getApi("/Role/getRoleListExport") + "?" + this.Params(params);
   },
-  exportshoplist() {
+  exportshoplist(params) {
     return this.getApi("/MBase/getShopListExport") + "?" + this.Params(params);
   },
-  exportuserlist() {
-    return this.getApi("/User/getUserListExpor") + "?" + this.Params(params);
-    // GET /User/getUserListExpor
+  exportuserlist(params) {
+    return this.getApi("/User/getUserListExport") + "?" + this.Params(params);
+    // GET /User/getUserListExport
   },
   getuserlist(params) {
     return this.getApi("/User/getUserList") + "?" + this.Params(params);

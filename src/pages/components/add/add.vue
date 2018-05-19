@@ -6,8 +6,14 @@
                 <slot name='title'>新增基础信息</slot>
                 <span @click='cancle' class="fa fa-close pull-right close"></span>
             </div>
+            <div class='error' v-if='errorshow'>
+              <span class="fa fa-exclamation-circle">
+              </span>
+               {{errormsg}}
+       
+            </div>
             <slot name='form'>
-                  <component ref='form' :is="form" @success='success' :edit='edit'></component>
+                  <component ref='form' :is="form" @success='success' @error='error' :edit='edit'></component>
             </slot>
 
              <div class='buttons'>
@@ -25,6 +31,12 @@ import adduser from "./adduser";
 import addrole from "./addrole"
 export default {
   name: "add",
+  data(){
+    return {
+      errormsg:'',
+      errorshow:false
+    }
+  },
   props: ["form", "show",'formwidth','edit'],
   components: {
     addbase,
@@ -40,12 +52,30 @@ export default {
     },
     success(){
       this.$emit('success');
+    },
+    error(msg){
+        this.errormsg = msg;
+        this.errorshow = true;
+        setTimeout(()=>{
+          this.errorshow = false;
+        },2000)
     }
 
   }
 };
 </script>
 <style scoped>
+.error{
+  position: absolute;
+  width: 400px;
+  height:38px;
+  background-color: rgba(255, 0, 0, 0.5);
+  top:30%;
+  left:50%;
+  margin-left: -200px;
+  line-height: 38px;
+  text-align: center;
+}
 .mask {
   position: fixed;
   height: 100%;

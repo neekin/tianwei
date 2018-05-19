@@ -52,7 +52,7 @@
 <script>
 export default {
   name: "addbase",
-  props:['edit'],
+  props: ["edit"],
   data() {
     return {
       BusCategory: [],
@@ -66,7 +66,7 @@ export default {
         CityDistID: 0,
         BusCircleCharID: 0,
         BusCategoryID: 0,
-        Operation: '',
+        Operation: "",
         Remark: ""
       }
     };
@@ -84,22 +84,23 @@ export default {
           }
         });
     },
-    add(){
-      var addParams ={};
-      for(var key in this.addParams)
-      {
-        addParams[key]= this.addParams[key];
+    add() {
+      var addParams = {};
+      for (var key in this.addParams) {
+        addParams[key] = this.addParams[key];
       }
-      console.log(addParams);
+
       addParams.token = this.$store.state.token;
-       this.$http.post(this.$api.addUptShop(),addParams).then(res=>{
-           console.log(res);
-       })
+      this.$http.post(this.$api.addUptShop(), addParams).then(res => {
+        if (res.data.code === 1) {
+        } else {
+          this.$emit("error", res.data.message);
+        }
+      });
     }
   },
   mounted() {
-    if(this.edit!=null)
-    {
+    if (this.edit != null) {
       this.addParams = this.edit;
     }
     this.init();
@@ -146,37 +147,37 @@ export default {
 .group input {
   width: 450px;
 }
-.input .radio{
-    position: relative;
-    display: inline-block;
-    height:16px;
-    width: 16px;
-    background: rgba(0,0,0,0.12);
-    border: 1px solid #FFFFFF;
-    border-radius: 50%;
-    padding:0;
-    vertical-align: middle;
-    margin-right: 10px;
+.input .radio {
+  position: relative;
+  display: inline-block;
+  height: 16px;
+  width: 16px;
+  background: rgba(0, 0, 0, 0.12);
+  border: 1px solid #ffffff;
+  border-radius: 50%;
+  padding: 0;
+  vertical-align: middle;
+  margin-right: 10px;
 }
-.input label{
+.input label {
   margin: 0 20px;
 }
-.input .radio input{
-   width: 16px;
+.input .radio input {
+  width: 16px;
   height: 16px;
   position: absolute;
-  top:0;
-  left:0;
+  top: 0;
+  left: 0;
   opacity: 0;
   z-index: 1;
 }
-.input .radio i{
-  height:12px;
+.input .radio i {
+  height: 12px;
   width: 12px;
-  background-color: #F49C00;
+  background-color: #f49c00;
   position: absolute;
-  left:1px;
-  top:1px;
+  left: 1px;
+  top: 1px;
   border-radius: 50%;
   opacity: 0;
   z-index: 0;
