@@ -152,10 +152,24 @@
                     </div>
                 </div>
                 <div class="ct_center ">
-                    <div class="report_keliu">
+                    <div class="report_keliu pr">
                         <div class="rp_title">
                             <i class="iconfont icon-city"></i>
                             客流量统计
+                        </div>
+                        <div class="rp_data">
+                            <div class="rp_data_today">
+                                <span>今日累计（人次）</span>
+                                <span>684,424</span>
+                            </div>
+                            <div class="rp_data_yesterday">
+                                <span>昨日累计（人次）</span>
+                                <span>896,424</span>
+                            </div>
+                            <div class="rp_data_lastweek">
+                                <span>上周累计（人次）</span>
+                                <span>999,424</span>
+                            </div>
                         </div>
                         <div class="rp_echarts" id="map"></div>
                     </div>
@@ -253,12 +267,13 @@
 div {
     box-sizing: border-box;
 }
+
 .content {
     overflow: hidden;
     padding: 12px;
     font-family: "Microsoft Yahei";
-    > div[class^="ct_"] {
-        > div[class^="report_"] {
+    >div[class^="ct_"] {
+        >div[class^="report_"] {
             color: @contentColor;
             &:not(:first-child) {
                 margin: 12px 0;
@@ -267,7 +282,7 @@ div {
                 background-color: @boxbgc;
                 border: 1px solid @borderColor;
             }
-            > [class^="rp_paiming_"] {
+            >[class^="rp_paiming_"] {
                 width: 49.5%;
                 height: 100%;
                 padding: 10px;
@@ -275,44 +290,44 @@ div {
                 text-indent: 2em;
                 background-color: @boxbgc;
                 border: 1px solid @borderColor;
-                > table tr:first-child {
+                >table tr:first-child {
                     border-bottom: 1px solid #144068;
-                    > th {
+                    >th {
                         font-weight: bold;
                     }
                 }
             }
-            > [class^="rp_top10_"] {
+            >[class^="rp_top10_"] {
                 height: 410px;
                 margin-top: 47px;
                 padding: 14px;
-                > table > tr {
+                >table>tr {
                     &:first-child {
                         border-bottom: 1px solid #144068;
-                        > th {
+                        >th {
                             font-weight: bold;
                         }
                     }
-                    > td:last-child,
-                    > th:last-child {
+                    >td:last-child,
+                    >th:last-child {
                         text-align: right;
                     }
                 }
             }
-            > .rp_title {
+            >.rp_title {
                 color: @fontColor;
                 position: absolute;
                 font-weight: bold;
                 font-size: 18px;
                 margin: 20px 0 0 14px;
                 width: 200px;
-                > i {
+                >i {
                     font-weight: normal;
                     font-size: 20px;
                     margin: 0 5px;
                 }
             }
-            > .rp_echarts {
+            >.rp_echarts {
                 width: 100%;
                 height: 100%;
             }
@@ -333,6 +348,55 @@ div {
         margin: 0 336px !important;
         .report_keliu {
             height: 616px;
+            overflow: hidden;
+            .rp_data {
+                width: 100%;
+                height: 104px;
+                padding: 65px 75px 0;
+                position: absolute;
+                z-index: 1;
+                >div[class^="rp_data_"] {
+                    display: inline-block;
+                    width: 136px;
+                    margin: 0 38px;
+                    >span:first-child {
+                        font-size: 14px;
+                        line-height: 19px;
+                        position: relative;
+                        &::before {
+                            position: absolute;
+                            top: 6px;
+                            left: -18px;
+                            content: '';
+                            display: block;
+                            width: 10px;
+                            height: 10px;
+                        }
+                    }
+                    >span:last-child {
+                        font-size: 24px;
+                        line-height: 31px;
+                        font-weight: bold;
+                    }
+                }
+                >.rp_data_today {
+                    >span:first-child::before {
+                        background-color: #E538B9;
+                    }
+                }
+                >.rp_data_yesterday {
+                    >span:first-child::before {
+                        background-color: #FFA136;
+                    }
+                }
+                >.rp_data_lastweek {
+                    >span:first-child::before {
+                        background-color: #50E3C2;
+                    }
+                }
+            } // #map {
+            //     height: calc( 100% - 104px);
+            // }
         }
         .report_paiming {
             height: 300px;
@@ -508,7 +572,7 @@ export default {
                     },
                     series: [
                         {
-                            name: "pm2.5",
+                            name: "客流量统计",
                             type: "scatter",
                             coordinateSystem: "geo",
                             data: [],
@@ -561,7 +625,7 @@ export default {
                             });
                             this.data.city.legend.formatter = `    {name}    ${
                                 res.data.result.detail[i].percent
-                            }`;
+                                }`;
                         }
                         this.charts.city.setOption(this.data.city);
                         this.charts.city.hideLoading();
@@ -599,7 +663,7 @@ export default {
                             this.data.people.series[0].data.push({
                                 value: res.data.result.detail[i].count,
                                 name: `${i}  ${
-                                    res.data.result.detail[i].percent
+                                res.data.result.detail[i].percent
                                 }`
                             });
                         }
