@@ -26,9 +26,9 @@
          </div>
           <div class='input '>
            <span class='title'>所属角色：</span> 
-           <select style='margin-left:-1px' v-model='addParams.RoleID'>
+           <select style='margin-left:-1px' v-model='addParams.RoleId'>
                <option value="0">请选择~</option>}
-             <option v-for="item in Role"  :key='item.RoleID' :value="item.RoleID">{{ item.RoleName }}</option>
+             <option v-for="item in Role"  :key='item.RoleId' :value="item.RoleId">{{ item.RoleName }}</option>
            </select>
         
          </div>
@@ -51,7 +51,7 @@ export default {
       RePwd: "",
       DeptID: 0,
       JobID: 0,
-      RoleID: 0,
+      RoleId: 0,
       UserPhone: "",
       UserEmail: "",
       Remark: "",
@@ -64,7 +64,7 @@ export default {
   methods: {
     add() {
       if (this.addParams.UserPwd != this.addParams.RePwd) {
-        alert("请填写正确的密码");
+        this.$emit("error", '两次密码不一致');
         return;
       }
       var params = {
@@ -75,7 +75,7 @@ export default {
         RePwd: this.addParams.RePwd,
         DeptID: this.addParams.DeptID,
         JobID: this.addParams.JobID,
-        RoleID: this.addParams.RoleID,
+        RoleId: this.addParams.RoleId,
         UserPhone: this.addParams.UserPhone,
         UserEmail: this.addParams.UserEmail,
         Remark: this.addParams.Remark,
@@ -85,6 +85,8 @@ export default {
       this.$http.post(this.$api.adduser(), params).then(res => {
         if (res.data.code === 1) {
           this.$emit("success");
+        }else {
+          this.$emit("error", res.data.message);
         }
       });
     },

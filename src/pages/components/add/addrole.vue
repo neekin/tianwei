@@ -14,6 +14,7 @@ export default {
   data() {
     return {
       menus: [],
+      checkedmenus: [],
       name: ""
     };
   },
@@ -30,11 +31,12 @@ export default {
               menus[i].title = menus[i].MenuName;
               if (menus[i].PMenuId == 0) {
                 obj = menus[i];
-                // obj.title = menus[i].MenuName;
                 obj.children = [];
                 for (var j = 0; j < menus.length; j++) {
                   if (obj.MenuId == menus[j].PMenuId) {
-                    console.log(menus[j].PMenuId);
+                    if (this.checkedmenus.indexOf(menus[j].MenuName) != -1) {
+                      menus[j].checked = true;
+                    }
                     obj.children.push(menus[j]);
                   }
                 }
@@ -42,6 +44,7 @@ export default {
               }
             }
             this.menus = arr;
+            console.log(this.menus);
           }
         });
     },
@@ -68,7 +71,7 @@ export default {
         MenuId
       };
       if (!this.name) {
-        alert("请写入角色名");
+        this.$emit("error", "请填写角色名称");
         return;
       }
 
@@ -76,14 +79,17 @@ export default {
         console.log(res);
         if (res.data.code === 1) {
           this.$emit("success");
+        } else {
+          this.$emit("error", res.data.message);
         }
       });
     }
   },
   mounted() {
-    console.log("roleid", this.edit);
     if (this.edit.RoleId != 0) {
       this.name = this.edit.RoleName;
+      this.checkedmenus = this.edit.MenuName.split(",");
+      console.log(this.checkedmenus);
     }
     this.getlist();
   }

@@ -16,6 +16,7 @@
       <div slot='search'>
         集团：<select v-model='search.GroupName'>
             <option value="">请选择</option>
+            <option v-for='item in GropList'></option>
         </select>
         类别：
         <select v-model="search.BusCategoryID">
@@ -47,19 +48,19 @@
         <tr  v-for='item in result' :key='item.num'>
               <td>{{item.num}}</td>
               <td>{{item.GroupName}}</td>
-              <!-- <td>{{item.ShopId}}</td>
+              <td>{{item.ShopId}}</td>
               <td>{{item.CityDist}}</td>
-              <td>{{item.CityDist}}</td>
-              <td>{{item.CityDist}}</td>
-               <td>{{item.UserPhone}}</td> -->
+              <td>{{item.BusCircleChar}}</td>
+              <td>{{item.BusCategory}}</td>
+              <td>{{item.SysVersion}}</td>
+              <td>{{item.Operation}}</td>
+              <td>{{item.Remark}}</td>
               <td>
                   <a class='edit' @click='edititem(item)'><span class="fa fa-refresh"></span>修改</a>
                   <a class='del'><span class="fa fa-trash"></span> 删除</a>
               </td>
         </tr>
       </slot>
-
-
     </list>
     <notice :noticeshow='noticeshow'></notice>
   </div>
@@ -85,6 +86,8 @@ export default {
         BusCategoryID: "",
         Operation: ""
       },
+      GropList:[],
+
       pagesize: 10,
       pageindex: 1,
       
@@ -109,7 +112,7 @@ export default {
     },
     getlist() {
       // http://121.201.14.250:83/MBase/getShopList?GroupName=&BusCategoryID=&Operation=&pagesize=10&pageindex=1&token=FBFF067233A31ED094FB7B6EA306C8ACACA46950308B6920DFD3046477DB5BA1
-      var parasm = {
+      var params = {
         token: this.$store.state.token,
         pageindex: this.pageindex,
         pagesize: this.pagesize,
@@ -117,14 +120,14 @@ export default {
         GroupName: this.search.GroupName,
         Operation: this.search.Operation
       };
-      this.$http.get(this.$api.getshoplist(parasm)).then(res => {
+      this.$http.get(this.$api.getshoplist(params)).then(res => {
         if (res.data.code == 1) {
           this.result = res.data.result;
         }
       });
     },
     exportitems() {
-      var parasm = {
+      var params = {
         token: this.$store.state.token,
         pageindex: this.pageindex,
         pagesize: this.pagesize,
@@ -134,13 +137,21 @@ export default {
       };
       this.$http.get(this.$api.exportshoplist(params)).then(res => {
         if (res.data.code === 1) {
-          window.open(res.data.result);
+          var a = document.createElement('a');  
+          a.href = res.data.result;  
+          a.click();  
         }
       });
+    },
+    getgroplist(){
+      this.$http.get(this.$api.getgroplist()+'?token='+this.$store.state.token).then(res=>{
+            console.log(res);
+      })
     }
   },
   mounted() {
     this.getlist();
+    this.getgroplist();
   },
   components: {
     add,

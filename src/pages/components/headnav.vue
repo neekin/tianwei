@@ -1,5 +1,6 @@
 <template>
-    <div class='headnav'>
+    <div class='headnav clearfix'>
+    	<a href="#" class="hidebtn" @click='hide'>隐藏</a>
 	    <div class="title">
 	      广州天威后台
 	    </div>
@@ -21,6 +22,9 @@ export default {
     		this.$store.commit("updateToken", '');
     		this.$router.push('/login')
     	},
+    	hide(){
+
+    	}
 
     },
     data(){
@@ -62,6 +66,16 @@ export default {
 	font-family: MicrosoftYaHei;
 	font-size: 14px;
 	color: rgba(255,255,255,0.9);
+}
+
+.hidebtn{
+	float: left;
+	background: #004C94;
+	border-radius: 2px;
+	height: 32px;
+	width: 32px;
+	line-height: 32px;
+	margin-top:10px;
 }
 </style>
 
