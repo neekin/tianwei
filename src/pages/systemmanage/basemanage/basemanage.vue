@@ -53,7 +53,7 @@
               <td>{{item.BusCircleChar}}</td>
               <td>{{item.BusCategory}}</td>
               <td>{{item.SysVersion}}</td>
-              <td>{{item.Operation}}</td>
+              <td>{{item.Operation==0?'未维护':'维护'}}</td>
               <td>{{item.Remark}}</td>
               <td>
                   <a class='edit' @click='edititem(item)'><span class="fa fa-refresh"></span>修改</a>
