@@ -79,6 +79,26 @@
                             </div>
                         </div>
                     </div>
+                    <div class="echarts_industry fl">
+                        <div>
+                            <div class="ch_title pr">
+                                <span class="fl">购物中心业态</span>
+                            </div>
+                            <div class="ch_content">
+                                <div class="ch_echarts" id="industry"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="echarts_customer fl">
+                        <div>
+                            <div class="ch_title pr">
+                                <span class="fl">购物中心客群</span>
+                            </div>
+                            <div class="ch_content">
+                                <div class="ch_echarts" id="s"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
             </div>
@@ -111,6 +131,7 @@ export default {
             token: "",
             data: {
                 percent: {
+                    tooltip: {},
                     radar: {
                         name: {
                             textStyle: {
@@ -130,7 +151,29 @@ export default {
                     },
                     series: [
                         {
+                            name: "购物中心指数",
                             type: "radar",
+                            data: [
+                                {
+                                    value: [],
+                                    name: "购物中心指数"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                industry: {
+                    tooltip: {
+                        trigger: "item",
+                        formatter: "{a} <br/>{b} : {c} ({d}%)"
+                    },
+                    calculable: true,
+                    series: [
+                        {
+                            name: "购物中心业态",
+                            type: "pie",
+                            radius: [60, 220],
+                            roseType: "area",
                             data: []
                         }
                     ]
@@ -138,7 +181,8 @@ export default {
             },
             cityList: [],
             model8: "",
-            charts: {}
+            charts: {},
+            shopId: 0
         };
     },
     methods: {
@@ -156,16 +200,14 @@ export default {
             this.$http
                 .get(this.$api.getPercent(), {
                     params: {
-                        ShopId: 0,
+                        ShopId: this.shopId,
                         token: this.token
                     }
                 })
                 .then(res => {
-                    console.log(res);
                     if (res.data.code == 1) {
-                        this.data.percent.series[0].data.push(
-                            res.data.result.dataY
-                        );
+                        this.data.percent.series[0].data[0].value =
+                            res.data.result.dataY;
                         res.data.result.dataX.forEach((v, i) => {
                             this.data.percent.radar.indicator[i].name = v;
                         });
@@ -182,11 +224,51 @@ export default {
                 .catch(err => {
                     console.log(err);
                 });
+        },
+        getIndustry() {
+            this.charts.industry = echarts.init(
+                document.getElementById("industry")
+            );
+            this.charts.industry.showLoading("default", {
+                text: "加载中...",
+                color: "#f49c00",
+                textColor: "#fff",
+                maskColor: "rgba(0, 0, 0, 0.5)",
+                zlevel: 0
+            });
+            this.$http
+                .get(this.$api.getIndustry(), {
+                    params: {
+                        ShopId: this.shopId,
+                        token: this.token
+                    }
+                })
+                .then(res => {
+                    if (res.data.code == 1) {
+                        for (let i in res.data.result) {
+                            this.data.industry.series[0].data.push({
+                                value: res.data.result[i],
+                                name: i
+                            });
+                        }
+
+                        this.charts.industry.hideLoading();
+                        this.charts.industry.setOption(this.data.industry);
+                    } else if (res.data.code == -1) {
+                        this.$router.push("/login");
+                    } else {
+                        this.charts.industry.hideLoading();
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                });
         }
     },
     mounted() {
         this.token = this.$store.state.token;
         this.getPercent();
+        this.getIndustry();
     }
 };
 </script>
@@ -384,6 +466,16 @@ export default {
         > div.echarts_percent {
             .ch_title::before {
                 background-color: #239dfd;
+            }
+        }
+        > div.echarts_industry {
+            .ch_title::before {
+                background-color: #ffa094;
+            }
+        }
+        > div.echarts_customer {
+            .ch_title::before {
+                background-color: #50e3c2;
             }
         }
     }

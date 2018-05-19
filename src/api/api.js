@@ -93,6 +93,12 @@ var Api = {
   },
   getPercent() {
     return this.getApi("/BusData/getShopIndex");
+  },
+  getIndustry() {
+    return this.getApi("/BusData/getShopIndustryReport");
+  },
+  getCustomer() {
+    return this.getApi("/BusData/getShopCustomerReport");
   }
 };
 module.exports = Api;
