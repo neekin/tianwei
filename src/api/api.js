@@ -100,6 +100,9 @@ var Api = {
   },
   getCustomer() {
     return this.getApi("/BusData/getShopCustomerReport");
+  },
+  getCountRP() {
+    return this.getApi("/BIData/getCountSumReport");
   }
 };
 module.exports = Api;

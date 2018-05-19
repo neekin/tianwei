@@ -272,8 +272,8 @@ div {
     overflow: hidden;
     padding: 12px;
     font-family: "Microsoft Yahei";
-    >div[class^="ct_"] {
-        >div[class^="report_"] {
+    > div[class^="ct_"] {
+        > div[class^="report_"] {
             color: @contentColor;
             &:not(:first-child) {
                 margin: 12px 0;
@@ -282,7 +282,7 @@ div {
                 background-color: @boxbgc;
                 border: 1px solid @borderColor;
             }
-            >[class^="rp_paiming_"] {
+            > [class^="rp_paiming_"] {
                 width: 49.5%;
                 height: 100%;
                 padding: 10px;
@@ -290,44 +290,44 @@ div {
                 text-indent: 2em;
                 background-color: @boxbgc;
                 border: 1px solid @borderColor;
-                >table tr:first-child {
+                > table tr:first-child {
                     border-bottom: 1px solid #144068;
-                    >th {
+                    > th {
                         font-weight: bold;
                     }
                 }
             }
-            >[class^="rp_top10_"] {
+            > [class^="rp_top10_"] {
                 height: 410px;
                 margin-top: 47px;
                 padding: 14px;
-                >table>tr {
+                > table > tr {
                     &:first-child {
                         border-bottom: 1px solid #144068;
-                        >th {
+                        > th {
                             font-weight: bold;
                         }
                     }
-                    >td:last-child,
-                    >th:last-child {
+                    > td:last-child,
+                    > th:last-child {
                         text-align: right;
                     }
                 }
             }
-            >.rp_title {
+            > .rp_title {
                 color: @fontColor;
                 position: absolute;
                 font-weight: bold;
                 font-size: 18px;
                 margin: 20px 0 0 14px;
                 width: 200px;
-                >i {
+                > i {
                     font-weight: normal;
                     font-size: 20px;
                     margin: 0 5px;
                 }
             }
-            >.rp_echarts {
+            > .rp_echarts {
                 width: 100%;
                 height: 100%;
             }
@@ -355,11 +355,12 @@ div {
                 padding: 65px 75px 0;
                 position: absolute;
                 z-index: 1;
-                >div[class^="rp_data_"] {
+                text-align: center;
+                > div[class^="rp_data_"] {
                     display: inline-block;
                     width: 136px;
                     margin: 0 38px;
-                    >span:first-child {
+                    > span:first-child {
                         font-size: 14px;
                         line-height: 19px;
                         position: relative;
@@ -367,31 +368,31 @@ div {
                             position: absolute;
                             top: 6px;
                             left: -18px;
-                            content: '';
+                            content: "";
                             display: block;
                             width: 10px;
                             height: 10px;
                         }
                     }
-                    >span:last-child {
+                    > span:last-child {
                         font-size: 24px;
                         line-height: 31px;
                         font-weight: bold;
                     }
                 }
-                >.rp_data_today {
-                    >span:first-child::before {
-                        background-color: #E538B9;
+                > .rp_data_today {
+                    > span:first-child::before {
+                        background-color: #e538b9;
                     }
                 }
-                >.rp_data_yesterday {
-                    >span:first-child::before {
-                        background-color: #FFA136;
+                > .rp_data_yesterday {
+                    > span:first-child::before {
+                        background-color: #ffa136;
                     }
                 }
-                >.rp_data_lastweek {
-                    >span:first-child::before {
-                        background-color: #50E3C2;
+                > .rp_data_lastweek {
+                    > span:first-child::before {
+                        background-color: #50e3c2;
                     }
                 }
             } // #map {
@@ -596,7 +597,8 @@ export default {
                     ]
                 }
             },
-            charts: {}
+            charts: {},
+            countRP: ""
         };
     },
     methods: {
@@ -617,7 +619,6 @@ export default {
                 })
                 .then(res => {
                     if (res.data.code == 1) {
-                        console.log(res.data);
                         for (let i in res.data.result.detail) {
                             this.data.city.series[0].data.push({
                                 value: res.data.result.detail[i].count,
@@ -625,7 +626,7 @@ export default {
                             });
                             this.data.city.legend.formatter = `    {name}    ${
                                 res.data.result.detail[i].percent
-                                }`;
+                            }`;
                         }
                         this.charts.city.setOption(this.data.city);
                         this.charts.city.hideLoading();
@@ -657,13 +658,12 @@ export default {
                     }
                 })
                 .then(res => {
-                    console.log(res);
                     if (res.data.code == 1) {
                         for (let i in res.data.result.detail) {
                             this.data.people.series[0].data.push({
                                 value: res.data.result.detail[i].count,
                                 name: `${i}  ${
-                                res.data.result.detail[i].percent
+                                    res.data.result.detail[i].percent
                                 }`
                             });
                         }
@@ -682,6 +682,26 @@ export default {
         getMap() {
             this.charts.map = echarts.init(document.getElementById("map"));
             this.charts.map.setOption(this.data.map);
+        },
+        getCountRP() {
+            this.$http
+                .get(this.$api.getCountRP(), {
+                    params: {
+                        token: this.token
+                    }
+                })
+                .then(res => {
+                    if (res.data.code == 1) {
+                        this.countRP = res.data.result;
+                    } else if (res.data.code == -1) {
+                        this.$router.push("/login");
+                    } else {
+                        console.log(this.countRP);
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                });
         }
     },
     mounted() {
@@ -689,6 +709,7 @@ export default {
         this.getCity();
         this.getPeople();
         this.getMap();
+        this.getCountRP();
     }
 };
 </script>
