@@ -32,7 +32,6 @@ var Api = {
     return this.getApi("/MBase/getShopList") + "?" + this.Params(params);
   },
   getgroplist() {
-    // GET /MBase/getGropList
     return this.getApi("/MBase/getGropList");
   },
   getmalllist() {
