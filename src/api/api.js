@@ -119,6 +119,11 @@ var Api = {
   // 竞争数据
   getCompete() {
     return this.getApi("/BusData/getShopCompetitiveData");
+  },
+  // 一周客流
+  getWeekCount() {
+    return this.getApi("/BusData/getShopWeekCountReport");
   }
+  
 };
 module.exports = Api;

@@ -308,10 +308,16 @@
                         <div>
                             <div class="ch_title pr">
                                 <span class="fl">购物中心客流指标</span>
-
                             </div>
-                            <div class="ch_content">
-
+                            <div class="ch_content clearfix">
+                                <div class="fl">
+                                    <div class="eg_charts" id="weekCount"></div>
+                                </div>
+                                <div class="fl"></div>
+                                <div class="fl"></div>
+                                <div class="fl"></div>
+                                <div class="fl"></div>
+                                <div class="fl"></div>
                             </div>
                         </div>
                     </div>
@@ -391,6 +397,37 @@ export default {
                             radius: [60, 220],
                             roseType: "area",
                             data: []
+                        }
+                    ]
+                },
+                weekCount: {
+                    xAxis: {
+                        splitLine: {
+                            show: true
+                        },
+                        type: "category",
+                        data: [
+                            "05/21",
+                            "05/20",
+                            "05/19",
+                            "05/18",
+                            "05/17",
+                            "05/16",
+                            "05/15"
+                        ]
+                    },
+                    yAxis: {
+                        // show:false,
+                        splitLine: {
+                            show: true
+                        },
+                        type: "value"
+                    },
+                    series: [
+                        {
+                            data: [34, 34, 55, 3444, 3224, 444, 32224],
+                            type: "line",
+                            smooth: true
                         }
                     ]
                 }
@@ -575,6 +612,41 @@ export default {
                 .catch(err => {
                     console.log(err);
                 });
+        },
+        // 一周客流趋势
+        getWeekCount() {
+            this.charts.weekCount = echarts.init(
+                document.getElementById("weekCount")
+            );
+            this.charts.weekCount.showLoading("default", {
+                text: "加载中...",
+                color: "#f49c00",
+                textColor: "#fff",
+                maskColor: "rgba(0, 0, 0, 0.5)",
+                zlevel: 0
+            });
+            this.$http
+                .get(this.$api.getWeekCount(), {
+                    params: {
+                        token: this.token,
+                        ShopId: this.shopId
+                    }
+                })
+                .then(res => {
+                    console.log(res);
+                    if (res.data.code == 1) {
+                        this.data.weekCount.xAxis.data = res.data.result.dataX;
+                        this.data.weekCount.series[0].data = res.data.result.dataY;    
+                        
+                        this.charts.weekCount.hideLoading();
+                        this.charts.weekCount.setOption(this.data.weekCount);
+                    } else {
+                        console.log(res);
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                });
         }
     },
     mounted() {
@@ -585,6 +657,7 @@ export default {
         this.getShopCustomer();
         this.getShopIndexTop();
         this.getCompete();
+        this.getWeekCount();
     }
 };
 </script>
@@ -985,55 +1058,6 @@ export default {
             .ch_title::before {
                 background-color: #d5187e;
             }
-        }
-        > div.echarts_keyData {
-            .ch_title::before {
-                background-color: #189cd5;
-            }
-            .ch_content {
-                > div {
-                    width: 50%;
-                    height: 100%;
-                    padding: 0 26px;
-                    &:not(:nth-child(2n)) {
-                        border-right: 1px solid #204c74;
-                    }
-                    > div {
-                        &:not(:nth-child(2n)) {
-                            border-bottom: 1px solid #204c74;
-                        }
-                        width: 100%;
-                        height: 50%;
-                        padding: 40px 30px;
-                        text-align: center;
-                        > i {
-                            font-size: 80px;
-                            line-height: 90px;
-                            padding-top: 12px;
-                        }
-                        > div {
-                            &:last-child {
-                                width: 140px;
-                            }
-                            > div:first-child {
-                                font-size: 16px;
-                                line-height: 21px;
-                            }
-                            > div:last-child {
-                                font-size: 30px;
-                                line-height: 40px;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        > div.echarts_guestPercent {
-            .ch_title::before {
-                background-color: #189cd5;
-            }
-        }
-        > div.echarts_compete {
             > div {
                 height: auto;
                 > div.ch_content {
@@ -1157,6 +1181,73 @@ export default {
                                 }
                             }
                         }
+                    }
+                }
+            }
+        }
+        > div.echarts_keyData {
+            .ch_title::before {
+                background-color: #189cd5;
+            }
+            .ch_content {
+                > div {
+                    width: 50%;
+                    height: 100%;
+                    padding: 0 26px;
+                    &:not(:nth-child(2n)) {
+                        border-right: 1px solid #204c74;
+                    }
+                    > div {
+                        &:not(:nth-child(2n)) {
+                            border-bottom: 1px solid #204c74;
+                        }
+                        width: 100%;
+                        height: 50%;
+                        padding: 40px 30px;
+                        text-align: center;
+                        > i {
+                            font-size: 80px;
+                            line-height: 90px;
+                            padding-top: 12px;
+                        }
+                        > div {
+                            &:last-child {
+                                width: 140px;
+                            }
+                            > div:first-child {
+                                font-size: 16px;
+                                line-height: 21px;
+                            }
+                            > div:last-child {
+                                font-size: 30px;
+                                line-height: 40px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        > div.echarts_guestPercent {
+            > div {
+                height: auto;
+            }
+            .ch_title::before {
+                background-color: #189cd5;
+            }
+            div.ch_content {
+                height: auto;
+                padding: 26px;
+                > div {
+                    &:nth-child(2n-1) {
+                        margin-right: 26px;
+                    }
+                    margin-bottom: 26px;
+                    width: calc(50% - 13px);
+                    height: 424px;
+                    border: 1px solid #204c74;
+                    > div.eg_charts {
+                        width: 100%;
+                        height: 100%;
                     }
                 }
             }
