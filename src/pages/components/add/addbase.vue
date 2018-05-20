@@ -93,6 +93,7 @@ export default {
       addParams.token = this.$store.state.token;
       this.$http.post(this.$api.addUptShop(), addParams).then(res => {
         if (res.data.code === 1) {
+          this.$emit('success')
         } else {
           this.$emit("error", res.data.message);
         }

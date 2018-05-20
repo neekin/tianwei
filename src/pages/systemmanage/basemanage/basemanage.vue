@@ -1,6 +1,6 @@
 <template>
   <div>
-     <add :show='show' @hide='hide' :form='form' :edit='edit'>
+     <add :show='show' @hide='hide' :form='form' :edit='edit' @success='success'>
         <span slot='title'>
           新增基础信息
         </span>
@@ -106,6 +106,10 @@ export default {
     edititem(item){
       this.edit = item;
       this.show=true;
+    },
+    success(){
+      this.show=false;
+      this.getlist();
     },
     hide() {
       this.show = false;
