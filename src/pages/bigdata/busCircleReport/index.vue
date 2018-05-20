@@ -35,7 +35,7 @@
                                 <span>（ 满分10分 ）</span>
                             </div>
                             <div class="cs_points">
-                                <span>5</span>
+                                <span>{{ SPIndex.Success }}</span>
                                 <span>分</span>
                             </div>
                         </div>
@@ -47,7 +47,7 @@
                                 <span>（ 满分10分 ）</span>
                             </div>
                             <div class="cs_points">
-                                <span>10</span>
+                                <span>{{ SPIndex.Prosperity }}</span>
                                 <span>分</span>
                             </div>
                         </div>
@@ -101,7 +101,7 @@
                                         <div style="font-size:20px">全年客流</div>
                                     </div>
                                     <div class="cs_points" style="right:50px">
-                                        <span style="font-size:36px">62,895,986</span>
+                                        <span style="font-size:36px">{{ this.shopCustomer.yearcount }}</span>
                                         <span style="font-size:24px">人</span>
                                     </div>
                                 </div>
@@ -111,7 +111,7 @@
                                         <div style="font-size:20px">进店客流</div>
                                     </div>
                                     <div class="cs_points" style="right:50px">
-                                        <span style="font-size:36px">5,869,569</span>
+                                        <span style="font-size:36px">{{ this.shopCustomer.instore }}</span>
                                         <span style="font-size:24px">人</span>
                                     </div>
                                 </div>
@@ -121,7 +121,7 @@
                                         <div style="font-size:20px">商圈租金</div>
                                     </div>
                                     <div class="cs_points" style="right:50px">
-                                        <span style="font-size:36px">533元/平米/月</span>
+                                        <span style="font-size:36px">{{ this.shopCustomer.rent }}/平米/月</span>
                                         <span style="font-size:24px">仅参考</span>
                                     </div>
                                 </div>
@@ -140,13 +140,13 @@
                                         <div class="fl" style="margin-left:60px">
                                             <div>城市评级</div>
                                             <div style="color: #eb4590;">
-                                                <strong style="font-size:64px;line-height:85px">5</strong>
+                                                <strong style="font-size:64px;line-height:85px">{{ indexTop.city.data }}</strong>
                                                 星
                                             </div>
                                         </div>
                                         <div class="fr">
                                             <div>城市经济评级</div>
-                                            <div style="font-size:30px;line-height:110px;font-weight:bold;">一级城市</div>
+                                            <div style="font-size:30px;line-height:110px;font-weight:bold;">{{ indexTop.city.TOP }}</div>
                                         </div>
                                     </div>
                                     <div class="clearfix">
@@ -154,13 +154,13 @@
                                         <div class="fl" style="margin-left:60px">
                                             <div>单人次租金比</div>
                                             <div style="color: #ffc84e;">
-                                                <strong style="font-size:64px;line-height:85px">500</strong>
+                                                <strong style="font-size:64px;line-height:85px">{{ indexTop.rent.data }}</strong>
                                                 元
                                             </div>
                                         </div>
                                         <div class="fr">
                                             <div>全国排名</div>
-                                            <div style="font-size:30px;line-height:110px;font-weight:bold;">1</div>
+                                            <div style="font-size:30px;line-height:110px;font-weight:bold;">{{ indexTop.rent.TOP }}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -170,13 +170,13 @@
                                         <div class="fl" style="margin-left:60px">
                                             <div>全国客流</div>
                                             <div style="color: #579def;">
-                                                <strong style="font-size:64px;line-height:85px">253454.8</strong>
+                                                <strong style="font-size:64px;line-height:85px">{{ indexTop.yearcount.data }}</strong>
                                                 万人
                                             </div>
                                         </div>
                                         <div class="fr">
                                             <div>全国排名</div>
-                                            <div style="font-size:30px;line-height:110px;font-weight:bold;">1</div>
+                                            <div style="font-size:30px;line-height:110px;font-weight:bold;">{{ indexTop.yearcount.TOP }}</div>
                                         </div>
                                     </div>
                                     <div class="clearfix">
@@ -184,13 +184,12 @@
                                         <div class="fl" style="margin-left:60px">
                                             <div>进店转化率</div>
                                             <div style="color: #b774e1;">
-                                                <strong style="font-size:64px;line-height:85px">89.3</strong>
-                                                %
+                                                <strong style="font-size:64px;line-height:85px">{{ indexTop.instore.data }}</strong>
                                             </div>
                                         </div>
                                         <div class="fr">
                                             <div>全国排名</div>
-                                            <div style="font-size:30px;line-height:110px;font-weight:bold;">12</div>
+                                            <div style="font-size:30px;line-height:110px;font-weight:bold;">{{ indexTop.instore.TOP }}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -201,10 +200,107 @@
                         <div>
                             <div class="ch_title pr">
                                 <span class="fl">竞争数据</span>
-
                             </div>
                             <div class="ch_content">
-
+                                <div class="cc_top clearfix">
+                                    <div class="fl">
+                                        <div class="pr mark">
+                                            <div class="cs_text">
+                                                <span>店铺总数</span>
+                                            </div>
+                                            <div class="cs_points">
+                                                <span>{{ compete.shopnumber }}</span>
+                                                <span>家</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="fl">
+                                        <div class="pr mark">
+                                            <div class="cs_text">
+                                                <span>整体评分</span>
+                                                <span>（ 满分5分 ）</span>
+                                            </div>
+                                            <div class="cs_points">
+                                                <span>{{ compete.grade }}</span>
+                                                <span>分</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="fl">
+                                        <div class="pr mark">
+                                            <div class="cs_text">
+                                                <span>单人次平均租金</span>
+                                            </div>
+                                            <div class="cs_points">
+                                                <span>{{ compete.rent }}</span>
+                                                <span>元/人</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cc_bottom clearfix">
+                                    <div class="fl cb_left">
+                                        <div class="ch_title pr">
+                                            <!-- <span class="fl">购物中心热力图</span> -->
+                                            <span class="slt fr">
+                                                楼层:
+                                                <select v-model="model8">
+                                                    <option value='' disabled selected style='display:none;'>请选择</option>
+                                                    <option :value='i' v-for="(v,i) in cityList" :key="i">{{v.value}}</option>
+                                                </select>
+                                            </span>
+                                        </div>
+                                        <div class="ch_content">
+                                            <div id="competeIMG"></div>
+                                        </div>
+                                    </div>
+                                    <div class="fl cb_right">
+                                        <table>
+                                            <tr>
+                                                <th>序号</th>
+                                                <th>名称</th>
+                                                <th>日均客流量</th>
+                                                <th>总评分</th>
+                                            </tr>
+                                            <tr>
+                                                <td>1</td>
+                                                <td>歌莉娅001店</td>
+                                                <td>45635</td>
+                                                <td>5</td>
+                                            </tr>
+                                            <tr>
+                                                <td>2</td>
+                                                <td>歌莉娅001店</td>
+                                                <td>45635</td>
+                                                <td>5</td>
+                                            </tr>
+                                            <tr>
+                                                <td>3</td>
+                                                <td>歌莉娅001店</td>
+                                                <td>45635</td>
+                                                <td>5</td>
+                                            </tr>
+                                            <tr>
+                                                <td>4</td>
+                                                <td>歌莉娅001店</td>
+                                                <td>45635</td>
+                                                <td>5</td>
+                                            </tr>
+                                            <tr>
+                                                <td>5</td>
+                                                <td>歌莉娅001店</td>
+                                                <td>45635</td>
+                                                <td>5</td>
+                                            </tr>
+                                            <tr>
+                                                <td>6</td>
+                                                <td>歌莉娅001店</td>
+                                                <td>45635</td>
+                                                <td>5</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -302,10 +398,42 @@ export default {
             cityList: [],
             model8: "",
             charts: {},
-            shopId: 0
+            shopId: 0,
+            SPIndex: {},
+            shopCustomer: {},
+            customer: {},
+            indexTop: {
+                yearcount: {},
+                city: {},
+                rent: {},
+                instore: {}
+            },
+            compete: {}
         };
     },
     methods: {
+        // 成功/繁荣指数
+        getSPIndex() {
+            this.$http
+                .get(this.$api.getSPIndex(), {
+                    params: {
+                        token: this.token,
+                        ShopId: this.shopId
+                    }
+                })
+                .then(res => {
+                    console.log(res);
+                    if (res.data.code == 1) {
+                        this.SPIndex = res.data.result;
+                    } else {
+                        console.log(res);
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        },
+        // 购物中心指数
         getPercent() {
             this.charts.percent = echarts.init(
                 document.getElementById("percent")
@@ -345,6 +473,7 @@ export default {
                     console.log(err);
                 });
         },
+        // 购物中心业态
         getIndustry() {
             this.charts.industry = echarts.init(
                 document.getElementById("industry")
@@ -383,12 +512,79 @@ export default {
                 .catch(err => {
                     console.log(err);
                 });
+        },
+        // 购物中心客群
+        getShopCustomer() {
+            this.$http
+                .get(this.$api.getShopCustomer(), {
+                    params: {
+                        token: this.token,
+                        ShopId: this.shopId
+                    }
+                })
+                .then(res => {
+                    console.log(res);
+                    if (res.data.code == 1) {
+                        this.shopCustomer = res.data.result;
+                    } else {
+                        console.log(res);
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        },
+        // 购物中心关键指标
+        getShopIndexTop() {
+            this.$http
+                .get(this.$api.getShopIndexTop(), {
+                    params: {
+                        token: this.token,
+                        ShopId: this.shopId
+                    }
+                })
+                .then(res => {
+                    console.log(res);
+                    if (res.data.code == 1) {
+                        this.indexTop = res.data.result;
+                    } else {
+                        console.log(res);
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        },
+        // 竞争数据
+        getCompete() {
+            this.$http
+                .get(this.$api.getCompete(), {
+                    params: {
+                        token: this.token,
+                        ShopId: this.shopId
+                    }
+                })
+                .then(res => {
+                    console.log(res);
+                    if (res.data.code == 1) {
+                        this.compete = res.data.result;
+                    } else {
+                        console.log(res);
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                });
         }
     },
     mounted() {
         this.token = this.$store.state.token;
+        this.getSPIndex();
         this.getPercent();
         this.getIndustry();
+        this.getShopCustomer();
+        this.getShopIndexTop();
+        this.getCompete();
     }
 };
 </script>
@@ -808,7 +1004,7 @@ export default {
                         }
                         width: 100%;
                         height: 50%;
-                        padding: 40px 40px;
+                        padding: 40px 30px;
                         text-align: center;
                         > i {
                             font-size: 80px;
@@ -835,6 +1031,134 @@ export default {
         > div.echarts_guestPercent {
             .ch_title::before {
                 background-color: #189cd5;
+            }
+        }
+        > div.echarts_compete {
+            > div {
+                height: auto;
+                > div.ch_content {
+                    padding: 26px;
+                    height: auto;
+                    > div.cc_top {
+                        > div {
+                            width: calc((100% - 30px) / 3);
+                            height: 122px;
+                            &:nth-child(2) {
+                                margin: 0 15px;
+                            }
+                            div.cs_text {
+                                bottom: 40px;
+                                left: 36px;
+                                > span {
+                                    font-size: 24px;
+                                    line-height: 31px;
+                                }
+                            }
+                            div.cs_points {
+                                bottom: 30px;
+                                right: 50px;
+                                > span:first-child {
+                                    font-size: 48px;
+                                    line-height: 64px;
+                                    font-weight: bold;
+                                }
+                                > span:last-child {
+                                    font-size: 24px;
+                                    line-height: 31px;
+                                }
+                            }
+                        }
+                        > div:nth-child(2) {
+                            > div {
+                                background-color: #fe6464;
+                                background-image: linear-gradient(
+                                        0,
+                                        #fe7070 5%,
+                                        transparent 5%,
+                                        transparent
+                                    ),
+                                    linear-gradient(
+                                        90deg,
+                                        #fe7070 5%,
+                                        transparent 5%,
+                                        transparent
+                                    ),
+                                    linear-gradient(
+                                        0,
+                                        transparent 100%,
+                                        #fe7070 100%
+                                    ),
+                                    linear-gradient(
+                                        90deg,
+                                        transparent 100%,
+                                        #fe7070 100%
+                                    );
+                            }
+                        }
+                        > div:nth-child(3) {
+                            > div {
+                                background-color: #fc9d30;
+                                background-image: linear-gradient(
+                                        0,
+                                        #fca645 5%,
+                                        transparent 5%,
+                                        transparent
+                                    ),
+                                    linear-gradient(
+                                        90deg,
+                                        #fca645 5%,
+                                        transparent 5%,
+                                        transparent
+                                    ),
+                                    linear-gradient(
+                                        0,
+                                        transparent 100%,
+                                        #fca645 100%
+                                    ),
+                                    linear-gradient(
+                                        90deg,
+                                        transparent 100%,
+                                        #fca645 100%
+                                    );
+                            }
+                        }
+                    }
+                    > div.cc_bottom {
+                        padding-top: 26px;
+                        > div.cb_left {
+                            width: calc(66.66% - 5px); // margin-right: 15px;
+                            padding: 26px;
+                            border: 1px solid #176bb8;
+                            height: 638px;
+                            #competeIMG {
+                                background-image: url("../../../assets/images/compete.png");
+                                height: 574px;
+                                margin-top: 36px;
+                                background-repeat: no-repeat;
+                                background-position: center;
+                            }
+                        }
+                        > div.cb_right {
+                            width: calc(33.33% - 10px);
+                            height: 638px;
+                            margin-left: 15px;
+                            border: 1px solid #176bb8;
+                            > table {
+                                width: 100%;
+                                font-size: 14px;
+                                line-height: 3;
+                                tr,
+                                th {
+                                    text-align: center;
+                                    border-bottom: 1px solid #204c74;
+                                }
+                                tr:first-child {
+                                    background-color: #003b70;
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }

@@ -86,23 +86,40 @@ var Api = {
     }
     return par;
   },
+
+  getCountRP() {
+    return this.getApi("/BIData/getCountSumReport");
+  },
   getCity() {
     return this.getApi("/BIData/getCityDistReport");
   },
   getPeople() {
     return this.getApi("/BIData/getBusCircleCharReport");
   },
+
+  // 成功/繁荣指数
+  getSPIndex() {
+    return this.getApi("/BusData/getSuccessProsperityIndex");
+  },
+  // 购物中心指数
   getPercent() {
     return this.getApi("/BusData/getShopIndex");
   },
+  // 购物中心业态
   getIndustry() {
     return this.getApi("/BusData/getShopIndustryReport");
   },
-  getCustomer() {
-    return this.getApi("/BusData/getShopCustomerReport");
+  // 购物中心客群
+  getShopCustomer() {
+    return this.getApi("/BusData/getShopCusomterReport");
   },
-  getCountRP() {
-    return this.getApi("/BIData/getCountSumReport");
+  // 购物中心关键指标
+  getShopIndexTop() {
+    return this.getApi("/BusData/getShopIndexTop");
+  },
+  // 竞争数据
+  getCompete() {
+    return this.getApi("/BusData/getShopCompetitiveData");
   }
 };
 module.exports = Api;
