@@ -6,7 +6,7 @@
             <search @search='getlist'>
               
                     所属区域：
-                    <select v-model='search.ProvinceID'>
+                    <select v-model='searchB.ProvinceID'>
                       <option value="0">
                         请选择
                       </option>
@@ -14,9 +14,9 @@
                         {{item.Area}}
                       </option>
                     </select>
-                    设备编号: <input type="text" v-model='search.SNO'>
-                    物联卡号: <input type="text" v-model='search.IotCode'>
-                    设备状态： <select v-model='search.DeviceStatus'>
+                    设备编号: <input type="text" v-model='searchB.SNO'>
+                    物联卡号: <input type="text" v-model='searchB.IotCode'>
+                    设备状态： <select v-model='searchB.DeviceStatus'>
                       <option value="0">
                         请选择
                       </option>
@@ -24,7 +24,7 @@
                         {{item.DeviceStatusName}}
                       </option>
                     </select>
-                    流量状态：<select v-model='search.IotStatus'>
+                    流量状态：<select v-model='searchB.IotStatus'>
                        <option value="0">
                         请选择
                       </option>
@@ -67,10 +67,11 @@ import headnav from "@/pages/components/headnav.vue";
 import sidebar from "@/pages/components/sidebar";
 import container from "@/pages/components/container";
 import search from "@/pages/components/list/search";
+// import {MP} from '@/pages/api/baiduMpa.js' 
 export default {
   data() {
     return {
-      search: {
+      searchB: {
         ProvinceID: 0,
         SNO: "",
         IotCode: "",
@@ -89,11 +90,11 @@ export default {
     },
     getlist() {
       var params = {
-        ProvinceID: this.search.ProvinceID==0?'':this.search.ProvinceID,
-        SNO: this.search.SNO,
-        IotCode: this.search.IotCode,
-        DeviceStatus: this.search.DeviceStatus==0?'':this.search.DeviceStatus,
-        IotStatus: this.search.IotStatus==0?'':this.search.IotStatus,
+        ProvinceID: this.searchB.ProvinceID==0?'':this.searchB.ProvinceID,
+        SNO: this.searchB.SNO,
+        IotCode: this.searchB.IotCode,
+        DeviceStatus: this.searchB.DeviceStatus==0?'':this.searchB.DeviceStatus,
+        IotStatus: this.searchB.IotStatus==0?'':this.searchB.IotStatus,
         pagesize: 200,
         pageindex: 1,
         token: this.$store.state.token
@@ -105,11 +106,11 @@ export default {
     },
     exportlist() {
       var params = {
-        ProvinceID: this.search.ProvinceID==0?'':this.search.ProvinceID,
-        SNO: this.search.SNO,
-        IotCode: this.search.IotCode,
-        DeviceStatus: this.search.DeviceStatus==0?'':this.search.DeviceStatus,
-        IotStatus: this.search.IotStatus==0?'':this.search.IotStatus,
+        ProvinceID: this.searchB.ProvinceID==0?'':this.searchB.ProvinceID,
+        SNO: this.searchB.SNO,
+        IotCode: this.searchB.IotCode,
+        DeviceStatus: this.searchB.DeviceStatus==0?'':this.searchB.DeviceStatus,
+        IotStatus: this.searchB.IotStatus==0?'':this.searchB.IotStatus,
         token: this.$store.state.token
       };
       this.$http.get(this.$api.exportReTimeDeviceList(params)).then(res => {
@@ -122,10 +123,10 @@ export default {
     },
     //这几个地方加this
     initMap() {
-      this.createMap(); //创建地图
-      this.setMapEvent(); //设置地图事件
-      this.addMapControl(); //向地图添加控件
-      this.addMarker(); //向地图中添加marker
+      // this.createMap(); //创建地图
+      // this.setMapEvent(); //设置地图事件
+      // this.addMapControl(); //向地图添加控件
+      // this.addMarker(); //向地图中添加marker
     },
     createMap() {
       var map = new BMap.Map("dituContent"); //在百度地图容器中创建一个地图
@@ -282,7 +283,7 @@ export default {
   },
   mounted() {
     this.getlist();
-    this.initMap();
+    // this.initMap();
     this.getMapArea();
     this.getbd_DeviceStatus();
     this.getbd_DeviceStatusFlow();

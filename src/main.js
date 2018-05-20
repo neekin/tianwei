@@ -5,10 +5,10 @@ import App from './App'
 import router from './router'
 import axios from 'axios'
 import Api from '@/api/api'
-import "iview/dist/styles/iview.css"
+// import "iview/dist/styles/iview.css"
 import './assets/styles/reset.css'
 import './assets/styles/base.css'
-import './assets/styles/font-awesome/css/font-awesome.css'
+// import './assets/styles/font-awesome/css/font-awesome.css'
 
 import iView from 'iview'
 
