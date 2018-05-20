@@ -103,6 +103,15 @@ var Api = {
   },
   getCountRP() {
     return this.getApi("/BIData/getCountSumReport");
+  },
+  getMapArea(){
+    return this.getApi('/Base/getMapArea');
+  },
+  getbd_DeviceStatus(){
+    return this.getApi('/Base/getbd_DeviceStatus');
+  },
+  getbd_DeviceStatusFlow(){
+    return this.getApi('Base/getbd_DeviceStatusFlow');
   }
 };
 module.exports = Api;

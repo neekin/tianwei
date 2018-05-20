@@ -3,14 +3,35 @@
         <headnav></headnav>
         <sidebar></sidebar>
         <container>
-            <search>
+            <search @search='getlist'>
               
                     所属区域：
-                    <select name="" id=""></select>
-                    设备编号:  <input type="text">
-                    物联卡号: <input type="text">
-                    设备状态： <select name="" id=""></select>
-                    流量状态：<select name="" id=""></select>
+                    <select v-model='search.ProvinceID'>
+                      <option value="0">
+                        请选择
+                      </option>
+                      <option v-for='item in area' :key='item.AreaID' :value='item.AreaID'>
+                        {{item.Area}}
+                      </option>
+                    </select>
+                    设备编号: <input type="text" v-model='search.SNO'>
+                    物联卡号: <input type="text" v-model='search.IotCode'>
+                    设备状态： <select v-model='search.DeviceStatus'>
+                      <option value="0">
+                        请选择
+                      </option>
+                      <option v-for='item in DeviceStatus' :key='item.DeviceStatus' :value="item.DeviceStatus">
+                        {{item.DeviceStatusName}}
+                      </option>
+                    </select>
+                    流量状态：<select v-model='search.IotStatus'>
+                       <option value="0">
+                        请选择
+                      </option>
+                       <option v-for='item in DeviceStatusFlow' :key='item.DeviceStatus' :value="item.DeviceStatus">
+                        {{item.DeviceStatusName}}
+                      </option>
+                    </select>
          
             </search>
           <div class="container clearfix">
@@ -22,11 +43,11 @@
                             <th width='40'>状态</th>
                             <th width='40'>流量</th>
                         </tr>
-                        <tr>
-                            <td>SN0001</td>
-                            <td>1164612345678</td>
-                            <td>在线</td>
-                            <td>正常</td>
+                        <tr v-for='item in result' :key='item.num'>
+                            <td>{{item.SNo}}</td>
+                            <td>{{item.IotCode}}</td>
+                            <td>{{item.DeviceStatusName}}</td>
+                            <td>{{item.IotStatusName}}</td>
                         </tr>
                     </table>
                     <button @click='exportlist'>
@@ -50,42 +71,53 @@ export default {
   data() {
     return {
       search: {
-        ProvinceID: "",
+        ProvinceID: 0,
         SNO: "",
         IotCode: "",
-        DeviceStatus: "",
-        IotStatus: ""
+        DeviceStatus: 0,
+        IotStatus: 0
       },
-      result: []
+      result: [],
+      area: [],
+      DeviceStatus: [],
+      DeviceStatusFlow: []
     };
   },
   methods: {
+    search(){
+      this.getlist();
+    },
     getlist() {
       var params = {
-        ProvinceID: this.search.ProvinceID,
+        ProvinceID: this.search.ProvinceID==0?'':this.search.ProvinceID,
         SNO: this.search.SNO,
         IotCode: this.search.IotCode,
-        DeviceStatus: this.search.DeviceStatus,
-        IotStatus: this.search.IotStatus,
+        DeviceStatus: this.search.DeviceStatus==0?'':this.search.DeviceStatus,
+        IotStatus: this.search.IotStatus==0?'':this.search.IotStatus,
         pagesize: 200,
         pageindex: 1,
         token: this.$store.state.token
       };
       this.$http.get(this.$api.getReTimeDeviceList(params)).then(res => {
         console.log(res);
+        this.result = res.data.result;
       });
     },
     exportlist() {
       var params = {
-        ProvinceID: this.search.ProvinceID,
+        ProvinceID: this.search.ProvinceID==0?'':this.search.ProvinceID,
         SNO: this.search.SNO,
         IotCode: this.search.IotCode,
-        DeviceStatus: this.search.DeviceStatus,
-        IotStatus: this.search.IotStatus,
+        DeviceStatus: this.search.DeviceStatus==0?'':this.search.DeviceStatus,
+        IotStatus: this.search.IotStatus==0?'':this.search.IotStatus,
         token: this.$store.state.token
       };
       this.$http.get(this.$api.exportReTimeDeviceList(params)).then(res => {
-        window.open(res.data.result);
+        if (res.data.code === 1) {
+          var a = document.createElement("a");
+          a.href = res.data.result;
+          a.click();
+        }
       });
     },
     //这几个地方加this
@@ -97,7 +129,7 @@ export default {
     },
     createMap() {
       var map = new BMap.Map("dituContent"); //在百度地图容器中创建一个地图
-      var point = new BMap.Point(113.268395,23.131714); //定义一个中心点坐标
+      var point = new BMap.Point(113.268395, 23.131714); //定义一个中心点坐标
       map.centerAndZoom(point, 18); //设定地图的中心点和坐标并将地图显示在地图容器中
       window.map = map; //将map变量存储在全局
     },
@@ -213,11 +245,47 @@ export default {
         offset: new BMap.Size(json.x, json.h)
       });
       return icon;
+    },
+    //获取区域信息
+    getMapArea() {
+      this.$http
+        .get(this.$api.getMapArea() + "?token=" + this.$store.state.token)
+        .then(res => {
+          console.log("区域信息", res);
+          this.area = res.data.result;
+        });
+    },
+    //获取设备状态
+    getbd_DeviceStatus() {
+      this.$http
+        .get(
+          this.$api.getbd_DeviceStatus() + "?token=" + this.$store.state.token
+        )
+        .then(res => {
+          console.log("设备", res);
+          this.DeviceStatus = res.data.result;
+        });
+    },
+    //获取流量状态
+    getbd_DeviceStatusFlow() {
+      this.$http
+        .get(
+          this.$api.getbd_DeviceStatusFlow() +
+            "?token=" +
+            this.$store.state.token
+        )
+        .then(res => {
+          console.log("流量", res);
+          this.DeviceStatusFlow = res.data.result;
+        });
     }
   },
   mounted() {
     this.getlist();
     this.initMap();
+    this.getMapArea();
+    this.getbd_DeviceStatus();
+    this.getbd_DeviceStatusFlow();
   },
   components: {
     headnav,
@@ -229,8 +297,8 @@ export default {
 </script>
 
 <style scoped>
-.container{
-    min-width: 1280px;
+.container {
+  min-width: 1280px;
 }
 .search {
   display: block;
