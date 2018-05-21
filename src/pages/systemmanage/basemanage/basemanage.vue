@@ -16,11 +16,14 @@
       <div slot='search'>
         集团：<select v-model='search.GroupName'>
             <option value="">请选择</option>
-            <option v-for='item in GropList'></option>
+            <option v-for='item in GropList' :key='item.GroupID' :value='item.GroupName'>{{item.GroupName}}</option>
         </select>
         类别：
         <select v-model="search.BusCategoryID">
            <option value="">请选择</option>
+           <option v-for='item in BusCategory' :key='item.BusCategoryID' :value='item.BusCategoryID'>
+             {{item.BusCategory}}
+           </option>
         </select>
         运维：
         <select v-model='search.Operation'>
@@ -53,7 +56,7 @@
               <td>{{item.BusCircleChar}}</td>
               <td>{{item.BusCategory}}</td>
               <td>{{item.SysVersion}}</td>
-              <td>{{item.Operation==0?'未维护':'维护'}}</td>
+              <td>{{item.Operation==0?'未维护':item.Operation==1?'维护':''}}</td>
               <td>{{item.Remark}}</td>
               <td>
                   <a class='edit' @click='edititem(item)'><span class="fa fa-refresh"></span>修改</a>
@@ -87,7 +90,7 @@ export default {
         Operation: ""
       },
       GropList:[],
-
+      BusCategory:[],
       pagesize: 10,
       pageindex: 1,
       
@@ -150,12 +153,19 @@ export default {
     getgroplist(){
       this.$http.get(this.$api.getgroplist()+'?token='+this.$store.state.token).then(res=>{
             console.log(res);
+            this.GropList = res.data.result;
+      })
+    },
+    getbd_BusCategory(){
+      this.$http.get(this.$api.getbd_BusCategory()+'?token='+this.$store.state.token).then(res=>{
+        this.BusCategory = res.data.result;
       })
     }
   },
   mounted() {
     this.getlist();
     this.getgroplist();
+    this.getbd_BusCategory();
   },
   components: {
     add,
