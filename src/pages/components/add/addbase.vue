@@ -59,6 +59,7 @@ export default {
       BusCircleChar: [],
       CityDist: [],
       SysVersion: [],
+      dist: {},
       addParams: {
         GroupName: "",
         ShopId: 0,
@@ -101,10 +102,16 @@ export default {
     }
   },
   mounted() {
+       this.init();
     if (this.edit != null) {
-      this.addParams = this.edit;
+        this.addParams = this.edit;
+        // this.addParams.SysVersionID=0
+        // this.addParams.CityDistID= 0
+        // this.addParams.BusCircleCharID= 0
+        // this.addParams.BusCategoryID= 0
+      console.log('修改基础信息',this.addParams)
     }
-    this.init();
+ 
   }
 };
 </script>
