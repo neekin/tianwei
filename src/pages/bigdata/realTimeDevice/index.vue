@@ -67,7 +67,6 @@ import headnav from "@/pages/components/headnav.vue";
 import sidebar from "@/pages/components/sidebar";
 import container from "@/pages/components/container";
 import search from "@/pages/components/list/search";
-// import {MP} from '@/pages/api/baiduMpa.js' 
 export default {
   data() {
     return {
@@ -123,10 +122,10 @@ export default {
     },
     //这几个地方加this
     initMap() {
-      // this.createMap(); //创建地图
-      // this.setMapEvent(); //设置地图事件
-      // this.addMapControl(); //向地图添加控件
-      // this.addMarker(); //向地图中添加marker
+      this.createMap(); //创建地图
+      this.setMapEvent(); //设置地图事件
+      this.addMapControl(); //向地图添加控件
+      this.addMarker(); //向地图中添加marker
     },
     createMap() {
       var map = new BMap.Map("dituContent"); //在百度地图容器中创建一个地图
@@ -283,7 +282,7 @@ export default {
   },
   mounted() {
     this.getlist();
-    // this.initMap();
+    this.initMap();
     this.getMapArea();
     this.getbd_DeviceStatus();
     this.getbd_DeviceStatusFlow();
