@@ -401,9 +401,28 @@ export default {
                     ]
                 },
                 weekCount: {
+                    tooltip: {
+                        trigger: "axis",
+                        axisPointer: {
+                            // 坐标轴指示器，坐标轴触发有效
+                            type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
+                        }
+                    },
                     xAxis: {
                         splitLine: {
                             show: true
+                        },
+                        axisLabel: {
+                            textStyle: {
+                                color: "#fff",
+                                fontSize: 16
+                            }
+                        },
+                        axisLine: {
+                            lineStyle: {
+                                color: "#00396c",
+                                width: 1 //这里是坐标轴的宽度
+                            }
                         },
                         type: "category",
                         data: [
@@ -420,6 +439,12 @@ export default {
                         // show:false,
                         splitLine: {
                             show: true
+                        },
+                        axisLabel: {
+                            textStyle: {
+                                color: "#fff",
+                                fontSize: 16
+                            }
                         },
                         type: "value"
                     },
@@ -636,8 +661,9 @@ export default {
                     console.log(res);
                     if (res.data.code == 1) {
                         this.data.weekCount.xAxis.data = res.data.result.dataX;
-                        this.data.weekCount.series[0].data = res.data.result.dataY;    
-                        
+                        this.data.weekCount.series[0].data =
+                            res.data.result.dataY;
+
                         this.charts.weekCount.hideLoading();
                         this.charts.weekCount.setOption(this.data.weekCount);
                     } else {
