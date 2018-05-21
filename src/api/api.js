@@ -55,7 +55,16 @@ var Api = {
     },
     exportuserlist(params) {
         return this.getApi("/User/getUserListExport") + "?" + this.Params(params);
-        // GET /User/getUserListExport
+    },
+
+    getMapArea() {
+        return this.getApi('/Base/getMapArea');
+    },
+    getbd_DeviceStatus() {
+        return this.getApi('/Base/getbd_DeviceStatus')
+    },
+    getbd_DeviceStatusFlow() {
+        return this.getApi('/Base/getbd_DeviceStatusFlow')
     },
 
     getuserlist(params) {
