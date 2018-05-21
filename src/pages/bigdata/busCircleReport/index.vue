@@ -310,14 +310,30 @@
                                 <span class="fl">购物中心客流指标</span>
                             </div>
                             <div class="ch_content clearfix">
-                                <div class="fl">
+                                <div class="fl pr">
+                                    <div class="eg_title">近一周客流趋势</div>
                                     <div class="eg_charts" id="weekCount"></div>
                                 </div>
-                                <div class="fl"></div>
-                                <div class="fl"></div>
-                                <div class="fl"></div>
-                                <div class="fl"></div>
-                                <div class="fl"></div>
+                                <div class="fl pr">
+                                    <div class="eg_title">热点时段 TOP3</div>
+                                    <div class="eg_charts" id="top3"></div>
+                                </div>
+                                <div class="fl pr">
+                                    <div class="eg_title">性别构成</div>
+                                    <div class="eg_charts" id="sex"></div>
+                                </div>
+                                <div class="fl pr">
+                                    <div class="eg_title">年龄分布</div>
+                                    <div class="eg_charts" id="age"></div>
+                                </div>
+                                <div class="fl pr">
+                                    <div class="eg_title">近6个月回头客趋势</div>
+                                    <div class="eg_charts" id="last6M"></div>
+                                </div>
+                                <div class="fl pr">
+                                    <div class="eg_title">回头客年龄分布</div>
+                                    <div class="eg_charts" id="agePercent"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -401,9 +417,21 @@ export default {
                     ]
                 },
                 weekCount: {
+                    tooltip: {
+                        trigger: "axis"
+                    },
                     xAxis: {
                         splitLine: {
                             show: true
+                        },
+                        axisLine: {
+                            lineStyle: {
+                                color: "#fff"
+                            }
+                        },
+                        axisLabel: {
+                            color: "#fff",
+                            fontSize: 16
                         },
                         type: "category",
                         data: [
@@ -420,6 +448,15 @@ export default {
                         // show:false,
                         splitLine: {
                             show: true
+                        },
+                        axisLine: {
+                            lineStyle: {
+                                color: "#fff"
+                            }
+                        },
+                        axisLabel: {
+                            color: "#fff",
+                            fontSize: 16
                         },
                         type: "value"
                     },
@@ -636,8 +673,8 @@ export default {
                     console.log(res);
                     if (res.data.code == 1) {
                         this.data.weekCount.xAxis.data = res.data.result.dataX;
-                        this.data.weekCount.series[0].data = res.data.result.dataY;    
-                        
+                        this.data.weekCount.series[0].data = res.data.result.dataY;
+
                         this.charts.weekCount.hideLoading();
                         this.charts.weekCount.setOption(this.data.weekCount);
                     } else {
@@ -671,25 +708,23 @@ export default {
         width: 100%;
         height: 100%;
         background-color: #1ab2f3;
-        background-image: linear-gradient(
-                0,
-                #2cb8f3 5%,
-                transparent 5%,
-                transparent
-            ),
-            linear-gradient(90deg, #2cb8f3 5%, transparent 5%, transparent),
-            linear-gradient(0, transparent 100%, #2cb8f3 100%),
-            linear-gradient(90deg, transparent 100%, #2cb8f3 100%);
+        background-image: linear-gradient( 0,
+        #2cb8f3 5%,
+        transparent 5%,
+        transparent),
+        linear-gradient(90deg, #2cb8f3 5%, transparent 5%, transparent),
+        linear-gradient(0, transparent 100%, #2cb8f3 100%),
+        linear-gradient(90deg, transparent 100%, #2cb8f3 100%);
         background-size: 30px 25px;
         .cs_text {
             position: absolute;
             left: 111px;
             bottom: 24px;
-            & > span:first-child {
+            &>span:first-child {
                 font-size: 36px;
                 line-height: 47px;
             }
-            & > span:last-child {
+            &>span:last-child {
                 font-size: 18px;
                 line-height: 24px;
             }
@@ -698,11 +733,11 @@ export default {
             position: absolute;
             right: 158px;
             bottom: 4px;
-            & > span:first-child {
+            &>span:first-child {
                 font-size: 90px;
                 line-height: 119px;
             }
-            & > span:last-child {
+            &>span:last-child {
                 font-size: 36px;
                 line-height: 47px;
             }
@@ -719,14 +754,14 @@ export default {
     font-family: "Microsoft Yahei";
     color: @fontColor;
     .ch_content {
-        > div.ch_echarts {
+        >div.ch_echarts {
             height: 100%;
             width: 100%;
         }
     }
     span.slt {
         margin: 0 0 0 30px;
-        > select {
+        >select {
             width: 185px;
             height: 36px;
             border: 1px solid #0a4b90;
@@ -744,8 +779,8 @@ export default {
         line-height: 100px;
         font-size: 16px;
         color: #dfe5ed;
-        > span {
-            > button {
+        >span {
+            >button {
                 width: 100px;
                 height: 36px;
                 line-height: 36px;
@@ -759,17 +794,17 @@ export default {
     .content_charts {
         width: 100%;
         padding: 15px;
-        > div {
+        >div {
             width: 50%;
             padding: 15px;
-            > div {
+            >div {
                 border: 1px solid #176bb8;
                 overflow: hidden;
             }
         }
         .charts_success,
         .charts_prosperity {
-            > div {
+            >div {
                 height: 130px;
                 border: none;
                 color: #fff;
@@ -778,30 +813,26 @@ export default {
         .charts_success {
             div[class*="mark"] {
                 background-color: #1ab2f3;
-                background-image: linear-gradient(
-                        0,
-                        #2cb8f3 5%,
-                        transparent 5%,
-                        transparent
-                    ),
-                    linear-gradient(
-                        90deg,
-                        #2cb8f3 5%,
-                        transparent 5%,
-                        transparent
-                    ),
-                    linear-gradient(0, transparent 100%, #2cb8f3 100%),
-                    linear-gradient(90deg, transparent 100%, #2cb8f3 100%);
+                background-image: linear-gradient( 0,
+                #2cb8f3 5%,
+                transparent 5%,
+                transparent),
+                linear-gradient( 90deg,
+                #2cb8f3 5%,
+                transparent 5%,
+                transparent),
+                linear-gradient(0, transparent 100%, #2cb8f3 100%),
+                linear-gradient(90deg, transparent 100%, #2cb8f3 100%);
                 background-size: 30px 25px;
                 .cs_text {
                     position: absolute;
                     left: 111px;
                     bottom: 24px;
-                    & > span:first-child {
+                    &>span:first-child {
                         font-size: 36px;
                         line-height: 47px;
                     }
-                    & > span:last-child {
+                    &>span:last-child {
                         font-size: 18px;
                         line-height: 24px;
                     }
@@ -810,11 +841,11 @@ export default {
                     position: absolute;
                     right: 158px;
                     bottom: 4px;
-                    & > span:first-child {
+                    &>span:first-child {
                         font-size: 90px;
                         line-height: 119px;
                     }
-                    & > span:last-child {
+                    &>span:last-child {
                         font-size: 36px;
                         line-height: 47px;
                     }
@@ -822,32 +853,28 @@ export default {
             }
         }
         .charts_prosperity {
-            > div[class*="mark"] {
+            >div[class*="mark"] {
                 background-color: #fc6e55;
-                background-image: linear-gradient(
-                        0,
-                        #fc7962 5%,
-                        transparent 5%,
-                        transparent
-                    ),
-                    linear-gradient(
-                        90deg,
-                        #fc7962 5%,
-                        transparent 5%,
-                        transparent
-                    ),
-                    linear-gradient(0, transparent 100%, #fc7962 100%),
-                    linear-gradient(90deg, transparent 100%, #fc7962 100%);
+                background-image: linear-gradient( 0,
+                #fc7962 5%,
+                transparent 5%,
+                transparent),
+                linear-gradient( 90deg,
+                #fc7962 5%,
+                transparent 5%,
+                transparent),
+                linear-gradient(0, transparent 100%, #fc7962 100%),
+                linear-gradient(90deg, transparent 100%, #fc7962 100%);
                 background-size: 30px 25px;
                 .cs_text {
                     position: absolute;
                     left: 111px;
                     bottom: 24px;
-                    & > span:first-child {
+                    &>span:first-child {
                         font-size: 36px;
                         line-height: 47px;
                     }
-                    & > span:last-child {
+                    &>span:last-child {
                         font-size: 18px;
                         line-height: 24px;
                     }
@@ -856,25 +883,25 @@ export default {
                     position: absolute;
                     right: 158px;
                     bottom: 4px;
-                    & > span:first-child {
+                    &>span:first-child {
                         font-size: 90px;
                         line-height: 119px;
                     }
-                    & > span:last-child {
+                    &>span:last-child {
                         font-size: 36px;
                         line-height: 47px;
                     }
                 }
             }
         }
-        > div[class^="echarts_"] {
-            > div {
+        >div[class^="echarts_"] {
+            >div {
                 height: 688px;
-                > .ch_title {
+                >.ch_title {
                     height: 40px;
                     width: 100%;
                     margin-top: 30px;
-                    > span {
+                    >span {
                         line-height: 40px;
                         &:first-child {
                             margin-left: 30px;
@@ -892,27 +919,27 @@ export default {
                         height: 50%;
                     }
                 }
-                > .ch_content {
+                >.ch_content {
                     height: 616px;
                 }
             }
         }
-        > div.echarts_hotMap {
+        >div.echarts_hotMap {
             .ch_title::before {
                 background-color: #bd10e0;
             }
         }
-        > div.echarts_percent {
+        >div.echarts_percent {
             .ch_title::before {
                 background-color: #239dfd;
             }
         }
-        > div.echarts_industry {
+        >div.echarts_industry {
             .ch_title::before {
                 background-color: #ffa094;
             }
         }
-        > div.echarts_customer {
+        >div.echarts_customer {
             .ch_title::before {
                 background-color: #50e3c2;
             }
@@ -922,30 +949,26 @@ export default {
                 height: 129px;
                 &:nth-child(1) {
                     background-color: #c87ff3;
-                    background-image: linear-gradient(
-                            0,
-                            #ce8cf3 5%,
-                            transparent 5%,
-                            transparent
-                        ),
-                        linear-gradient(
-                            90deg,
-                            #ce8cf3 5%,
-                            transparent 5%,
-                            transparent
-                        ),
-                        linear-gradient(0, transparent 100%, #ce8cf3 100%),
-                        linear-gradient(90deg, transparent 100%, #ce8cf3 100%);
+                    background-image: linear-gradient( 0,
+                    #ce8cf3 5%,
+                    transparent 5%,
+                    transparent),
+                    linear-gradient( 90deg,
+                    #ce8cf3 5%,
+                    transparent 5%,
+                    transparent),
+                    linear-gradient(0, transparent 100%, #ce8cf3 100%),
+                    linear-gradient(90deg, transparent 100%, #ce8cf3 100%);
                     background-size: 30px 25px;
                     .cs_text {
                         position: absolute;
                         left: 111px;
                         bottom: 24px;
-                        & > span:first-child {
+                        &>span:first-child {
                             font-size: 36px;
                             line-height: 47px;
                         }
-                        & > span:last-child {
+                        &>span:last-child {
                             font-size: 18px;
                             line-height: 24px;
                         }
@@ -954,11 +977,11 @@ export default {
                         position: absolute;
                         right: 158px;
                         bottom: 4px;
-                        & > span:first-child {
+                        &>span:first-child {
                             font-size: 90px;
                             line-height: 119px;
                         }
-                        & > span:last-child {
+                        &>span:last-child {
                             font-size: 36px;
                             line-height: 47px;
                         }
@@ -966,30 +989,26 @@ export default {
                 }
                 &:nth-child(2) {
                     background-color: #33c882;
-                    background-image: linear-gradient(
-                            0,
-                            #4dce94 5%,
-                            transparent 5%,
-                            transparent
-                        ),
-                        linear-gradient(
-                            90deg,
-                            #4dce94 5%,
-                            transparent 5%,
-                            transparent
-                        ),
-                        linear-gradient(0, transparent 100%, #4dce94 100%),
-                        linear-gradient(90deg, transparent 100%, #4dce94 100%);
+                    background-image: linear-gradient( 0,
+                    #4dce94 5%,
+                    transparent 5%,
+                    transparent),
+                    linear-gradient( 90deg,
+                    #4dce94 5%,
+                    transparent 5%,
+                    transparent),
+                    linear-gradient(0, transparent 100%, #4dce94 100%),
+                    linear-gradient(90deg, transparent 100%, #4dce94 100%);
                     background-size: 30px 25px;
                     .cs_text {
                         position: absolute;
                         left: 111px;
                         bottom: 24px;
-                        & > span:first-child {
+                        &>span:first-child {
                             font-size: 36px;
                             line-height: 47px;
                         }
-                        & > span:last-child {
+                        &>span:last-child {
                             font-size: 18px;
                             line-height: 24px;
                         }
@@ -998,11 +1017,11 @@ export default {
                         position: absolute;
                         right: 158px;
                         bottom: 4px;
-                        & > span:first-child {
+                        &>span:first-child {
                             font-size: 90px;
                             line-height: 119px;
                         }
-                        & > span:last-child {
+                        &>span:last-child {
                             font-size: 36px;
                             line-height: 47px;
                         }
@@ -1010,30 +1029,26 @@ export default {
                 }
                 &:nth-child(3) {
                     background-color: #f68d71;
-                    background-image: linear-gradient(
-                            0,
-                            #f6967c 5%,
-                            transparent 5%,
-                            transparent
-                        ),
-                        linear-gradient(
-                            90deg,
-                            #f6967c 5%,
-                            transparent 5%,
-                            transparent
-                        ),
-                        linear-gradient(0, transparent 100%, #f6967c 100%),
-                        linear-gradient(90deg, transparent 100%, #f6967c 100%);
+                    background-image: linear-gradient( 0,
+                    #f6967c 5%,
+                    transparent 5%,
+                    transparent),
+                    linear-gradient( 90deg,
+                    #f6967c 5%,
+                    transparent 5%,
+                    transparent),
+                    linear-gradient(0, transparent 100%, #f6967c 100%),
+                    linear-gradient(90deg, transparent 100%, #f6967c 100%);
                     background-size: 30px 25px;
                     .cs_text {
                         position: absolute;
                         left: 111px;
                         bottom: 24px;
-                        & > span:first-child {
+                        &>span:first-child {
                             font-size: 36px;
                             line-height: 47px;
                         }
-                        & > span:last-child {
+                        &>span:last-child {
                             font-size: 18px;
                             line-height: 24px;
                         }
@@ -1042,11 +1057,11 @@ export default {
                         position: absolute;
                         right: 158px;
                         bottom: 4px;
-                        & > span:first-child {
+                        &>span:first-child {
                             font-size: 90px;
                             line-height: 119px;
                         }
-                        & > span:last-child {
+                        &>span:last-child {
                             font-size: 36px;
                             line-height: 47px;
                         }
@@ -1054,17 +1069,17 @@ export default {
                 }
             }
         }
-        > div.echarts_compete {
+        >div.echarts_compete {
             .ch_title::before {
                 background-color: #d5187e;
             }
-            > div {
+            >div {
                 height: auto;
-                > div.ch_content {
+                >div.ch_content {
                     padding: 26px;
                     height: auto;
-                    > div.cc_top {
-                        > div {
+                    >div.cc_top {
+                        >div {
                             width: calc((100% - 30px) / 3);
                             height: 122px;
                             &:nth-child(2) {
@@ -1073,7 +1088,7 @@ export default {
                             div.cs_text {
                                 bottom: 40px;
                                 left: 36px;
-                                > span {
+                                >span {
                                     font-size: 24px;
                                     line-height: 31px;
                                 }
@@ -1081,75 +1096,59 @@ export default {
                             div.cs_points {
                                 bottom: 30px;
                                 right: 50px;
-                                > span:first-child {
+                                >span:first-child {
                                     font-size: 48px;
                                     line-height: 64px;
                                     font-weight: bold;
                                 }
-                                > span:last-child {
+                                >span:last-child {
                                     font-size: 24px;
                                     line-height: 31px;
                                 }
                             }
                         }
-                        > div:nth-child(2) {
-                            > div {
+                        >div:nth-child(2) {
+                            >div {
                                 background-color: #fe6464;
-                                background-image: linear-gradient(
-                                        0,
-                                        #fe7070 5%,
-                                        transparent 5%,
-                                        transparent
-                                    ),
-                                    linear-gradient(
-                                        90deg,
-                                        #fe7070 5%,
-                                        transparent 5%,
-                                        transparent
-                                    ),
-                                    linear-gradient(
-                                        0,
-                                        transparent 100%,
-                                        #fe7070 100%
-                                    ),
-                                    linear-gradient(
-                                        90deg,
-                                        transparent 100%,
-                                        #fe7070 100%
-                                    );
+                                background-image: linear-gradient( 0,
+                                #fe7070 5%,
+                                transparent 5%,
+                                transparent),
+                                linear-gradient( 90deg,
+                                #fe7070 5%,
+                                transparent 5%,
+                                transparent),
+                                linear-gradient( 0,
+                                transparent 100%,
+                                #fe7070 100%),
+                                linear-gradient( 90deg,
+                                transparent 100%,
+                                #fe7070 100%);
                             }
                         }
-                        > div:nth-child(3) {
-                            > div {
+                        >div:nth-child(3) {
+                            >div {
                                 background-color: #fc9d30;
-                                background-image: linear-gradient(
-                                        0,
-                                        #fca645 5%,
-                                        transparent 5%,
-                                        transparent
-                                    ),
-                                    linear-gradient(
-                                        90deg,
-                                        #fca645 5%,
-                                        transparent 5%,
-                                        transparent
-                                    ),
-                                    linear-gradient(
-                                        0,
-                                        transparent 100%,
-                                        #fca645 100%
-                                    ),
-                                    linear-gradient(
-                                        90deg,
-                                        transparent 100%,
-                                        #fca645 100%
-                                    );
+                                background-image: linear-gradient( 0,
+                                #fca645 5%,
+                                transparent 5%,
+                                transparent),
+                                linear-gradient( 90deg,
+                                #fca645 5%,
+                                transparent 5%,
+                                transparent),
+                                linear-gradient( 0,
+                                transparent 100%,
+                                #fca645 100%),
+                                linear-gradient( 90deg,
+                                transparent 100%,
+                                #fca645 100%);
                             }
                         }
                     }
-                    > div.cc_bottom {
+                    >div.cc_bottom {
                         padding-top: 26px;
-                        > div.cb_left {
+                        >div.cb_left {
                             width: calc(66.66% - 5px); // margin-right: 15px;
                             padding: 26px;
                             border: 1px solid #176bb8;
@@ -1162,12 +1161,12 @@ export default {
                                 background-position: center;
                             }
                         }
-                        > div.cb_right {
+                        >div.cb_right {
                             width: calc(33.33% - 10px);
                             height: 638px;
                             margin-left: 15px;
                             border: 1px solid #176bb8;
-                            > table {
+                            >table {
                                 width: 100%;
                                 font-size: 14px;
                                 line-height: 3;
@@ -1185,19 +1184,19 @@ export default {
                 }
             }
         }
-        > div.echarts_keyData {
+        >div.echarts_keyData {
             .ch_title::before {
                 background-color: #189cd5;
             }
             .ch_content {
-                > div {
+                >div {
                     width: 50%;
                     height: 100%;
                     padding: 0 26px;
                     &:not(:nth-child(2n)) {
                         border-right: 1px solid #204c74;
                     }
-                    > div {
+                    >div {
                         &:not(:nth-child(2n)) {
                             border-bottom: 1px solid #204c74;
                         }
@@ -1205,20 +1204,20 @@ export default {
                         height: 50%;
                         padding: 40px 30px;
                         text-align: center;
-                        > i {
+                        >i {
                             font-size: 80px;
                             line-height: 90px;
                             padding-top: 12px;
                         }
-                        > div {
+                        >div {
                             &:last-child {
                                 width: 140px;
                             }
-                            > div:first-child {
+                            >div:first-child {
                                 font-size: 16px;
                                 line-height: 21px;
                             }
-                            > div:last-child {
+                            >div:last-child {
                                 font-size: 30px;
                                 line-height: 40px;
                             }
@@ -1227,8 +1226,8 @@ export default {
                 }
             }
         }
-        > div.echarts_guestPercent {
-            > div {
+        >div.echarts_guestPercent {
+            >div {
                 height: auto;
             }
             .ch_title::before {
@@ -1237,7 +1236,7 @@ export default {
             div.ch_content {
                 height: auto;
                 padding: 26px;
-                > div {
+                >div {
                     &:nth-child(2n-1) {
                         margin-right: 26px;
                     }
@@ -1245,9 +1244,16 @@ export default {
                     width: calc(50% - 13px);
                     height: 424px;
                     border: 1px solid #204c74;
-                    > div.eg_charts {
+                    >div.eg_charts {
                         width: 100%;
                         height: 100%;
+                    }
+                    >div.eg_title {
+                        position: absolute;
+                        font-size: 16px;
+                        top: 12px;
+                        left: 12px;
+                        font-weight: bold;
                     }
                 }
             }
