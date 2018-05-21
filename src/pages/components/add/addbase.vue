@@ -34,12 +34,12 @@
            <span class='title'>平台维护：</span>
            <label>
             <span class='radio'>
-                <input type="radio" value='0' v-model='addParams.Operation' name='Operation'>
+                <input type="radio" value='1' v-model='addParams.Operation' name='Operation'>
                 <i></i>
             </span>
              是 </label>
           <label> <span class='radio'>
-                <input type="radio" value='1' v-model='addParams.Operation' name='Operation'>
+                <input type="radio" value='0' v-model='addParams.Operation' name='Operation'>
                 <i></i>
             </span> 否 </label>
            
