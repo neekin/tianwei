@@ -1,11 +1,13 @@
 <template>
 <div class="stepone">
       <div style='margin-top:120px' class='username block-center'>
-           <span>用户名:</span> <input type="text">               
+           <span>用户名:</span> <input type="text" v-model='username'>               
            </div>
            <div class='checkcode block-center'>
-              <span>验证码:</span> <input type="text">
-               <div class="checkcodeimg">123</div>
+              <span>验证码:</span> <input type="text" v-model='code'>
+               <button class="checkcodeimg">
+                {{checkCode}}
+               </button>
                <i class='fa fa-refresh' @click='refreshCode'></i>
            </div>
 </div>
@@ -13,13 +15,20 @@
 </template>
 <script>
 export default {
-  name:'Step1',
-  methods:{
+  name: "Step1",
+  props: ["checkCode"],
+  data(){
+    return {
+      username:'',
+      code:''
+    }
+  },
+  methods: {
     refreshCode() {
-      alert("刷新成功");
+      this.$emit("createCode");
     }
   }
-}
+};
 </script>
 <style scoped>
 .username,
@@ -71,6 +80,12 @@ export default {
   display: inline-block;
   margin-left: 8px;
   vertical-align: bottom;
+  border: none;
+  outline: none;
+  font-size: 26px;
+}
+.checkcodeimg:hover {
+  cursor: none;
 }
 .checkcode i {
   font-size: 28px;

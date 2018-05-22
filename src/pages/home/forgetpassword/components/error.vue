@@ -5,7 +5,10 @@
 </template>
 <script>
 export default {
-  name:'ErrorMsg'
+  name:'ErrorMsg',
+  mounted(){
+      this.$emit('hidemsg');
+  }
 }
 </script>
 

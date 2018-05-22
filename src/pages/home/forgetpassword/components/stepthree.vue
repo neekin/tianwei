@@ -3,11 +3,12 @@
             <div style='margin-top:102px'>
 	           <div class="w block-center">
 	            <span>新密码：</span>
-	            <input type="text">
+	            <input type="password" v-model='password'>
+				<input type="hidden" v-model='username'>
 	           </div>
 	           <div class="w func block-center">
 	              <span>确认新密码：</span>
-	              <input type="text">
+	              <input type="password" v-model='repassword'>
 	           </div>
          </div>
 </div>
@@ -15,7 +16,14 @@
 </template>
 <script>
 export default {
-  name:'Step3'
+  name:'Step3',
+  props:['username'],
+  data(){
+	  return{
+		  password:'',
+		  repassword:''
+	  }
+  }
 }
 </script>
 <style scoped>
@@ -42,5 +50,8 @@ export default {
        	background: rgba(0,0,0,0.12);
 		border: 1px solid rgba(255,255,255,0.12);
 		border-radius: 3px;
+		color:#fff;
+		text-indent: 10px;
+		font-size: 16px;
        }
 </style>

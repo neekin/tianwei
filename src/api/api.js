@@ -10,6 +10,9 @@ var Api = {
         return this.getApi("/Home/Login");
     },
     logout: function() {},
+    forgetpwd(params){
+     return this.getApi('/Home/ForgetPwd')+'?'+this.Params(params);
+    },
     getReTimeDeviceList(params) {
         // GET /Device/getReTimeDeviceList
         return (
