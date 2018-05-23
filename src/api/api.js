@@ -139,7 +139,14 @@ var Api = {
     // 一周客流
     getWeekCount() {
         return this.getApi("/BusData/getShopWeekCountReport");
+    },
+    // Top3
+    getTop3() {
+        return this.getApi("/BusData/getShopHotTimeReport");
+    },
+    // 近6个月回头客
+    getLast6M() {
+        return this.getApi("/BusData/getReturnGuesReport");
     }
-
 };
 module.exports = Api;
