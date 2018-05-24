@@ -6,12 +6,12 @@ var Api = {
     getApi(api) {
         return this.http + this.url + api;
     },
-    login: function() {
+    login: function () {
         return this.getApi("/Home/Login");
     },
-    logout: function() {},
-    forgetpwd(params){
-     return this.getApi('/Home/ForgetPwd')+'?'+this.Params(params);
+    logout: function () { },
+    forgetpwd(params) {
+        return this.getApi('/Home/ForgetPwd') + '?' + this.Params(params);
     },
     getReTimeDeviceList(params) {
         // GET /Device/getReTimeDeviceList
@@ -144,9 +144,23 @@ var Api = {
     getTop3() {
         return this.getApi("/BusData/getShopHotTimeReport");
     },
+    // 年龄分布
+    getAge() {
+        return this.getApi("/BusData/getAgeReport");
+    },
+    // 年龄分布
+    getSex() {
+        return this.getApi("/BusData/getShopSexReport");
+    },
     // 近6个月回头客
     getLast6M() {
         return this.getApi("/BusData/getReturnGuesReport");
+    },
+    // 回头客年龄分布
+    getReturnGuestAge() {
+        return this.getApi("/BusData/getReturnGuesAgeReport");
     }
+
+
 };
 module.exports = Api;

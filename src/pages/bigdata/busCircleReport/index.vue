@@ -570,7 +570,58 @@ export default {
                 top3: {
                     dataX: '',
                     dataY: '',
-                    total:''
+                    total: ''
+                },
+                age: {
+                    color: ["#ffa9a9", "#fed971", "#80c5ff"],
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: "{a} <br/>{b}: {c} ({d}%)"
+                    },
+                    series: [
+                        {
+                            name: '年龄分布',
+                            type: 'pie',
+                            radius: ['50%', '70%'],
+                            avoidLabelOverlap: false,
+                            label: {
+                                normal: {
+                                    show: true
+                                },
+                                emphasis: {
+                                    show: true,
+                                    textStyle: {
+                                        fontSize: '30',
+                                        fontWeight: 'bold'
+                                    }
+                                }
+                            },
+                            data: []
+                        }
+                    ]
+                },
+                returnGuestAge: {
+                     color: ["#faff81", "#e06d06", "#ffc53a"],
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: "{a} <br/>{b} : {c} ({d}%)"
+                    },
+                    series: [
+                        {
+                            name: '回头客年龄分布',
+                            type: 'pie',
+                            radius: '55%',
+                            center: ['50%', '60%'],
+                            data: [],
+                            itemStyle: {
+                                emphasis: {
+                                    shadowBlur: 10,
+                                    shadowOffsetX: 0,
+                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                }
+                            }
+                        }
+                    ]
                 }
             },
             cityList: [],
@@ -600,7 +651,7 @@ export default {
                     }
                 })
                 .then(res => {
-                    console.log(res);
+                    // console.log(res);
                     if (res.data.code == 1) {
                         this.SPIndex = res.data.result;
                     } else {
@@ -638,7 +689,7 @@ export default {
                             this.data.percent.radar.indicator[i].name = v;
                         });
 
-                        console.log(this.data.percent);
+                        // console.log(this.data.percent);
                         this.charts.percent.hideLoading();
                         this.charts.percent.setOption(this.data.percent);
                     } else if (res.data.code == -1) {
@@ -701,7 +752,7 @@ export default {
                     }
                 })
                 .then(res => {
-                    console.log(res);
+                    // console.log(res);
                     if (res.data.code == 1) {
                         this.shopCustomer = res.data.result;
                     } else {
@@ -722,7 +773,7 @@ export default {
                     }
                 })
                 .then(res => {
-                    console.log(res);
+                    // console.log(res);
                     if (res.data.code == 1) {
                         this.indexTop = res.data.result;
                     } else {
@@ -743,7 +794,7 @@ export default {
                     }
                 })
                 .then(res => {
-                    console.log(res);
+                    // console.log(res);
                     if (res.data.code == 1) {
                         this.compete = res.data.result;
                     } else {
@@ -774,7 +825,7 @@ export default {
                     }
                 })
                 .then(res => {
-                    console.log(res);
+                    // console.log(res);
                     if (res.data.code == 1) {
                         this.data.weekCount.xAxis.data = res.data.result.dataX;
                         this.data.weekCount.series[0].data = res.data.result.dataY;
@@ -799,11 +850,91 @@ export default {
                     }
                 })
                 .then(res => {
-                    console.log(res);
+                    // console.log(res);
                     if (res.data.code == 1) {
                         this.data.top3 = res.data.result;
                         this.data.top3.total = eval(this.data.top3.dataY.join("+"));
-                        console.log(this.data.top3);
+                        // console.log(this.data.top3);
+                    } else {
+                        console.log(res);
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        },
+        // 年龄分布
+        getAge() {
+            this.charts.age = echarts.init(
+                document.getElementById("age")
+            );
+            this.charts.age.showLoading("default", {
+                text: "加载中...",
+                color: "#f49c00",
+                textColor: "#fff",
+                maskColor: "rgba(0, 0, 0, 0.5)",
+                zlevel: 0
+            });
+            this.$http
+                .get(this.$api.getAge(), {
+                    params: {
+                        token: this.token,
+                        ShopId: this.shopId
+                    }
+                })
+                .then(res => {
+                    // console.log(res.data.result);
+                    if (res.data.code == 1) {
+                        // console.log(res.data)
+                        for (let i = 0; i < res.data.result.dataX.length; i++) {
+                            this.data.age.series[0].data.push({
+                                value: res.data.result.dataY[i],
+                                name: res.data.result.dataX[i]
+                            });
+                        }
+
+                        this.charts.age.hideLoading();
+                        this.charts.age.setOption(this.data.age);
+                    } else {
+                        console.log(res);
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        },
+        // 性别分布
+        getSex() {
+            this.charts.agePercent = echarts.init(
+                document.getElementById("agePercent")
+            );
+            this.charts.agePercent.showLoading("default", {
+                text: "加载中...",
+                color: "#f49c00",
+                textColor: "#fff",
+                maskColor: "rgba(0, 0, 0, 0.5)",
+                zlevel: 0
+            });
+            this.$http
+                .get(this.$api.getSex(), {
+                    params: {
+                        token: this.token,
+                        ShopId: this.shopId
+                    }
+                })
+                .then(res => {
+                    console.log(res.data.result);
+                    if (res.data.code == 1) {
+                        for (let i = 0; i < res.data.result.dataX.length; i++) {
+                            this.data.returnGuestAge.series[0].data.push({
+                                value: res.data.result.dataY[i],
+                                name: res.data.result.dataX[i]
+                            });
+                        }
+                        console.log(this.data.returnGuestAge.series)
+
+                        this.charts.agePercent.hideLoading();
+                        this.charts.agePercent.setOption(this.data.returnGuestAge);
                     } else {
                         console.log(res);
                     }
@@ -832,13 +963,53 @@ export default {
                     }
                 })
                 .then(res => {
-                    console.log(res);
+                    // console.log(res);
                     if (res.data.code == 1) {
                         this.data.last6M.xAxis.data = res.data.result.dataX;
                         this.data.last6M.series[0].data = res.data.result.dataY;
 
                         this.charts.last6M.hideLoading();
                         this.charts.last6M.setOption(this.data.last6M);
+                    } else {
+                        console.log(res);
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        },
+        // 回头客年龄分布
+        getReturnGuestAge() {
+            this.charts.agePercent = echarts.init(
+                document.getElementById("agePercent")
+            );
+            this.charts.agePercent.showLoading("default", {
+                text: "加载中...",
+                color: "#f49c00",
+                textColor: "#fff",
+                maskColor: "rgba(0, 0, 0, 0.5)",
+                zlevel: 0
+            });
+            this.$http
+                .get(this.$api.getReturnGuestAge(), {
+                    params: {
+                        token: this.token,
+                        ShopId: this.shopId
+                    }
+                })
+                .then(res => {
+                    // console.log(res.data.result);
+                    if (res.data.code == 1) {
+                        for (let i = 0; i < res.data.result.dataX.length; i++) {
+                            this.data.returnGuestAge.series[0].data.push({
+                                value: res.data.result.dataY[i],
+                                name: res.data.result.dataX[i]
+                            });
+                        }
+                        // console.log(this.data.returnGuestAge.series)
+
+                        this.charts.agePercent.hideLoading();
+                        this.charts.agePercent.setOption(this.data.returnGuestAge);
                     } else {
                         console.log(res);
                     }
@@ -858,7 +1029,10 @@ export default {
         this.getCompete();
         this.getWeekCount();
         this.getTop3();
+        this.getAge();
+        
         this.getLast6M();
+        this.getReturnGuestAge();
     }
 };
 </script>
@@ -868,612 +1042,591 @@ export default {
 @import url("../../../assets/fonts/iconfont.css");
 
 .content {
-  div[class*="mark"] {
-    width: 100%;
-    height: 100%;
-    background-color: #1ab2f3;
-    background-image: linear-gradient(
-        0,
+    div[class*="mark"] {
+        width: 100%;
+        height: 100%;
+        background-color: #1ab2f3;
+        background-image: linear-gradient( 0,
         #2cb8f3 5%,
         transparent 5%,
-        transparent
-      ),
-      linear-gradient(90deg, #2cb8f3 5%, transparent 5%, transparent),
-      linear-gradient(0, transparent 100%, #2cb8f3 100%),
-      linear-gradient(90deg, transparent 100%, #2cb8f3 100%);
-    background-size: 30px 25px;
-    .cs_text {
-      position: absolute;
-      left: 111px;
-      bottom: 24px;
-      & > span:first-child {
-        font-size: 36px;
-        line-height: 47px;
-      }
-      & > span:last-child {
-        font-size: 18px;
-        line-height: 24px;
-      }
-    }
-    .cs_points {
-      position: absolute;
-      right: 158px;
-      bottom: 4px;
-      & > span:first-child {
-        font-size: 90px;
-        line-height: 119px;
-      }
-      & > span:last-child {
-        font-size: 36px;
-        line-height: 47px;
-      }
-    }
-  }
-  #hotMap {
-    width: 80%;
-    height: 80%;
-    margin: 70px auto;
-    background-image: url("../../../assets/images/hotMap.png");
-    background-repeat: no-repeat;
-    background-size: cover;
-  }
-  font-family: "Microsoft Yahei";
-  color: @fontColor;
-  .ch_content {
-    > div.ch_echarts {
-      height: 100%;
-      width: 100%;
-    }
-  }
-  span.slt {
-    margin: 0 0 0 30px;
-    > select {
-      width: 185px;
-      height: 36px;
-      border: 1px solid #0a4b90;
-      border-radius: 5px;
-      background-color: #00438b;
-      color: #7f95ad;
-      text-indent: 1em;
-      margin: 0 20px;
-    }
-  }
-  .navIpt {
-    width: 100%;
-    height: 100px;
-    background-color: #013676;
-    line-height: 100px;
-    font-size: 16px;
-    color: #dfe5ed;
-    > span {
-      > button {
-        width: 100px;
-        height: 36px;
-        line-height: 36px;
-        background-color: #245ee2;
-        border: none;
-        border-radius: 5px;
-        color: #dfe5ed;
-      }
-    }
-  }
-  .content_charts {
-    width: 100%;
-    padding: 15px;
-    > div {
-      width: 50%;
-      padding: 15px;
-      > div {
-        border: 1px solid #176bb8;
-        overflow: hidden;
-      }
-    }
-    .charts_success,
-    .charts_prosperity {
-      > div {
-        height: 130px;
-        border: none;
-        color: #fff;
-      }
-    }
-    .charts_success {
-      div[class*="mark"] {
-        background-color: #1ab2f3;
-        background-image: linear-gradient(
-            0,
-            #2cb8f3 5%,
-            transparent 5%,
-            transparent
-          ),
-          linear-gradient(90deg, #2cb8f3 5%, transparent 5%, transparent),
-          linear-gradient(0, transparent 100%, #2cb8f3 100%),
-          linear-gradient(90deg, transparent 100%, #2cb8f3 100%);
+        transparent),
+        linear-gradient(90deg, #2cb8f3 5%, transparent 5%, transparent),
+        linear-gradient(0, transparent 100%, #2cb8f3 100%),
+        linear-gradient(90deg, transparent 100%, #2cb8f3 100%);
         background-size: 30px 25px;
         .cs_text {
-          position: absolute;
-          left: 111px;
-          bottom: 24px;
-          & > span:first-child {
-            font-size: 36px;
-            line-height: 47px;
-          }
-          & > span:last-child {
-            font-size: 18px;
-            line-height: 24px;
-          }
-        }
-        .cs_points {
-          position: absolute;
-          right: 158px;
-          bottom: 4px;
-          & > span:first-child {
-            font-size: 90px;
-            line-height: 119px;
-          }
-          & > span:last-child {
-            font-size: 36px;
-            line-height: 47px;
-          }
-        }
-      }
-    }
-    .charts_prosperity {
-      > div[class*="mark"] {
-        background-color: #fc6e55;
-        background-image: linear-gradient(
-            0,
-            #fc7962 5%,
-            transparent 5%,
-            transparent
-          ),
-          linear-gradient(90deg, #fc7962 5%, transparent 5%, transparent),
-          linear-gradient(0, transparent 100%, #fc7962 100%),
-          linear-gradient(90deg, transparent 100%, #fc7962 100%);
-        background-size: 30px 25px;
-        .cs_text {
-          position: absolute;
-          left: 111px;
-          bottom: 24px;
-          & > span:first-child {
-            font-size: 36px;
-            line-height: 47px;
-          }
-          & > span:last-child {
-            font-size: 18px;
-            line-height: 24px;
-          }
-        }
-        .cs_points {
-          position: absolute;
-          right: 158px;
-          bottom: 4px;
-          & > span:first-child {
-            font-size: 90px;
-            line-height: 119px;
-          }
-          & > span:last-child {
-            font-size: 36px;
-            line-height: 47px;
-          }
-        }
-      }
-    }
-    > div[class^="echarts_"] {
-      > div {
-        height: 688px;
-        > .ch_title {
-          height: 40px;
-          width: 100%;
-          margin-top: 30px;
-          > span {
-            line-height: 40px;
-            &:first-child {
-              margin-left: 30px;
-              font-size: 20px;
-              color: #fff;
-              font-weight: bold;
-            }
-          }
-          &::before {
-            content: "";
-            display: block;
             position: absolute;
-            top: 25%;
-            width: 6px;
-            height: 50%;
-          }
+            left: 111px;
+            bottom: 24px;
+            &>span:first-child {
+                font-size: 36px;
+                line-height: 47px;
+            }
+            &>span:last-child {
+                font-size: 18px;
+                line-height: 24px;
+            }
         }
-        > .ch_content {
-          height: 616px;
+        .cs_points {
+            position: absolute;
+            right: 158px;
+            bottom: 4px;
+            &>span:first-child {
+                font-size: 90px;
+                line-height: 119px;
+            }
+            &>span:last-child {
+                font-size: 36px;
+                line-height: 47px;
+            }
         }
-      }
     }
-    > div.echarts_hotMap {
-      .ch_title::before {
-        background-color: #bd10e0;
-      }
-    }
-    > div.echarts_percent {
-      .ch_title::before {
-        background-color: #239dfd;
-      }
-    }
-    > div.echarts_industry {
-      .ch_title::before {
-        background-color: #ffa094;
-      }
-    }
-    > div.echarts_customer {
-      .ch_title::before {
-        background-color: #50e3c2;
-      }
-      .fanrong {
+    #hotMap {
         width: 80%;
-        margin: 55px auto;
-        height: 129px;
-        &:nth-child(1) {
-          background-color: #c87ff3;
-          background-image: linear-gradient(
-              0,
-              #ce8cf3 5%,
-              transparent 5%,
-              transparent
-            ),
-            linear-gradient(90deg, #ce8cf3 5%, transparent 5%, transparent),
-            linear-gradient(0, transparent 100%, #ce8cf3 100%),
-            linear-gradient(90deg, transparent 100%, #ce8cf3 100%);
-          background-size: 30px 25px;
-          .cs_text {
-            position: absolute;
-            left: 111px;
-            bottom: 24px;
-            & > span:first-child {
-              font-size: 36px;
-              line-height: 47px;
-            }
-            & > span:last-child {
-              font-size: 18px;
-              line-height: 24px;
-            }
-          }
-          .cs_points {
-            position: absolute;
-            right: 158px;
-            bottom: 4px;
-            & > span:first-child {
-              font-size: 90px;
-              line-height: 119px;
-            }
-            & > span:last-child {
-              font-size: 36px;
-              line-height: 47px;
-            }
-          }
-        }
-        &:nth-child(2) {
-          background-color: #33c882;
-          background-image: linear-gradient(
-              0,
-              #4dce94 5%,
-              transparent 5%,
-              transparent
-            ),
-            linear-gradient(90deg, #4dce94 5%, transparent 5%, transparent),
-            linear-gradient(0, transparent 100%, #4dce94 100%),
-            linear-gradient(90deg, transparent 100%, #4dce94 100%);
-          background-size: 30px 25px;
-          .cs_text {
-            position: absolute;
-            left: 111px;
-            bottom: 24px;
-            & > span:first-child {
-              font-size: 36px;
-              line-height: 47px;
-            }
-            & > span:last-child {
-              font-size: 18px;
-              line-height: 24px;
-            }
-          }
-          .cs_points {
-            position: absolute;
-            right: 158px;
-            bottom: 4px;
-            & > span:first-child {
-              font-size: 90px;
-              line-height: 119px;
-            }
-            & > span:last-child {
-              font-size: 36px;
-              line-height: 47px;
-            }
-          }
-        }
-        &:nth-child(3) {
-          background-color: #f68d71;
-          background-image: linear-gradient(
-              0,
-              #f6967c 5%,
-              transparent 5%,
-              transparent
-            ),
-            linear-gradient(90deg, #f6967c 5%, transparent 5%, transparent),
-            linear-gradient(0, transparent 100%, #f6967c 100%),
-            linear-gradient(90deg, transparent 100%, #f6967c 100%);
-          background-size: 30px 25px;
-          .cs_text {
-            position: absolute;
-            left: 111px;
-            bottom: 24px;
-            & > span:first-child {
-              font-size: 36px;
-              line-height: 47px;
-            }
-            & > span:last-child {
-              font-size: 18px;
-              line-height: 24px;
-            }
-          }
-          .cs_points {
-            position: absolute;
-            right: 158px;
-            bottom: 4px;
-            & > span:first-child {
-              font-size: 90px;
-              line-height: 119px;
-            }
-            & > span:last-child {
-              font-size: 36px;
-              line-height: 47px;
-            }
-          }
-        }
-      }
+        height: 80%;
+        margin: 70px auto;
+        background-image: url("../../../assets/images/hotMap.png");
+        background-repeat: no-repeat;
+        background-size: cover;
     }
-    > div.echarts_compete {
-      .ch_title::before {
-        background-color: #d5187e;
-      }
-      > div {
-        height: auto;
-        > div.ch_content {
-          padding: 26px;
-          height: auto;
-          > div.cc_top {
-            > div {
-              width: calc((100% - 30px) / 3);
-              height: 122px;
-              &:nth-child(2) {
-                margin: 0 15px;
-              }
-              div.cs_text {
-                bottom: 40px;
-                left: 36px;
-                > span {
-                  font-size: 24px;
-                  line-height: 31px;
-                }
-              }
-              div.cs_points {
-                bottom: 30px;
-                right: 50px;
-                > span:first-child {
-                  font-size: 48px;
-                  line-height: 64px;
-                  font-weight: bold;
-                }
-                > span:last-child {
-                  font-size: 24px;
-                  line-height: 31px;
-                }
-              }
-            }
-            > div:nth-child(2) {
-              > div {
-                background-color: #fe6464;
-                background-image: linear-gradient(
-                    0,
-                    #fe7070 5%,
-                    transparent 5%,
-                    transparent
-                  ),
-                  linear-gradient(
-                    90deg,
-                    #fe7070 5%,
-                    transparent 5%,
-                    transparent
-                  ),
-                  linear-gradient(0, transparent 100%, #fe7070 100%),
-                  linear-gradient(90deg, transparent 100%, #fe7070 100%);
-              }
-            }
-            > div:nth-child(3) {
-              > div {
-                background-color: #fc9d30;
-                background-image: linear-gradient(
-                    0,
-                    #fca645 5%,
-                    transparent 5%,
-                    transparent
-                  ),
-                  linear-gradient(
-                    90deg,
-                    #fca645 5%,
-                    transparent 5%,
-                    transparent
-                  ),
-                  linear-gradient(0, transparent 100%, #fca645 100%),
-                  linear-gradient(90deg, transparent 100%, #fca645 100%);
-              }
-            }
-          }
-          > div.cc_bottom {
-            padding-top: 26px;
-            > div.cb_left {
-              width: calc(66.66% - 5px);
-              // margin-right: 15px;
-              padding: 26px;
-              border: 1px solid #176bb8;
-              height: 638px;
-              #competeIMG {
-                background-image: url("../../../assets/images/compete.png");
-                height: 574px;
-                margin-top: 36px;
-                background-repeat: no-repeat;
-                background-position: center;
-              }
-            }
-            > div.cb_right {
-              width: calc(33.33% - 10px);
-              height: 638px;
-              margin-left: 15px;
-              border: 1px solid #176bb8;
-              > table {
-                width: 100%;
-                font-size: 14px;
-                line-height: 3;
-                tr,
-                th {
-                  text-align: center;
-                  border-bottom: 1px solid #204c74;
-                }
-                tr:first-child {
-                  background-color: #003b70;
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-    > div.echarts_keyData {
-      .ch_title::before {
-        background-color: #189cd5;
-      }
-      .ch_content {
-        > div {
-          width: 50%;
-          height: 100%;
-          padding: 0 26px;
-          &:not(:nth-child(2n)) {
-            border-right: 1px solid #204c74;
-          }
-          > div {
-            &:not(:nth-child(2n)) {
-              border-bottom: 1px solid #204c74;
-            }
-            width: 100%;
-            height: 50%;
-            padding: 40px 30px;
-            text-align: center;
-            > i {
-              font-size: 80px;
-              line-height: 90px;
-              padding-top: 12px;
-            }
-            > div {
-              &:last-child {
-                width: 140px;
-              }
-              > div:first-child {
-                font-size: 16px;
-                line-height: 21px;
-              }
-              > div:last-child {
-                font-size: 30px;
-                line-height: 40px;
-              }
-            }
-          }
-        }
-      }
-    }
-    > div.echarts_guestPercent {
-      > div {
-        height: auto;
-      }
-      .ch_title::before {
-        background-color: #189cd5;
-      }
-      div.ch_content {
-        height: auto;
-        padding: 26px;
-        > div {
-          &:nth-child(2n-1) {
-            margin-right: 26px;
-          }
-          margin-bottom: 26px;
-          width: calc(50% - 13px);
-          height: 424px;
-          border: 1px solid #204c74;
-          > div.eg_charts {
-            width: 100%;
+    font-family: "Microsoft Yahei";
+    color: @fontColor;
+    .ch_content {
+        >div.ch_echarts {
             height: 100%;
-          }
-          > div.eg_title {
-            position: absolute;
-            font-size: 16px;
-            top: 12px;
-            left: 12px;
-            font-weight: bold;
-          }
-        }
-        #top3 {
-          padding-top: 42px;
-          > div:nth-child(1) {
-            > div.top3_box {
-              > div.top3_progress {
-                background-color: #7ca4ec;
-              }
-            }
-          }
-          > div:nth-child(2) {
-            > div.top3_box {
-              > div.top3_progress {
-                background-color: #c98bdc;
-              }
-            }
-          }
-          > div:nth-child(3) {
-            > div.top3_box {
-              > div.top3_progress {
-                background-color: #f9ac80;
-              }
-            }
-          }
-          > div {
-            padding: 12px 24px;
             width: 100%;
-            height: calc(100% / 3);
-            font-size: 20px;
-            > svg {
-              font-size: 24px;
-            }
-            > div.top3_box {
-              line-height: 42px;
-              margin: 10px 0;
-              width: 85%;
-              > div.top3_progress {
-                height: 42px;
-                > div.top3_pro_percent {
-                  position: absolute;
-                  font-size: 20px;
-                  height: 42px;
-                  line-height: 42px;
-                  left: 6px;
-                  top: 0;
-                }
-                > div.top3_pro_ren {
-                  position: absolute;
-                  top: 0;
-                  right: -120px;
-                }
-              }
-            }
-          }
         }
-      }
     }
-  }
+    span.slt {
+        margin: 0 0 0 30px;
+        >select {
+            width: 185px;
+            height: 36px;
+            border: 1px solid #0a4b90;
+            border-radius: 5px;
+            background-color: #00438b;
+            color: #7f95ad;
+            text-indent: 1em;
+            margin: 0 20px;
+        }
+    }
+    .navIpt {
+        width: 100%;
+        height: 100px;
+        background-color: #013676;
+        line-height: 100px;
+        font-size: 16px;
+        color: #dfe5ed;
+        >span {
+            >button {
+                width: 100px;
+                height: 36px;
+                line-height: 36px;
+                background-color: #245ee2;
+                border: none;
+                border-radius: 5px;
+                color: #dfe5ed;
+            }
+        }
+    }
+    .content_charts {
+        width: 100%;
+        padding: 15px;
+        >div {
+            width: 50%;
+            padding: 15px;
+            >div {
+                border: 1px solid #176bb8;
+                overflow: hidden;
+            }
+        }
+        .charts_success,
+        .charts_prosperity {
+            >div {
+                height: 130px;
+                border: none;
+                color: #fff;
+            }
+        }
+        .charts_success {
+            div[class*="mark"] {
+                background-color: #1ab2f3;
+                background-image: linear-gradient( 0,
+                #2cb8f3 5%,
+                transparent 5%,
+                transparent),
+                linear-gradient(90deg, #2cb8f3 5%, transparent 5%, transparent),
+                linear-gradient(0, transparent 100%, #2cb8f3 100%),
+                linear-gradient(90deg, transparent 100%, #2cb8f3 100%);
+                background-size: 30px 25px;
+                .cs_text {
+                    position: absolute;
+                    left: 111px;
+                    bottom: 24px;
+                    &>span:first-child {
+                        font-size: 36px;
+                        line-height: 47px;
+                    }
+                    &>span:last-child {
+                        font-size: 18px;
+                        line-height: 24px;
+                    }
+                }
+                .cs_points {
+                    position: absolute;
+                    right: 158px;
+                    bottom: 4px;
+                    &>span:first-child {
+                        font-size: 90px;
+                        line-height: 119px;
+                    }
+                    &>span:last-child {
+                        font-size: 36px;
+                        line-height: 47px;
+                    }
+                }
+            }
+        }
+        .charts_prosperity {
+            >div[class*="mark"] {
+                background-color: #fc6e55;
+                background-image: linear-gradient( 0,
+                #fc7962 5%,
+                transparent 5%,
+                transparent),
+                linear-gradient(90deg, #fc7962 5%, transparent 5%, transparent),
+                linear-gradient(0, transparent 100%, #fc7962 100%),
+                linear-gradient(90deg, transparent 100%, #fc7962 100%);
+                background-size: 30px 25px;
+                .cs_text {
+                    position: absolute;
+                    left: 111px;
+                    bottom: 24px;
+                    &>span:first-child {
+                        font-size: 36px;
+                        line-height: 47px;
+                    }
+                    &>span:last-child {
+                        font-size: 18px;
+                        line-height: 24px;
+                    }
+                }
+                .cs_points {
+                    position: absolute;
+                    right: 158px;
+                    bottom: 4px;
+                    &>span:first-child {
+                        font-size: 90px;
+                        line-height: 119px;
+                    }
+                    &>span:last-child {
+                        font-size: 36px;
+                        line-height: 47px;
+                    }
+                }
+            }
+        }
+        >div[class^="echarts_"] {
+            >div {
+                height: 688px;
+                >.ch_title {
+                    height: 40px;
+                    width: 100%;
+                    margin-top: 30px;
+                    >span {
+                        line-height: 40px;
+                        &:first-child {
+                            margin-left: 30px;
+                            font-size: 20px;
+                            color: #fff;
+                            font-weight: bold;
+                        }
+                    }
+                    &::before {
+                        content: "";
+                        display: block;
+                        position: absolute;
+                        top: 25%;
+                        width: 6px;
+                        height: 50%;
+                    }
+                }
+                >.ch_content {
+                    height: 616px;
+                }
+            }
+        }
+        >div.echarts_hotMap {
+            .ch_title::before {
+                background-color: #bd10e0;
+            }
+        }
+        >div.echarts_percent {
+            .ch_title::before {
+                background-color: #239dfd;
+            }
+        }
+        >div.echarts_industry {
+            .ch_title::before {
+                background-color: #ffa094;
+            }
+        }
+        >div.echarts_customer {
+            .ch_title::before {
+                background-color: #50e3c2;
+            }
+            .fanrong {
+                width: 80%;
+                margin: 55px auto;
+                height: 129px;
+                &:nth-child(1) {
+                    background-color: #c87ff3;
+                    background-image: linear-gradient( 0,
+                    #ce8cf3 5%,
+                    transparent 5%,
+                    transparent),
+                    linear-gradient(90deg, #ce8cf3 5%, transparent 5%, transparent),
+                    linear-gradient(0, transparent 100%, #ce8cf3 100%),
+                    linear-gradient(90deg, transparent 100%, #ce8cf3 100%);
+                    background-size: 30px 25px;
+                    .cs_text {
+                        position: absolute;
+                        left: 111px;
+                        bottom: 24px;
+                        &>span:first-child {
+                            font-size: 36px;
+                            line-height: 47px;
+                        }
+                        &>span:last-child {
+                            font-size: 18px;
+                            line-height: 24px;
+                        }
+                    }
+                    .cs_points {
+                        position: absolute;
+                        right: 158px;
+                        bottom: 4px;
+                        &>span:first-child {
+                            font-size: 90px;
+                            line-height: 119px;
+                        }
+                        &>span:last-child {
+                            font-size: 36px;
+                            line-height: 47px;
+                        }
+                    }
+                }
+                &:nth-child(2) {
+                    background-color: #33c882;
+                    background-image: linear-gradient( 0,
+                    #4dce94 5%,
+                    transparent 5%,
+                    transparent),
+                    linear-gradient(90deg, #4dce94 5%, transparent 5%, transparent),
+                    linear-gradient(0, transparent 100%, #4dce94 100%),
+                    linear-gradient(90deg, transparent 100%, #4dce94 100%);
+                    background-size: 30px 25px;
+                    .cs_text {
+                        position: absolute;
+                        left: 111px;
+                        bottom: 24px;
+                        &>span:first-child {
+                            font-size: 36px;
+                            line-height: 47px;
+                        }
+                        &>span:last-child {
+                            font-size: 18px;
+                            line-height: 24px;
+                        }
+                    }
+                    .cs_points {
+                        position: absolute;
+                        right: 158px;
+                        bottom: 4px;
+                        &>span:first-child {
+                            font-size: 90px;
+                            line-height: 119px;
+                        }
+                        &>span:last-child {
+                            font-size: 36px;
+                            line-height: 47px;
+                        }
+                    }
+                }
+                &:nth-child(3) {
+                    background-color: #f68d71;
+                    background-image: linear-gradient( 0,
+                    #f6967c 5%,
+                    transparent 5%,
+                    transparent),
+                    linear-gradient(90deg, #f6967c 5%, transparent 5%, transparent),
+                    linear-gradient(0, transparent 100%, #f6967c 100%),
+                    linear-gradient(90deg, transparent 100%, #f6967c 100%);
+                    background-size: 30px 25px;
+                    .cs_text {
+                        position: absolute;
+                        left: 111px;
+                        bottom: 24px;
+                        &>span:first-child {
+                            font-size: 36px;
+                            line-height: 47px;
+                        }
+                        &>span:last-child {
+                            font-size: 18px;
+                            line-height: 24px;
+                        }
+                    }
+                    .cs_points {
+                        position: absolute;
+                        right: 158px;
+                        bottom: 4px;
+                        &>span:first-child {
+                            font-size: 90px;
+                            line-height: 119px;
+                        }
+                        &>span:last-child {
+                            font-size: 36px;
+                            line-height: 47px;
+                        }
+                    }
+                }
+            }
+        }
+        >div.echarts_compete {
+            .ch_title::before {
+                background-color: #d5187e;
+            }
+            >div {
+                height: auto;
+                >div.ch_content {
+                    padding: 26px;
+                    height: auto;
+                    >div.cc_top {
+                        >div {
+                            width: calc((100% - 30px) / 3);
+                            height: 122px;
+                            &:nth-child(2) {
+                                margin: 0 15px;
+                            }
+                            div.cs_text {
+                                bottom: 40px;
+                                left: 36px;
+                                >span {
+                                    font-size: 24px;
+                                    line-height: 31px;
+                                }
+                            }
+                            div.cs_points {
+                                bottom: 30px;
+                                right: 50px;
+                                >span:first-child {
+                                    font-size: 48px;
+                                    line-height: 64px;
+                                    font-weight: bold;
+                                }
+                                >span:last-child {
+                                    font-size: 24px;
+                                    line-height: 31px;
+                                }
+                            }
+                        }
+                        >div:nth-child(2) {
+                            >div {
+                                background-color: #fe6464;
+                                background-image: linear-gradient( 0,
+                                #fe7070 5%,
+                                transparent 5%,
+                                transparent),
+                                linear-gradient( 90deg,
+                                #fe7070 5%,
+                                transparent 5%,
+                                transparent),
+                                linear-gradient(0, transparent 100%, #fe7070 100%),
+                                linear-gradient(90deg, transparent 100%, #fe7070 100%);
+                            }
+                        }
+                        >div:nth-child(3) {
+                            >div {
+                                background-color: #fc9d30;
+                                background-image: linear-gradient( 0,
+                                #fca645 5%,
+                                transparent 5%,
+                                transparent),
+                                linear-gradient( 90deg,
+                                #fca645 5%,
+                                transparent 5%,
+                                transparent),
+                                linear-gradient(0, transparent 100%, #fca645 100%),
+                                linear-gradient(90deg, transparent 100%, #fca645 100%);
+                            }
+                        }
+                    }
+                    >div.cc_bottom {
+                        padding-top: 26px;
+                        >div.cb_left {
+                            width: calc(66.66% - 5px); // margin-right: 15px;
+                            padding: 26px;
+                            border: 1px solid #176bb8;
+                            height: 638px;
+                            #competeIMG {
+                                background-image: url("../../../assets/images/compete.png");
+                                height: 574px;
+                                margin-top: 36px;
+                                background-repeat: no-repeat;
+                                background-position: center;
+                            }
+                        }
+                        >div.cb_right {
+                            width: calc(33.33% - 10px);
+                            height: 638px;
+                            margin-left: 15px;
+                            border: 1px solid #176bb8;
+                            >table {
+                                width: 100%;
+                                font-size: 14px;
+                                line-height: 3;
+                                tr,
+                                th {
+                                    text-align: center;
+                                    border-bottom: 1px solid #204c74;
+                                }
+                                tr:first-child {
+                                    background-color: #003b70;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        >div.echarts_keyData {
+            .ch_title::before {
+                background-color: #189cd5;
+            }
+            .ch_content {
+                >div {
+                    width: 50%;
+                    height: 100%;
+                    padding: 0 26px;
+                    &:not(:nth-child(2n)) {
+                        border-right: 1px solid #204c74;
+                    }
+                    >div {
+                        &:not(:nth-child(2n)) {
+                            border-bottom: 1px solid #204c74;
+                        }
+                        width: 100%;
+                        height: 50%;
+                        padding: 40px 30px;
+                        text-align: center;
+                        >i {
+                            font-size: 80px;
+                            line-height: 90px;
+                            padding-top: 12px;
+                        }
+                        >div {
+                            &:last-child {
+                                width: 140px;
+                            }
+                            >div:first-child {
+                                font-size: 16px;
+                                line-height: 21px;
+                            }
+                            >div:last-child {
+                                font-size: 30px;
+                                line-height: 40px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        >div.echarts_guestPercent {
+            >div {
+                height: auto;
+            }
+            .ch_title::before {
+                background-color: #189cd5;
+            }
+            div.ch_content {
+                height: auto;
+                padding: 26px;
+                >div {
+                    &:nth-child(2n-1) {
+                        margin-right: 26px;
+                    }
+                    margin-bottom: 26px;
+                    width: calc(50% - 13px);
+                    height: 424px;
+                    border: 1px solid #204c74;
+                    >div.eg_charts {
+                        width: 100%;
+                        height: 100%;
+                    }
+                    >div.eg_title {
+                        position: absolute;
+                        font-size: 16px;
+                        top: 12px;
+                        left: 12px;
+                        font-weight: bold;
+                    }
+                }
+                #top3 {
+                    padding-top: 42px;
+                    >div:nth-child(1) {
+                        >div.top3_box {
+                            >div.top3_progress {
+                                background-color: #7ca4ec;
+                            }
+                        }
+                    }
+                    >div:nth-child(2) {
+                        >div.top3_box {
+                            >div.top3_progress {
+                                background-color: #c98bdc;
+                            }
+                        }
+                    }
+                    >div:nth-child(3) {
+                        >div.top3_box {
+                            >div.top3_progress {
+                                background-color: #f9ac80;
+                            }
+                        }
+                    }
+                    >div {
+                        padding: 12px 24px;
+                        width: 100%;
+                        height: calc(100% / 3);
+                        font-size: 20px;
+                        >svg {
+                            font-size: 24px;
+                        }
+                        >div.top3_box {
+                            line-height: 42px;
+                            margin: 10px 0;
+                            width: 85%;
+                            >div.top3_progress {
+                                height: 42px;
+                                >div.top3_pro_percent {
+                                    position: absolute;
+                                    font-size: 20px;
+                                    height: 42px;
+                                    line-height: 42px;
+                                    left: 6px;
+                                    top: 0;
+                                }
+                                >div.top3_pro_ren {
+                                    position: absolute;
+                                    top: 0;
+                                    right: -120px;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 </style>
