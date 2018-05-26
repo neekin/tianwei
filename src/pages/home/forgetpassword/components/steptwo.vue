@@ -16,7 +16,7 @@
              <div class="w checkcode">
                <span class="text">验证码：</span>
                <input type="text" v-model='testCode'>
-               <button @click='getTestCode'>获取验证码</button>
+               <button @click='getTestCode' :disabled='disabled'>{{btnTxt}}</button>
              </div>
          </div>
 </div>
@@ -30,6 +30,9 @@ export default {
     return {
       testCode: "",
       backType:1,
+      disabled:false,
+      sec:60,
+      btnTxt:'获取验证码'
     };
   },
   methods: {
@@ -41,8 +44,22 @@ export default {
         backType:this.backType
       };
       this.$http.post(this.$api.forgetpwd(), params).then(res => {
+          var timer =setInterval(()=>{
+            this.disabled= true;
+            this.sec -=1;
+            this.btnTxt='获取验证码('+this.sec+"s)";
+            if(this.sec<=0)
+            {
+              clearInterval(timer);
+              this.sec=60;
+              this.btnTxt='获取验证码';
+              this.disabled=false;
+            }
+          },1000)
           alert(res.data.message);
+          
       });
+    
     }
   }
 };
@@ -105,5 +122,10 @@ export default {
   font-family: MicrosoftYaHei;
   font-size: 16px;
   color: #ffffff;
+}
+.checkcode button[disabled]
+{
+  color:#fff;
+  background: #acacac;
 }
 </style>
