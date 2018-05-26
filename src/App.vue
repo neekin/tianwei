@@ -38,19 +38,21 @@ export default {
 	margin-top:10px;
 	margin-left: 12px;
 	background-position: center center;
-	background-size: contain;
+	
   background-repeat: no-repeat;
   z-index: 99;
-  top:10px;
+  top:0;
   transition: all 1s;
 }
 .hideleft{
 	background-image: url(/static/right-arrow.png);
-	left:200px;
+  left:200px;
+  background-size: 19px 16px;
 }
 .hidetop{
 		background-image: url(/static/top-arrow.png);
-		left:240px;
+    left:240px;
+    background-size: 16px 19px;
 }
 .hidesidbar .hideleft{
   left:10px;
