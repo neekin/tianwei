@@ -31,56 +31,13 @@
                                     <th>客流量</th>
                                     <th>集客力</th>
                                 </tr>
-                                <tr>
-                                    <td>购物中心</td>
-                                    <td class="triangle_up">80000</td>
-                                    <td>80000</td>
+
+                                <tr v-for="(v,i) in top10BusCR" :key="i">
+                                    <td>{{ v.BusCategory }}</td>
+                                    <td :class="{'triangle_up': v.TOP > 0,'triangle_down': v.TOP < 0}">{{ v.CountData }}</td>
+                                    <td>{{ v.CountData }}</td>
                                 </tr>
-                                <tr>
-                                    <td>仓储式商场</td>
-                                    <td class="triangle_down">76000</td>
-                                    <td>80000</td>
-                                </tr>
-                                <tr>
-                                    <td>超级市场</td>
-                                    <td class="triangle_up">40000</td>
-                                    <td>80000</td>
-                                </tr>
-                                <tr>
-                                    <td>商业步行街</td>
-                                    <td class="triangle_up">34000</td>
-                                    <td>80000</td>
-                                </tr>
-                                <tr>
-                                    <td>批发市场</td>
-                                    <td class="triangle_down">25000</td>
-                                    <td>80000</td>
-                                </tr>
-                                <tr>
-                                    <td>大型综合市场</td>
-                                    <td class="triangle_down">33000</td>
-                                    <td>80000</td>
-                                </tr>
-                                <tr>
-                                    <td>百货店</td>
-                                    <td class="triangle_up">70000</td>
-                                    <td>80000</td>
-                                </tr>
-                                <tr>
-                                    <td>便利店</td>
-                                    <td class="triangle_up">40000</td>
-                                    <td>80000</td>
-                                </tr>
-                                <tr>
-                                    <td>专业店</td>
-                                    <td class="triangle_down">50000</td>
-                                    <td>80000</td>
-                                </tr>
-                                <tr>
-                                    <td>专卖店</td>
-                                    <td class="triangle_up">70000</td>
-                                    <td>80000</td>
-                                </tr>
+
                             </table>
                         </div>
 
@@ -97,62 +54,19 @@
                                     <th>客流量</th>
                                     <th>集客力</th>
                                 </tr>
-                                <tr>
-                                    <td>奢侈品</td>
-                                    <td class="triangle_up">80000</td>
-                                    <td>80000</td>
+
+                                <tr v-for="(v,i) in top10IR" :key="i">
+                                    <td>{{ v.IndustryName }}</td>
+                                    <td :class="{'triangle_up': v.TOP > 0,'triangle_down': v.TOP < 0}">{{ v.CountData }}</td>
+                                    <td>{{ v.CountData }}</td>
                                 </tr>
-                                <tr>
-                                    <td>快时尚</td>
-                                    <td class="triangle_down">76000</td>
-                                    <td>80000</td>
-                                </tr>
-                                <tr>
-                                    <td>服饰</td>
-                                    <td class="triangle_up">40000</td>
-                                    <td>80000</td>
-                                </tr>
-                                <tr>
-                                    <td>儿童</td>
-                                    <td class="triangle_up">34000</td>
-                                    <td>80000</td>
-                                </tr>
-                                <tr>
-                                    <td>家具生活</td>
-                                    <td class="triangle_down">25000</td>
-                                    <td>80000</td>
-                                </tr>
-                                <tr>
-                                    <td>精品超市</td>
-                                    <td class="triangle_down">33000</td>
-                                    <td>80000</td>
-                                </tr>
-                                <tr>
-                                    <td>餐饮</td>
-                                    <td class="triangle_up">70000</td>
-                                    <td>80000</td>
-                                </tr>
-                                <tr>
-                                    <td>美容</td>
-                                    <td class="triangle_up">40000</td>
-                                    <td>80000</td>
-                                </tr>
-                                <tr>
-                                    <td>电影院</td>
-                                    <td class="triangle_down">50000</td>
-                                    <td>80000</td>
-                                </tr>
-                                <tr>
-                                    <td>3C数码</td>
-                                    <td class="triangle_up">70000</td>
-                                    <td>80000</td>
-                                </tr>
+
                             </table>
                         </div>
                     </div>
                 </div>
                 <div class="ct_center ">
-                    <div class="report_keliu pr">
+                    <div class="report_keliu pr" style="border:none">
                         <div class="rp_title">
                             <i class="iconfont icon-city"></i>
                             客流量统计
@@ -160,98 +74,57 @@
                         <div class="rp_data">
                             <div class="rp_data_today">
                                 <span>今日累计（人次）</span>
-                                <span>684,424</span>
+                                <span>{{ countRP.today }}</span>
                             </div>
                             <div class="rp_data_yesterday">
                                 <span>昨日累计（人次）</span>
-                                <span>896,424</span>
+                                <span>{{ countRP.yestoday }}</span>
                             </div>
                             <div class="rp_data_lastweek">
                                 <span>上周累计（人次）</span>
-                                <span>999,424</span>
+                                <span>{{ countRP.week }}</span>
                             </div>
                         </div>
                         <div class="rp_echarts" id="map"></div>
                     </div>
-                    <div class="report_paiming">
+                    <div class="report_paiming pr" style="border:none">
+                        <Col span="12" style="position:absolute;top:-40px">
+                        <DatePicker id="datePick" :value="pickDate" format="yyyy/MM/dd" type="daterange" placement="bottom-start" placeholder="选择日期" style="width: 200px;"></DatePicker>
+                        </Col>
                         <div class="rp_paiming_left fl">
-                            <table width="100%" height="100%">
+                            <table width="100%">
                                 <tr>
                                     <th>排名</th>
                                     <th>品牌</th>
                                     <th>客流量（人次）</th>
                                     <th> </th>
                                 </tr>
-                                <tr>
-                                    <td>1</td>
-                                    <td>歌莉娅</td>
-                                    <td class="triangle_up">43455</td>
-                                    <td>000</td>
+
+                                <tr v-for="(v,i) in brandR" :key="i">
+                                    <td>{{ v.BrandId }}</td>
+                                    <td>{{ v.BrandName }}</td>
+                                    <td :class="{'triangle_up': v.TOP > 0,'triangle_down': v.TOP < 0}">{{ v.CountData }}</td>
+                                    <td>{{ v.chartData }}</td>
                                 </tr>
-                                <tr>
-                                    <td>1</td>
-                                    <td>歌莉娅</td>
-                                    <td class="triangle_down">43455</td>
-                                    <td>000</td>
-                                </tr>
-                                <tr>
-                                    <td>1</td>
-                                    <td>歌莉娅</td>
-                                    <td class="triangle_up">43455</td>
-                                    <td>000</td>
-                                </tr>
-                                <tr>
-                                    <td>1</td>
-                                    <td>歌莉娅</td>
-                                    <td class="triangle_up">43455</td>
-                                    <td>000</td>
-                                </tr>
-                                <tr>
-                                    <td>1</td>
-                                    <td>歌莉娅</td>
-                                    <td class="triangle_down">43455</td>
-                                    <td>000</td>
-                                </tr>
+
                             </table>
                         </div>
                         <div class="rp_paiming_right fr">
-                            <table width="100%" height="100%">
+                            <table width="100%">
                                 <tr>
                                     <th>排名</th>
                                     <th>品牌</th>
                                     <th>客流量（人次）</th>
                                     <th> </th>
                                 </tr>
-                                <tr>
-                                    <td>1</td>
-                                    <td>歌莉娅</td>
-                                    <td class="triangle_up">43455</td>
-                                    <td>000</td>
+
+                                <tr v-for="(v,i) in shopR" :key="i">
+                                    <td>{{ v.ShopId }}</td>
+                                    <td>{{ v.ShopName }}</td>
+                                    <td :class="{'triangle_up': v.TOP > 0,'triangle_down': v.TOP < 0}">{{ v.CountData }}</td>
+                                    <td>{{ v.ChartData }}</td>
                                 </tr>
-                                <tr>
-                                    <td>1</td>
-                                    <td>歌莉娅</td>
-                                    <td class="triangle_down">43455</td>
-                                    <td>000</td>
-                                </tr>
-                                <tr>
-                                    <td>1</td>
-                                    <td>歌莉娅</td>
-                                    <td class="triangle_up">43455</td>
-                                    <td>000</td>
-                                </tr>
-                                <tr>
-                                    <td>1</td>
-                                    <td>歌莉娅</td>
-                                    <td class="triangle_up">43455</td>
-                                    <td>000</td>
-                                </tr>
-                                <tr>
-                                    <td>1</td>
-                                    <td>歌莉娅</td>
-                                    <td class="triangle_down">43455</td>
-                                    <td>000</td>
-                                </tr>
+
                             </table>
                         </div>
                     </div>
@@ -290,10 +163,24 @@ div {
                 text-indent: 2em;
                 background-color: @boxbgc;
                 border: 1px solid @borderColor;
-                > table tr:first-child {
-                    border-bottom: 1px solid #144068;
-                    > th {
-                        font-weight: bold;
+                > table {
+                    tr {
+                        th,
+                        td {
+                            height: 47px;
+                            width: 25%;
+                            text-indent: 0.5em;
+                        }
+                        :first-child {
+                            text-indent: 2em;
+                            text-align: left;
+                        }
+                    }
+                    tr:first-child {
+                        border-bottom: 1px solid #144068;
+                        > th {
+                            font-weight: bold;
+                        }
                     }
                 }
             }
@@ -306,6 +193,7 @@ div {
                         border-bottom: 1px solid #144068;
                         > th {
                             font-weight: bold;
+                            width: 33.33%;
                         }
                     }
                     > td:last-child,
@@ -358,7 +246,7 @@ div {
                 text-align: center;
                 > div[class^="rp_data_"] {
                     display: inline-block;
-                    width: 136px;
+                    width: 112px;
                     margin: 0 38px;
                     > span:first-child {
                         font-size: 14px;
@@ -484,7 +372,7 @@ export default {
                                 left: "center",
                                 style: {
                                     fill: "#fff",
-                                    text: ["9000万"].join("\n"),
+                                    text: [].join("\n"),
                                     font: "32px Microsoft YaHei",
                                     fontWeight: "bold"
                                 }
@@ -598,7 +486,13 @@ export default {
                 }
             },
             charts: {},
-            countRP: ""
+            countRP: "",
+
+            top10BusCR: [],
+            top10IR: [],
+            pickDate: ["2018-01-01", "2018-05-30"],
+            brandR: [],
+            shopR: []
         };
     },
     methods: {
@@ -628,7 +522,10 @@ export default {
                                 res.data.result.detail[i].percent
                             }`;
                         }
-                        this.charts.city.setOption(this.data.city);
+                        (this.data.city.graphic.children[1].style.text = [
+                            res.data.result.sum
+                        ].join("\n")),
+                            this.charts.city.setOption(this.data.city);
                         this.charts.city.hideLoading();
                     } else if (res.data.code == -1) {
                         this.$router.push("/login");
@@ -702,6 +599,94 @@ export default {
                 .catch(err => {
                     console.log(err);
                 });
+        },
+        // 前10商业体绩效
+        getTop10BusCR() {
+            this.$http
+                .get(this.$api.getTop10BusCR(), {
+                    params: {
+                        token: this.token
+                    }
+                })
+                .then(res => {
+                    if (res.data.code == 1) {
+                        this.top10BusCR = res.data.result;
+                    } else if (res.data.code == -1) {
+                        this.$router.push("/login");
+                    } else {
+                        console.log(res);
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        },
+        //前10业态绩效
+        getTop10IR() {
+            this.$http
+                .get(this.$api.getTop10IR(), {
+                    params: {
+                        token: this.token
+                    }
+                })
+                .then(res => {
+                    if (res.data.code == 1) {
+                        this.top10IR = res.data.result;
+                    } else if (res.data.code == -1) {
+                        this.$router.push("/login");
+                    } else {
+                        console.log(res);
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        },
+        //品牌客流排名
+        getBrandR() {
+            this.$http
+                .get(this.$api.getBrandR(), {
+                    params: {
+                        token: this.token,
+                        start: this.pickDate[0],
+                        end: this.pickDate[1]
+                    }
+                })
+                .then(res => {
+                    if (res.data.code == 1) {
+                        this.brandR = res.data.result;
+                    } else if (res.data.code == -1) {
+                        this.$router.push("/login");
+                    } else {
+                        console.log(res);
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        },
+        // 购物中心客流排名
+        getShopR() {
+            this.$http
+                .get(this.$api.getShopR(), {
+                    params: {
+                        token: this.token,
+                        start: this.pickDate[0],
+                        end: this.pickDate[1]
+                    }
+                })
+                .then(res => {
+                    if (res.data.code == 1) {
+                        this.shopR = res.data.result;
+                    } else if (res.data.code == -1) {
+                        this.$router.push("/login");
+                    } else {
+                        console.log(res);
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                });
         }
     },
     mounted() {
@@ -710,6 +695,10 @@ export default {
         this.getPeople();
         this.getMap();
         this.getCountRP();
+        this.getTop10BusCR();
+        this.getTop10IR();
+        this.getBrandR();
+        this.getShopR();
     }
 };
 </script>

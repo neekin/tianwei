@@ -45,7 +45,7 @@ a:hover {
     width: 100%;
     background-color: #00397b;
     padding-left: 220px;
-    z-index:1;
+    z-index: 1;
 }
 
 .logo {
@@ -119,4 +119,10 @@ a:hover {
 
 .clearfix:after {
     clear: both;
+}
+
+#datepick input {
+    background-color: rgba(0, 0, 0, 0);
+    color: #fff;
+    border: 1px solid #145fa5;
 }
