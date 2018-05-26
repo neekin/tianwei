@@ -42,6 +42,7 @@ export default {
   background-repeat: no-repeat;
   z-index: 99;
   top:10px;
+  transition: all 1s;
 }
 .hideleft{
 	background-image: url(/static/right-arrow.png);
