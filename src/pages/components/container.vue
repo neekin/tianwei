@@ -17,6 +17,7 @@
   margin-top:54px;
   min-width: 1500px;
   background-color: #002b52;
+  transition: all 1s;
 }
 </style>
 <script>
