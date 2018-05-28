@@ -103,6 +103,7 @@ export default {
     prevStep() {
       if (this.num > 1) {
         this.num--;
+        this.createCode();
       }
       this.step = "Step" + this.num;
     },
@@ -132,8 +133,8 @@ export default {
       if(this.num==3)
       {
         params.step++;
-        params.repassword = this.$refs.step.repassword; 
-        params.password = this.$refs.step.password; 
+        params.repassword = Base64.encode(this.$refs.step.repassword); 
+        params.password = Base64.encode(this.$refs.step.password); 
       }
 
       this.$http.post(this.$api.forgetpwd(), params).then(res => {
