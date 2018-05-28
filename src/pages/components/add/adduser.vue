@@ -110,7 +110,7 @@ export default {
   }
 };
 </script>
-<style>
+<style scoped>
 .input input,
 .input select {
   height: 38px;

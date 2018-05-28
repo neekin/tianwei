@@ -29,7 +29,7 @@
                                 <tr>
                                     <th>类别</th>
                                     <th>客流量</th>
-                                    <th>集客力</th>
+                                    <th>排名</th>
                                 </tr>
 
                                 <tr v-for="(v,i) in top10BusCR" :key="i">
@@ -52,7 +52,7 @@
                                 <tr>
                                     <th>业态</th>
                                     <th>客流量</th>
-                                    <th>集客力</th>
+                                    <th>排名</th>
                                 </tr>
 
                                 <tr v-for="(v,i) in top10IR" :key="i">

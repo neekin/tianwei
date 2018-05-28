@@ -159,7 +159,7 @@ export default {
   }
 };
 </script>
-<style>
+<style scoped>
 .forget {
   height: 624px;
   width: 870px;
