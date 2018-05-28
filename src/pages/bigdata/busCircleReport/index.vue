@@ -3,9 +3,25 @@
         <headnav></headnav>
         <sidebar></sidebar>
         <container>
+               <search @search='search'>
+                    类别： <select v-model='BusCategoryID'>
+                      <option value="0">
+                        请选择
+                      </option>
+                  <option v-for='item in busCategorylist' :key='item.BusCategoryID' :value='item.BusCategoryID'>{{item.BusCategory}}</option>
+                     
+                    </select>
+                    商圈：<select v-model='ShopId'>
+                       <option value="0">
+                        请选择
+                      </option>
+                      <option v-for='item in malllist'  :value='item.ShopId' :key='item.ShopId'>{{item.ShopName}}</option>
+                    </select>
+         
+               </search>
             <div class="content">
 
-                <form @submit.prevent="console.log('submit')" class="navIpt">
+                <!-- <form @submit.prevent="console.log('submit')" class="navIpt">
                     <span class="slt">
                         类别:
                         <select v-model="model8">
@@ -25,7 +41,7 @@
                             <i class="iconfont icon-fenxiang"> 查询</i>
                         </button>
                     </span>
-                </form>
+                </form> -->
 
                 <div class="content_charts clearfix">
                     <div class="charts_success fl">
@@ -416,12 +432,13 @@ require("../../../assets/fonts/iconfont.js");
 import headnav from "../../components/headnav.vue";
 import sidebar from "../../components/sidebar";
 import container from "../../components/container";
-
+import search from "@/pages/components/list/search";
 export default {
     components: {
         headnav,
         sidebar,
-        container
+        container,
+        search
     },
     data() {
         return {
@@ -649,9 +666,10 @@ export default {
                 }
             },
             cityList: [],
+            BusCategoryID:0,
             model8: "",
             charts: {},
-            shopId: 0,
+            ShopId: 0,
             SPIndex: {},
             shopCustomer: {},
             customer: {},
@@ -661,7 +679,9 @@ export default {
                 rent: {},
                 instore: {}
             },
-            compete: {}
+            compete: {},
+            busCategorylist:[],
+            malllist:[]
         };
     },
     methods: {
@@ -671,7 +691,7 @@ export default {
                 .get(this.$api.getSPIndex(), {
                     params: {
                         token: this.token,
-                        ShopId: this.shopId
+                        ShopId: this.ShopId
                     }
                 })
                 .then(res => {
@@ -701,7 +721,7 @@ export default {
             this.$http
                 .get(this.$api.getPercent(), {
                     params: {
-                        ShopId: this.shopId,
+                        ShopId: this.ShopId,
                         token: this.token
                     }
                 })
@@ -741,7 +761,7 @@ export default {
             this.$http
                 .get(this.$api.getIndustry(), {
                     params: {
-                        ShopId: this.shopId,
+                        ShopId: this.ShopId,
                         token: this.token
                     }
                 })
@@ -772,7 +792,7 @@ export default {
                 .get(this.$api.getShopCustomer(), {
                     params: {
                         token: this.token,
-                        ShopId: this.shopId
+                        ShopId: this.ShopId
                     }
                 })
                 .then(res => {
@@ -793,7 +813,7 @@ export default {
                 .get(this.$api.getShopIndexTop(), {
                     params: {
                         token: this.token,
-                        ShopId: this.shopId
+                        ShopId: this.ShopId
                     }
                 })
                 .then(res => {
@@ -814,7 +834,7 @@ export default {
                 .get(this.$api.getCompete(), {
                     params: {
                         token: this.token,
-                        ShopId: this.shopId
+                        ShopId: this.ShopId
                     }
                 })
                 .then(res => {
@@ -845,7 +865,7 @@ export default {
                 .get(this.$api.getWeekCount(), {
                     params: {
                         token: this.token,
-                        ShopId: this.shopId
+                        ShopId: this.ShopId
                     }
                 })
                 .then(res => {
@@ -870,7 +890,7 @@ export default {
                 .get(this.$api.getTop3(), {
                     params: {
                         token: this.token,
-                        ShopId: this.shopId
+                        ShopId: this.ShopId
                     }
                 })
                 .then(res => {
@@ -903,7 +923,7 @@ export default {
                 .get(this.$api.getAge(), {
                     params: {
                         token: this.token,
-                        ShopId: this.shopId
+                        ShopId: this.ShopId
                     }
                 })
                 .then(res => {
@@ -933,11 +953,12 @@ export default {
                 .get(this.$api.getSex(), {
                     params: {
                         token: this.token,
-                        ShopId: this.shopId
+                        ShopId: this.ShopId
                     }
                 })
                 .then(res => {
-                    console.log(res.data.result);
+                    console.log('性别',res.data.result);   
+                    console.log(res.data);
                     if (res.data.code == 1) {
                         this.data.sex = res.data.result;
                     } else {
@@ -964,7 +985,7 @@ export default {
                 .get(this.$api.getLast6M(), {
                     params: {
                         token: this.token,
-                        ShopId: this.shopId
+                        ShopId: this.ShopId
                     }
                 })
                 .then(res => {
@@ -999,7 +1020,7 @@ export default {
                 .get(this.$api.getReturnGuestAge(), {
                     params: {
                         token: this.token,
-                        ShopId: this.shopId
+                        ShopId: this.ShopId
                     }
                 })
                 .then(res => {
@@ -1022,22 +1043,43 @@ export default {
                 .catch(err => {
                     console.log(err);
                 });
+        },
+        getbd_BusCategory(){
+            this.$http.get(this.$api.getbd_BusCategory()+"?token="+this.$store.state.token).then(res=>{
+                console.log('类别',res.data);
+                this.busCategorylist = res.data.result;
+            })
+            this.getmalllist();
+        },
+        getmalllist(){
+            this.$http.get(this.$api.getmalllist()+"?token="+this.token+'&BusCategoryID='+this.BusCategoryID).then(res=>{
+                console.log('商圈',res.data);
+                this.malllist = res.data.result;
+                this.ShopId = res.data.result[0].ShopId;
+                this.init();
+            })
+        },
+        init(){
+            this.getSPIndex();
+            this.getPercent();
+            this.getIndustry();
+            this.getShopCustomer();
+            this.getShopIndexTop();
+            this.getCompete();
+            this.getWeekCount();
+            this.getTop3();
+            this.getAge();
+            this.getSex();
+            this.getLast6M();
+            this.getReturnGuestAge();
+        },
+        search(){
+            this.init();
         }
     },
     mounted() {
         this.token = this.$store.state.token;
-        this.getSPIndex();
-        this.getPercent();
-        this.getIndustry();
-        this.getShopCustomer();
-        this.getShopIndexTop();
-        this.getCompete();
-        this.getWeekCount();
-        this.getTop3();
-        this.getAge();
-        this.getSex();
-        this.getLast6M();
-        this.getReturnGuestAge();
+        this.getbd_BusCategory();
     }
 };
 </script>
@@ -1675,5 +1717,10 @@ export default {
       }
     }
   }
+}
+
+.search{
+    padding-left: 20px;
+    color:#fff;
 }
 </style>
