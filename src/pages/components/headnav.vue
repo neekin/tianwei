@@ -20,7 +20,13 @@ export default {
     	logout(){
     		this.$store.commit("updateToken", '');
     		this.$router.push('/login')
-    	}
+		},
+		hideleft(){
+        
+		},
+		hidetop(){
+
+		}
 
     },
     data(){

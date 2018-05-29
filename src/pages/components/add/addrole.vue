@@ -15,13 +15,13 @@ export default {
     return {
       menus: [],
       checkedmenus: [],
-      name: ""
+      name: "",
     };
   },
   methods: {
     getlist() {
       this.$http
-        .get(this.$api.getmenulist() + "?token=" + this.$store.state.token)
+        .get(this.$api.getmenuAllListRole() + "?token=" + this.$store.state.token+'&RoleId='+this.edit.RoleId)
         .then(res => {
           var arr = [];
           if (res.data.code == 1) {
@@ -34,7 +34,7 @@ export default {
                 obj.children = [];
                 for (var j = 0; j < menus.length; j++) {
                   if (obj.MenuId == menus[j].PMenuId) {
-                    if (this.checkedmenus.indexOf(menus[j].MenuName) != -1) {
+                    if (obj.IsChecked != 0) {
                       menus[j].checked = true;
                     }
                     obj.children.push(menus[j]);
@@ -64,6 +64,8 @@ export default {
           }
         }
       }
+      // console.log(MenuId);
+      // return;
       var params = {
         token: this.$store.state.token,
         RoleId: this.edit.RoleId,

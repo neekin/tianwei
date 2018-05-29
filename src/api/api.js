@@ -82,11 +82,11 @@ var Api = {
     getmenulist() {
         return this.getApi("/Home/getMenuList");
     },
+    getmenuAllListRole(){
+        return this.getApi('/Home/getMenuListByRole');
+    },
     addrole() {
         return this.getApi("/Role/AddUptRole");
-    },
-    getMenuListByRole() {
-        return this.getApi("/Home/getMenuListByRole");
     },
     delrole() {
         return this.getApi("/Role/DelRole");
@@ -180,6 +180,13 @@ var Api = {
     // 回头客年龄分布
     getReturnGuestAge() {
         return this.getApi("/BusData/getReturnGuesAgeReport");
+    },
+    //楼层店铺数据
+    getFloorStorePointReport(){
+        return this.getApi('/BusData/getFloorStorePointReport');
+    },
+    getFloorList(){
+        return this.getApi('/BusData/getFloorList');
     }
 };
 module.exports = Api;

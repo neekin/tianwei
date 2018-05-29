@@ -5,11 +5,11 @@
       <h3>用户登陆</h3>
       <hr style='width:442px;margin:0 auto 42px auto;border:none;border-top:1px solid #14395B;'>
       <div class="input">
-        <input v-model='username' type="text" placeholder="请输入用户名">
+        <input v-model='username' type="text" placeholder="请输入用户名"  name='username' @keydown="evnet($event)">
         <span class='fa fa-user'></span>
       </div>
       <div class="input">
-        <input v-model='password' type="password" placeholder="请输入密码">
+        <input v-model='password'  ref='password' type="password" placeholder="请输入密码" @keydown="evnet($event)">
         <span class='fa fa-lock'></span>
       </div>
       <div class="w">
@@ -72,6 +72,18 @@ export default {
                 });
         },
 
+        evnet(ev){
+             if(ev.keyCode=='13')
+             {
+                    if(ev.target.name=='username')
+                    {
+                        this.$refs.password.focus();
+                    }else{
+                        this.login();
+                    }
+             }
+            
+        },
         // token失效后自动登陆
         autoLogin() {
             this.username = 'neekin';
@@ -95,7 +107,7 @@ export default {
         }
     },
     mounted(){
-         this.autoLogin()
+        //  this.autoLogin()
     }
 
     
