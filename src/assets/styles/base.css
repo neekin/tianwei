@@ -2,13 +2,14 @@
         background-color: #00397B;
         background-image: url(../images/bg.png);
         background-repeat: no-repeat;
-        background-position: center right;
+        background-position: right 0 bottom 0;
+        background-size: contain;
         background-attachment: fixed;
-        max-width: 1920px;
+        /* max-width: 1920px; */
     }
     
     html {
-        background-color: #00397B;
+        /* background-color: #00397B; */
         font-family: MicrosoftYaHei;
         font-size: 14px;
     }
