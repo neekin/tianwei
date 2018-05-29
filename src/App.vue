@@ -24,11 +24,18 @@ export default {
 				  this.hidenav =!this.hidenav;
 			}
   },
+  mounted(){
+ 
+        if( this.$route.path=='/login'|| this.$route.path=='/forgetpassword')
+          {
+             this.show = false;
+          }
+          else{
+            this.show=true;
+          }
+  },
    watch: {
       '$route' (to, from) {
-        console.log('监听路由变化',to.path);
-          //  this.show = true;
-          console.log(from.path)
           if(to.path=='/login'||to.path=='/forgetpassword')
           {
              this.show = false;

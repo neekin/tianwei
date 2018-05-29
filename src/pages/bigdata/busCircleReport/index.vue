@@ -50,9 +50,10 @@
                                 <span class="fl">购物中心热力图</span>
                                 <span class="slt fr">
                                     楼层:
-                                    <select v-model="model8">
-                                        <option :value='i' v-for="(v,i) in cityList" :key="i">{{v.value}}</option>
-                                    </select>
+                                  <select v-model="floorIdHot"  @change='chagnefloorHot' >
+                                                  
+                                                    <option  v-for="(v,i) in floorlist" :value='v.FloorId' :key="i">{{v.FloorName}}</option>
+                                </select>
                                 </span>
                             </div>
                             <div class="ch_content">
@@ -200,7 +201,7 @@
                                                 <span>店铺总数</span>
                                             </div>
                                             <div class="cs_points">
-                                                <span>{{ compete.shopnumber }}</span>
+                                                <span>{{ compete.AllStore }}</span>
                                                 <span>家</span>
                                             </div>
                                         </div>
@@ -223,7 +224,7 @@
                                                 <span>单人次平均租金</span>
                                             </div>
                                             <div class="cs_points">
-                                                <span>{{ compete.rent }}</span>
+                                                <span>{{ compete.AverRent }}</span>
                                                 <span>元/人</span>
                                             </div>
                                         </div>
@@ -235,7 +236,7 @@
                                             <!-- <span class="fl">购物中心热力图</span> -->
                                             <span class="slt fr">
                                                 楼层:
-                                                <select v-model="floorId" >
+                                                <select v-model="floorId"  @change='chagnefloor' >
                                                     <!-- <option value='' disabled selected style='display:none;'>请选择</option> -->
                                                     <option  v-for="(v,i) in floorlist" :value='v.FloorId' :key="i">{{v.FloorName}}</option>
                                                 </select>
@@ -618,6 +619,7 @@ export default {
             FloorStorePointReport:[],
             floorImg:'',
             floorId:0,
+            floorIdHot:0,
             BusCategoryID:0,
             charts: {},
             ShopId: 0,
@@ -792,6 +794,7 @@ export default {
                 .then(res => {
                     // console.log(res);
                     if (res.data.code == 1) {
+                        console.log('竞争数据',res);
                         this.compete = res.data.result;
                     } else {
                         console.log(res);
@@ -1001,21 +1004,20 @@ export default {
         },
         getFloorStorePointReport(){
                this.$http.get(this.$api.getFloorStorePointReport()+"?token="+this.$store.state.token+'&ShopId='+this.ShopId+'&FloorId='+this.floorId).then(res=>{
-                        console.log('楼层',res);
-                        this.FloorStorePointReport = res.data.result;
-                         
+                        // console.log('楼层',res);
+                        this.FloorStorePointReport = res.data.result;     
                })
         },
         getFloorList(){
              this.$http.get(this.$api.getFloorList()+"?token="+this.$store.state.token+'&ShopId='+this.ShopId).then(res=>{
-                        console.log('楼层ID',res);
+                        // console.log('楼层ID',res);
                         this.floorlist = res.data.result;
                         if(res.data.result.length>0)
                         {  
                             console.log(this.floorImg);
                             this.floorId = res.data.result[0].FloorId;
+                            this.floorIdHot = res.data.result[0].FloorId;
                             this.floorImg = res.data.result[0].imgPath;
-                          
                         }
                })
         },
@@ -1027,18 +1029,22 @@ export default {
             this.getmalllist();
         },
         changeBusCat(){
-            // console.log(12123123123);
            this.getmalllist();
+           this.getFloorList();
+        },
+        chagnefloor(){
+           this.getFloorStorePointReport()
+        },
+        chagnefloorHot(){
+            console.log('切换热点图');
         },
         getmalllist(){
             this.$http.get(this.$api.getmalllist()+"?token="+this.token+'&BusCategoryID='+this.BusCategoryID).then(res=>{
                 // console.log('商圈',res.data);
                 this.malllist = res.data.result;
                 if(!!res.data.result&&res.data.result.length>0){
-                this.ShopId = res.data.result[0].ShopId;   
+                this.ShopId = res.data.result[0].ShopId;
                 }
-               
-                // console.log('shopidididid',this.ShopId)
                 this.init();
             })
         },
