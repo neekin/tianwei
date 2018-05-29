@@ -4,7 +4,7 @@
         <sidebar></sidebar>
         <container>
                <search @search='search'>
-                    类别： <select v-model='BusCategoryID'>
+                    类别： <select v-model='BusCategoryID' @change='changeBusCat'>
                       <option value="0">
                         请选择
                       </option>
@@ -12,36 +12,12 @@
                      
                     </select>
                     商圈：<select v-model='ShopId'>
-                       <option value="0">
-                        请选择
-                      </option>
                       <option v-for='item in malllist'  :value='item.ShopId' :key='item.ShopId'>{{item.ShopName}}</option>
                     </select>
          
                </search>
             <div class="content">
 
-                <!-- <form @submit.prevent="console.log('submit')" class="navIpt">
-                    <span class="slt">
-                        类别:
-                        <select v-model="model8">
-                            <option value='' disabled selected style='display:none;'>请选择</option>
-                            <option :value='i' v-for="(v,i) in cityList" :key="i">{{v.value}}</option>
-                        </select>
-                    </span>
-                    <span class="slt">
-                        商圈:
-                        <select v-model="model8">
-                            <option value='' disabled selected style='display:none;'>请选择</option>
-                            <option :value='i' v-for="(v,i) in cityList" :key="i">{{v.value}}</option>
-                        </select>
-                    </span>
-                    <span class="slt">
-                        <button>
-                            <i class="iconfont icon-fenxiang"> 查询</i>
-                        </button>
-                    </span>
-                </form> -->
 
                 <div class="content_charts clearfix">
                     <div class="charts_success fl">
@@ -75,7 +51,6 @@
                                 <span class="slt fr">
                                     楼层:
                                     <select v-model="model8">
-                                        <option value='' disabled selected style='display:none;'>请选择</option>
                                         <option :value='i' v-for="(v,i) in cityList" :key="i">{{v.value}}</option>
                                     </select>
                                 </span>
@@ -260,14 +235,17 @@
                                             <!-- <span class="fl">购物中心热力图</span> -->
                                             <span class="slt fr">
                                                 楼层:
-                                                <select v-model="model8">
-                                                    <option value='' disabled selected style='display:none;'>请选择</option>
-                                                    <option :value='i' v-for="(v,i) in cityList" :key="i">{{v.value}}</option>
+                                                <select v-model="floorId" >
+                                                    <!-- <option value='' disabled selected style='display:none;'>请选择</option> -->
+                                                    <option  v-for="(v,i) in floorlist" :value='v.FloorId' :key="i">{{v.FloorName}}</option>
                                                 </select>
                                             </span>
                                         </div>
                                         <div class="ch_content">
-                                            <div id="competeIMG"></div>
+                                            <div id="competeIMG">
+                                                  <!-- {{floorImg}} -->
+                                                 <img :src="floorImg" alt="">
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="fl cb_right">
@@ -278,42 +256,13 @@
                                                 <th>日均客流量</th>
                                                 <th>总评分</th>
                                             </tr>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>歌莉娅001店</td>
-                                                <td>45635</td>
-                                                <td>5</td>
+                                            <tr v-for=' (item,index) in FloorStorePointReport' :key='index'> 
+                                                <th>{{index+1}}</th>
+                                                <th>{{item.pointname}}</th>
+                                                <th>{{item.countdata}}</th>
+                                                <th>{{item.Grade}}</th>
                                             </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>歌莉娅001店</td>
-                                                <td>45635</td>
-                                                <td>5</td>
-                                            </tr>
-                                            <tr>
-                                                <td>3</td>
-                                                <td>歌莉娅001店</td>
-                                                <td>45635</td>
-                                                <td>5</td>
-                                            </tr>
-                                            <tr>
-                                                <td>4</td>
-                                                <td>歌莉娅001店</td>
-                                                <td>45635</td>
-                                                <td>5</td>
-                                            </tr>
-                                            <tr>
-                                                <td>5</td>
-                                                <td>歌莉娅001店</td>
-                                                <td>45635</td>
-                                                <td>5</td>
-                                            </tr>
-                                            <tr>
-                                                <td>6</td>
-                                                <td>歌莉娅001店</td>
-                                                <td>45635</td>
-                                                <td>5</td>
-                                            </tr>
+
                                         </table>
                                     </div>
                                 </div>
@@ -330,18 +279,18 @@
                                     <div class="eg_title">近一周客流趋势</div>
                                     <div class="eg_charts" id="weekCount"></div>
                                 </div>
-                                <div class="fl pr">
+                                <div class="fl pr" v-if='data.top3.data.length>0'>
                                     <div class="eg_title">热点时段 TOP3</div>
                                     <div class="eg_charts clearfix" id="top3">
                                         <div class="fl">
                                             <svg class="icon" aria-hidden="true">
                                                 <use xlink:href="#icon-jiangpai-2"></use>
                                             </svg>
-                                            <span>{{ data.top3.dataX[0] }}</span>
+                                            <span>{{ data.top3.data[0].timeDesc }}</span>
                                             <div class="top3_box">
-                                                <div class="top3_progress pr" :style="{width: (data.top3.dataY[0] / data.top3.total * 100 ).toFixed(2)+'%' }">
-                                                    <div class="top3_pro_percent">{{( data.top3.dataY[0] / data.top3.total * 100 ).toFixed(2) }}%</div>
-                                                    <div class="top3_pro_ren">{{ data.top3.dataY[0] }}人</div>
+                                                <div class="top3_progress pr" :style="{width: data.top3.data[0].CountPercent }">
+                                                    <div class="top3_pro_percent">{{data.top3.data[0].CountPercent}}</div>
+                                                    <div class="top3_pro_ren">{{ data.top3.data[0].TopThreeCount }}人</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -349,11 +298,11 @@
                                             <svg class="icon" aria-hidden="true">
                                                 <use xlink:href="#icon-jiangpai-1"></use>
                                             </svg>
-                                            <span>{{ data.top3.dataX[1] }}</span>
+                                            <span>{{ data.top3.data[1].timeDesc }}</span>
                                             <div class="top3_box">
-                                                <div class="top3_progress pr" :style="{width: (data.top3.dataY[1] / data.top3.total * 100 ).toFixed(2)+'%' }">
-                                                    <div class="top3_pro_percent">{{( data.top3.dataY[1] / data.top3.total * 100 ).toFixed(2) }}%</div>
-                                                    <div class="top3_pro_ren">{{ data.top3.dataY[1] }}人</div>
+                                                <div class="top3_progress pr" :style="{width: data.top3.data[1].CountPercent }">
+                                                    <div class="top3_pro_percent">{{data.top3.data[1].CountPercent}}</div>
+                                                    <div class="top3_pro_ren">{{ data.top3.data[1].TopThreeCount }}人</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -361,11 +310,11 @@
                                             <svg class="icon" aria-hidden="true">
                                                 <use xlink:href="#icon-jiangpai-"></use>
                                             </svg>
-                                            <span>{{ data.top3.dataX[2] }}</span>
+                                            <span>{{ data.top3.data[2].timeDesc }}</span>
                                             <div class="top3_box">
-                                                <div class="top3_progress pr" :style="{width: (data.top3.dataY[2] / data.top3.total * 100 ).toFixed(2)+'%' }">
-                                                    <div class="top3_pro_percent">{{( data.top3.dataY[2] / data.top3.total * 100 ).toFixed(2) }}%</div>
-                                                    <div class="top3_pro_ren">{{ data.top3.dataY[2] }}人</div>
+                                               <div class="top3_progress pr" :style="{width: data.top3.data[2].CountPercent }">
+                                                    <div class="top3_pro_percent">{{data.top3.data[2].CountPercent}}</div>
+                                                    <div class="top3_pro_ren">{{ data.top3.data[2].TopThreeCount }}人</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -605,9 +554,8 @@ export default {
                     ]
                 },
                 top3: {
-                    dataX: '',
-                    dataY: '',
-                    total: ''
+                    data: [],
+                    total: 0
                 },
                 age: {
                     color: ["#ffa9a9", "#fed971", "#80c5ff"],
@@ -666,8 +614,11 @@ export default {
                 }
             },
             cityList: [],
+            floorlist:[],
+            FloorStorePointReport:[],
+            floorImg:'',
+            floorId:0,
             BusCategoryID:0,
-            model8: "",
             charts: {},
             ShopId: 0,
             SPIndex: {},
@@ -895,17 +846,19 @@ export default {
                     }
                 })
                 .then(res => {
-                    // console.log(res);
+                  
                     if (res.data.code == 1) {
-                        this.data.top3 = res.data.result;
-                        this.data.top3.total = eval(this.data.top3.dataY.join("+"));
-                        // console.log(this.data.top3);
+
+                        this.data.top3.data = res.data.result.data;
+                        this.data.top3.total = res.data.result.sum;
+                      
                     } else {
                         console.log(res);
                     }
+                    
                 })
                 .catch(err => {
-                    console.log(err);
+                    // console.log(err);
                 });
         },
         // 年龄分布
@@ -939,7 +892,6 @@ export default {
                                 name: res.data.result.dataX[i]
                             });
                         }
-
                         this.charts.age.hideLoading();
                         this.charts.age.setOption(this.data.age);
                     } else {
@@ -960,7 +912,7 @@ export default {
                     }
                 })
                 .then(res => {
-                    console.log('性别',res.data.result);   
+                    // console.log('性别',res.data.result);   
                     console.log(res.data);
                     if (res.data.code == 1) {
                         this.data.sex = res.data.result;
@@ -1047,18 +999,46 @@ export default {
                     console.log(err);
                 });
         },
+        getFloorStorePointReport(){
+               this.$http.get(this.$api.getFloorStorePointReport()+"?token="+this.$store.state.token+'&ShopId='+this.ShopId+'&FloorId='+this.floorId).then(res=>{
+                        console.log('楼层',res);
+                        this.FloorStorePointReport = res.data.result;
+                         
+               })
+        },
+        getFloorList(){
+             this.$http.get(this.$api.getFloorList()+"?token="+this.$store.state.token+'&ShopId='+this.ShopId).then(res=>{
+                        console.log('楼层ID',res);
+                        this.floorlist = res.data.result;
+                        if(res.data.result.length>0)
+                        {  
+                            console.log(this.floorImg);
+                            this.floorId = res.data.result[0].FloorId;
+                            this.floorImg = res.data.result[0].imgPath;
+                          
+                        }
+               })
+        },
         getbd_BusCategory(){
             this.$http.get(this.$api.getbd_BusCategory()+"?token="+this.$store.state.token).then(res=>{
-                console.log('类别',res.data);
+                // console.log('类别',res.data);
                 this.busCategorylist = res.data.result;
             })
             this.getmalllist();
         },
+        changeBusCat(){
+            // console.log(12123123123);
+           this.getmalllist();
+        },
         getmalllist(){
             this.$http.get(this.$api.getmalllist()+"?token="+this.token+'&BusCategoryID='+this.BusCategoryID).then(res=>{
-                console.log('商圈',res.data);
+                // console.log('商圈',res.data);
                 this.malllist = res.data.result;
-                this.ShopId = res.data.result[0].ShopId;
+                if(!!res.data.result&&res.data.result.length>0){
+                this.ShopId = res.data.result[0].ShopId;   
+                }
+               
+                // console.log('shopidididid',this.ShopId)
                 this.init();
             })
         },
@@ -1075,6 +1055,8 @@ export default {
             this.getSex();
             this.getLast6M();
             this.getReturnGuestAge();
+            this.getFloorStorePointReport();
+             this.getFloorList();
         },
         search(){
             this.data.industry.series[0].data=[];
@@ -1140,7 +1122,7 @@ export default {
     width: 80%;
     height: 80%;
     margin: 70px auto;
-    background-image: url("../../../assets/images/hotMap.png");
+    // background-image: url("../../../assets/images/hotMap.png");
     background-repeat: no-repeat;
     background-size: cover;
   }
@@ -1543,11 +1525,17 @@ export default {
               border: 1px solid #176bb8;
               height: 638px;
               #competeIMG {
-                background-image: url("../../../assets/images/compete.png");
+                // background-image: url("../../../assets/images/compete.png");
                 height: 574px;
                 margin-top: 36px;
-                background-repeat: no-repeat;
-                background-position: center;
+                // background-repeat: no-repeat;
+                // background-position: center;
+                padding-top: 40px;
+                text-align: center;
+                > img{
+                   
+                    width: 90%;
+                }
               }
             }
             > div.cb_right {
