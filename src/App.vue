@@ -1,7 +1,7 @@
 <template>
   <div id="app" :class='{"hidesidbar":hidesidbar,"hidenav":hidenav}'>
-    	<a href="#" class="hidebtn hideleft" @click='hideleft'></a>
-			<a href="#" class="hidebtn hidetop" @click='hidetop'></a>
+      <a v-show='show' href="#" class="hidebtn hideleft" @click='hideleft'></a>
+			<a  v-show='show'  href="#" class="hidebtn hidetop" @click='hidetop'></a>
     <router-view/>
   </div>
 </template>
@@ -12,7 +12,8 @@ export default {
   data(){
     return{
       hidesidbar:false,
-      hidenav:false
+      hidenav:false,
+      show:false
     } 
   },
   methods:{
@@ -22,7 +23,21 @@ export default {
 			hidetop(){
 				  this.hidenav =!this.hidenav;
 			}
-  }
+  },
+   watch: {
+      '$route' (to, from) {
+        console.log('监听路由变化',to.path);
+          //  this.show = true;
+          console.log(from.path)
+          if(to.path=='/login'||to.path=='/forgetpassword')
+          {
+             this.show = false;
+          }
+          else{
+            this.show=true;
+          }
+      }
+    }
 }
 </script>
 

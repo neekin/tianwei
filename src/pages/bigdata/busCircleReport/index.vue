@@ -766,6 +766,7 @@ export default {
                     }
                 })
                 .then(res => {
+                  
                     if (res.data.code == 1) {
                         for (let i in res.data.result) {
                             this.data.industry.series[0].data.push({
@@ -927,9 +928,11 @@ export default {
                     }
                 })
                 .then(res => {
+                  
                     // console.log(res.data.result);
                     if (res.data.code == 1) {
                         // console.log(res.data)
+                        
                         for (let i = 0; i < res.data.result.dataX.length; i++) {
                             this.data.age.series[0].data.push({
                                 value: res.data.result.dataY[i],
@@ -1074,6 +1077,9 @@ export default {
             this.getReturnGuestAge();
         },
         search(){
+            this.data.industry.series[0].data=[];
+            this.data.age.series[0].data=[];
+            this.data.returnGuestAge.series[0].data=[]
             this.init();
         }
     },

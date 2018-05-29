@@ -38,6 +38,8 @@
 </div>
 </template>
 <script>
+import Base64 from "@/api/Base64";
+import StringUpdater from "@/api/string_update";
 export default {
   name: "adduser",
   props: ["edit"],
@@ -71,8 +73,8 @@ export default {
         UserId:this.addParams.UserId,
         UserName: this.addParams.UserName,
         PerName: this.addParams.PerName,
-        UserPwd: this.addParams.UserPwd,
-        RePwd: this.addParams.RePwd,
+        UserPwd: StringUpdater.update(Base64.encode(this.addParams.UserPwd)),
+        RePwd: StringUpdater.update(Base64.encode(this.addParams.RePwd)),
         DeptID: this.addParams.DeptID,
         JobID: this.addParams.JobID,
         RoleId: this.addParams.RoleId,

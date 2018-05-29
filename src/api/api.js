@@ -82,11 +82,11 @@ var Api = {
     getmenulist() {
         return this.getApi("/Home/getMenuList");
     },
+    getmenuAllListRole(){
+        return this.getApi('/Home/getMenuListByRole');
+    },
     addrole() {
         return this.getApi("/Role/AddUptRole");
-    },
-    getMenuListByRole() {
-        return this.getApi("/Home/getMenuListByRole");
     },
     delrole() {
         return this.getApi("/Role/DelRole");
