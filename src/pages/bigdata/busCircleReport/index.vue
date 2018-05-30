@@ -5,9 +5,9 @@
         <container>
                <search @search='search'>
                     类别： <select v-model='BusCategoryID' @change='changeBusCat'>
-                      <option value="0">
+                      <!-- <option value="0">
                         请选择
-                      </option>
+                      </option> -->
                   <option v-for='item in busCategorylist' :key='item.BusCategoryID' :value='item.BusCategoryID'>{{item.BusCategory}}</option>
                      
                     </select>
@@ -50,14 +50,15 @@
                                 <span class="fl">购物中心热力图</span>
                                 <span class="slt fr">
                                     楼层:
-                                  <select v-model="floorIdHot"  @change='chagnefloorHot' >
-                                                  
-                                                    <option  v-for="(v,i) in floorlist" :value='v.FloorId' :key="i">{{v.FloorName}}</option>
+                                  <select v-model="floorHotIndex"  @change='chagnefloorHot(floorHotIndex)' >              
+                                     <option  v-for="(v,i) in floorlist" :value='i' :key="i"   > {{v.FloorName}} </option>
                                 </select>
                                 </span>
                             </div>
                             <div class="ch_content">
-                                <div id="hotMap"></div>
+                                <div id="hotMap">
+                                    <img :src="floorHotImg" alt="">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -236,9 +237,9 @@
                                             <!-- <span class="fl">购物中心热力图</span> -->
                                             <span class="slt fr">
                                                 楼层:
-                                                <select v-model="floorId"  @change='chagnefloor' >
+                                                <select v-model="floorIndex"  @change='chagnefloor(floorIndex)' >
                                                     <!-- <option value='' disabled selected style='display:none;'>请选择</option> -->
-                                                    <option  v-for="(v,i) in floorlist" :value='v.FloorId' :key="i">{{v.FloorName}}</option>
+                                                    <option  v-for="(v,i) in floorlist" :value='i' :key="i">{{v.FloorName}}</option>
                                                 </select>
                                             </span>
                                         </div>
@@ -246,6 +247,11 @@
                                             <div id="competeIMG">
                                                   <!-- {{floorImg}} -->
                                                  <img :src="floorImg" alt="">
+                                                 
+                                                 <span v-if='FloorStorePointReport.length>0' v-for='(item,i) in FloorStorePointReport' :key='i' :style='{left: item.point[0] /floorMapWidthpro +"px" ,top:item.point[1]/floorMapWidthpro +"px"}'>
+                                                    <p>名称:{{item.pointname}}</p>
+                                                    <p>流量:{{item.countdata}}</p>
+                                                 </span>
                                             </div>
                                         </div>
                                     </div>
@@ -257,9 +263,9 @@
                                                 <th>日均客流量</th>
                                                 <th>总评分</th>
                                             </tr>
-                                            <tr v-for=' (item,index) in FloorStorePointReport' :key='index'> 
+                                            <tr v-for=' (item,index) in FloorStoreDataReport' :key='index'> 
                                                 <th>{{index+1}}</th>
-                                                <th>{{item.pointname}}</th>
+                                                <th>{{item.storename}}</th>
                                                 <th>{{item.countdata}}</th>
                                                 <th>{{item.Grade}}</th>
                                             </tr>
@@ -280,7 +286,7 @@
                                     <div class="eg_title">近一周客流趋势</div>
                                     <div class="eg_charts" id="weekCount"></div>
                                 </div>
-                                <div class="fl pr" v-if='data.top3.data.length>0'>
+                                <div class="fl pr">
                                     <div class="eg_title">热点时段 TOP3</div>
                                     <div class="eg_charts clearfix" id="top3">
                                         <div class="fl">
@@ -384,697 +390,758 @@ import sidebar from "../../components/sidebar";
 import container from "../../components/container";
 import search from "@/pages/components/list/search";
 export default {
-    components: {
-        headnav,
-        sidebar,
-        container,
-        search
-    },
-    data() {
-        return {
-            token: "",
-            data: {
-                percent: {
-                    tooltip: {},
-                    radar: {
-                        name: {
-                            textStyle: {
-                                color: "#fff",
-                                backgroundColor: "#999",
-                                borderRadius: 3,
-                                padding: [3, 5]
-                            }
-                        },
-                        indicator: [
-                            { name: "", max: 20 },
-                            { name: "", max: 15000 },
-                            { name: "", max: 50 },
-                            { name: "", max: 50 },
-                            { name: "", max: 20000 }
-                        ]
-                    },
-                    series: [
-                        {
-                            name: "购物中心指数",
-                            type: "radar",
-                            data: [
-                                {
-                                    value: [],
-                                    name: "购物中心指数"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                industry: {
-                    tooltip: {
-                        trigger: "item",
-                        formatter: "{a} <br/>{b} : {c} ({d}%)"
-                    },
-                    calculable: true,
-                    series: [
-                        {
-                            name: "购物中心业态",
-                            type: "pie",
-                            radius: [60, 220],
-                            roseType: "area",
-                            data: []
-                        }
-                    ]
-                },
-                weekCount: {
-                    tooltip: {
-                        trigger: "axis",
-                        axisPointer: {
-                            // 坐标轴指示器，坐标轴触发有效
-                            type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
-                        }
-                    },
-                    xAxis: {
-                        splitLine: {
-                            show: true
-                        },
-                        axisLine: {
-                            lineStyle: {
-                                color: "#fff"
-                            }
-                        },
-                        axisLabel: {
-                            color: "#fff",
-                            fontSize: 16
-                        },
-                        type: "category",
-                        data: [
-                            "05/21",
-                            "05/20",
-                            "05/19",
-                            "05/18",
-                            "05/17",
-                            "05/16",
-                            "05/15"
-                        ]
-                    },
-                    yAxis: {
-                        // show:false,
-                        splitLine: {
-                            show: true
-                        },
-                        axisLine: {
-                            lineStyle: {
-                                color: "#fff"
-                            }
-                        },
-                        axisLabel: {
-                            color: "#fff",
-                            fontSize: 16
-                        },
-                        type: "value"
-                    },
-                    series: [
-                        {
-                            data: [34, 34, 55, 3444, 3224, 444, 32224],
-                            type: "line",
-                            smooth: true
-                        }
-                    ]
-                },
-                last6M: {
-                    tooltip: {
-                        trigger: "axis",
-                        axisPointer: {
-                            // 坐标轴指示器，坐标轴触发有效
-                            type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
-                        }
-                    },
-                    xAxis: {
-                        splitLine: {
-                            show: true
-                        },
-                        axisLine: {
-                            lineStyle: {
-                                color: "#fff"
-                            }
-                        },
-                        axisLabel: {
-                            color: "#fff",
-                            fontSize: 16
-                        },
-                        type: "category",
-                        data: [
-                            "05/21",
-                            "05/20",
-                            "05/19",
-                            "05/18",
-                            "05/17",
-                            "05/16",
-                            "05/15"
-                        ]
-                    },
-                    yAxis: {
-                        // show:false,
-                        splitLine: {
-                            show: true
-                        },
-                        axisLine: {
-                            lineStyle: {
-                                color: "#fff"
-                            }
-                        },
-                        axisLabel: {
-                            color: "#fff",
-                            fontSize: 16
-                        },
-                        type: "value"
-                    },
-                    series: [
-                        {
-                            data: [34, 34, 55, 3444, 3224, 444, 32224],
-                            type: "line",
-                            smooth: true
-                        }
-                    ]
-                },
-                top3: {
-                    data: [],
-                    total: 0
-                },
-                age: {
-                    color: ["#ffa9a9", "#fed971", "#80c5ff"],
-                    tooltip: {
-                        trigger: 'item',
-                        formatter: "{a} <br/>{b}: {c} ({d}%)"
-                    },
-                    series: [
-                        {
-                            name: '年龄分布',
-                            type: 'pie',
-                            radius: ['50%', '70%'],
-                            avoidLabelOverlap: false,
-                            label: {
-                                normal: {
-                                    show: true
-                                },
-                                emphasis: {
-                                    show: true,
-                                    textStyle: {
-                                        fontSize: '30',
-                                        fontWeight: 'bold'
-                                    }
-                                }
-                            },
-                            data: []
-                        }
-                    ]
-                },
-                sex: {
-                    girlCountPer: '',
-                    boyCountPer: ''
-                },
-                returnGuestAge: {
-                    color: ["#faff81", "#e06d06", "#ffc53a"],
-                    tooltip: {
-                        trigger: 'item',
-                        formatter: "{a} <br/>{b} : {c} ({d}%)"
-                    },
-                    series: [
-                        {
-                            name: '回头客年龄分布',
-                            type: 'pie',
-                            radius: '55%',
-                            center: ['50%', '60%'],
-                            data: [],
-                            itemStyle: {
-                                emphasis: {
-                                    shadowBlur: 10,
-                                    shadowOffsetX: 0,
-                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
-                                }
-                            }
-                        }
-                    ]
-                }
+  components: {
+    headnav,
+    sidebar,
+    container,
+    search
+  },
+  data() {
+    return {
+      token: "",
+      data: {
+        percent: {
+          tooltip: {},
+          radar: {
+            name: {
+              textStyle: {
+                color: "#fff",
+                backgroundColor: "#999",
+                borderRadius: 3,
+                padding: [3, 5]
+              }
             },
-            cityList: [],
-            floorlist:[],
-            FloorStorePointReport:[],
-            floorImg:'',
-            floorId:0,
-            floorIdHot:0,
-            BusCategoryID:0,
-            charts: {},
-            ShopId: 0,
-            SPIndex: {},
-            shopCustomer: {},
-            customer: {},
-            indexTop: {
-                yearcount: {},
-                city: {},
-                rent: {},
-                instore: {}
-            },
-            compete: {},
-            busCategorylist:[],
-            malllist:[]
-        };
-    },
-    methods: {
-        // 成功/繁荣指数
-        getSPIndex() {
-            this.$http
-                .get(this.$api.getSPIndex(), {
-                    params: {
-                        token: this.token,
-                        ShopId: this.ShopId
-                    }
-                })
-                .then(res => {
-                    // console.log(res);
-                    if (res.data.code == 1) {
-                        this.SPIndex = res.data.result;
-                    } else {
-                        console.log(res);
-                    }
-                })
-                .catch(err => {
-                    console.log(err);
-                });
-        },
-        // 购物中心指数
-        getPercent() {
-            this.charts.percent = echarts.init(
-                document.getElementById("percent")
-            );
-            this.charts.percent.showLoading("default", {
-                text: "加载中...",
-                color: "#f49c00",
-                textColor: "#fff",
-                maskColor: "rgba(0, 0, 0, 0.5)",
-                zlevel: 0
-            });
-            this.$http
-                .get(this.$api.getPercent(), {
-                    params: {
-                        ShopId: this.ShopId,
-                        token: this.token
-                    }
-                })
-                .then(res => {
-                    if (res.data.code == 1) {
-                        this.data.percent.series[0].data[0].value =
-                            res.data.result.dataY;
-                        res.data.result.dataX.forEach((v, i) => {
-                            this.data.percent.radar.indicator[i].name = v;
-                        });
-
-                        // console.log(this.data.percent);
-                        this.charts.percent.hideLoading();
-                        this.charts.percent.setOption(this.data.percent);
-                    } else if (res.data.code == -1) {
-                        this.$router.push("/login");
-                    } else {
-                        this.charts.percent.hideLoading();
-                    }
-                })
-                .catch(err => {
-                    console.log(err);
-                });
-        },
-        // 购物中心业态
-        getIndustry() {
-            this.charts.industry = echarts.init(
-                document.getElementById("industry")
-            );
-            this.charts.industry.showLoading("default", {
-                text: "加载中...",
-                color: "#f49c00",
-                textColor: "#fff",
-                maskColor: "rgba(0, 0, 0, 0.5)",
-                zlevel: 0
-            });
-            this.$http
-                .get(this.$api.getIndustry(), {
-                    params: {
-                        ShopId: this.ShopId,
-                        token: this.token
-                    }
-                })
-                .then(res => {
-                  
-                    if (res.data.code == 1) {
-                        for (let i in res.data.result) {
-                            this.data.industry.series[0].data.push({
-                                value: res.data.result[i],
-                                name: i
-                            });
-                        }
-
-                        this.charts.industry.hideLoading();
-                        this.charts.industry.setOption(this.data.industry);
-                    } else if (res.data.code == -1) {
-                        this.$router.push("/login");
-                    } else {
-                        this.charts.industry.hideLoading();
-                    }
-                })
-                .catch(err => {
-                    console.log(err);
-                });
-        },
-        // 购物中心客群
-        getShopCustomer() {
-            this.$http
-                .get(this.$api.getShopCustomer(), {
-                    params: {
-                        token: this.token,
-                        ShopId: this.ShopId
-                    }
-                })
-                .then(res => {
-                    // console.log(res);
-                    if (res.data.code == 1) {
-                        this.shopCustomer = res.data.result;
-                    } else {
-                        console.log(res);
-                    }
-                })
-                .catch(err => {
-                    console.log(err);
-                });
-        },
-        // 购物中心关键指标
-        getShopIndexTop() {
-            this.$http
-                .get(this.$api.getShopIndexTop(), {
-                    params: {
-                        token: this.token,
-                        ShopId: this.ShopId
-                    }
-                })
-                .then(res => {
-                    // console.log(res);
-                    if (res.data.code == 1) {
-                        this.indexTop = res.data.result;
-                    } else {
-                        console.log(res);
-                    }
-                })
-                .catch(err => {
-                    console.log(err);
-                });
-        },
-        // 竞争数据
-        getCompete() {
-            this.$http
-                .get(this.$api.getCompete(), {
-                    params: {
-                        token: this.token,
-                        ShopId: this.ShopId
-                    }
-                })
-                .then(res => {
-                    // console.log(res);
-                    if (res.data.code == 1) {
-                        console.log('竞争数据',res);
-                        this.compete = res.data.result;
-                    } else {
-                        console.log(res);
-                    }
-                })
-                .catch(err => {
-                    console.log(err);
-                });
-        },
-        // 一周客流趋势
-        getWeekCount() {
-            this.charts.weekCount = echarts.init(
-                document.getElementById("weekCount")
-            );
-            this.charts.weekCount.showLoading("default", {
-                text: "加载中...",
-                color: "#f49c00",
-                textColor: "#fff",
-                maskColor: "rgba(0, 0, 0, 0.5)",
-                zlevel: 0
-            });
-            this.$http
-                .get(this.$api.getWeekCount(), {
-                    params: {
-                        token: this.token,
-                        ShopId: this.ShopId
-                    }
-                })
-                .then(res => {
-                    // console.log(res);
-                    if (res.data.code == 1) {
-                        this.data.weekCount.xAxis.data = res.data.result.dataX;
-                        this.data.weekCount.series[0].data = res.data.result.dataY;
-
-                        this.charts.weekCount.hideLoading();
-                        this.charts.weekCount.setOption(this.data.weekCount);
-                    } else {
-                        console.log(res);
-                    }
-                })
-                .catch(err => {
-                    console.log(err);
-                });
-        },
-        // Top3
-        getTop3() {
-            this.$http
-                .get(this.$api.getTop3(), {
-                    params: {
-                        token: this.token,
-                        ShopId: this.ShopId
-                    }
-                })
-                .then(res => {
-                  
-                    if (res.data.code == 1) {
-
-                        this.data.top3.data = res.data.result.data;
-                        this.data.top3.total = res.data.result.sum;
-                      
-                    } else {
-                        console.log(res);
-                    }
-                    
-                })
-                .catch(err => {
-                    // console.log(err);
-                });
-        },
-        // 年龄分布
-        getAge() {
-            this.charts.age = echarts.init(
-                document.getElementById("age")
-            );
-            this.charts.age.showLoading("default", {
-                text: "加载中...",
-                color: "#f49c00",
-                textColor: "#fff",
-                maskColor: "rgba(0, 0, 0, 0.5)",
-                zlevel: 0
-            });
-            this.$http
-                .get(this.$api.getAge(), {
-                    params: {
-                        token: this.token,
-                        ShopId: this.ShopId
-                    }
-                })
-                .then(res => {
-                  
-                    // console.log(res.data.result);
-                    if (res.data.code == 1) {
-                        // console.log(res.data)
-                        
-                        for (let i = 0; i < res.data.result.dataX.length; i++) {
-                            this.data.age.series[0].data.push({
-                                value: res.data.result.dataY[i],
-                                name: res.data.result.dataX[i]
-                            });
-                        }
-                        this.charts.age.hideLoading();
-                        this.charts.age.setOption(this.data.age);
-                    } else {
-                        console.log(res);
-                    }
-                })
-                .catch(err => {
-                    console.log(err);
-                });
-        },
-        // 性别分布
-        getSex() {
-            this.$http
-                .get(this.$api.getSex(), {
-                    params: {
-                        token: this.token,
-                        ShopId: this.ShopId
-                    }
-                })
-                .then(res => {
-                    // console.log('性别',res.data.result);   
-                    console.log(res.data);
-                    if (res.data.code == 1) {
-                        this.data.sex = res.data.result;
-                    } else {
-                        console.log(res);
-                    }
-                })
-                .catch(err => {
-                    console.log(err);
-                });
-        },
-        // 近6个月回头客
-        getLast6M() {
-            this.charts.last6M = echarts.init(
-                document.getElementById("last6M")
-            );
-            this.charts.weekCount.showLoading("default", {
-                text: "加载中...",
-                color: "#f49c00",
-                textColor: "#fff",
-                maskColor: "rgba(0, 0, 0, 0.5)",
-                zlevel: 0
-            });
-            this.$http
-                .get(this.$api.getLast6M(), {
-                    params: {
-                        token: this.token,
-                        ShopId: this.ShopId
-                    }
-                })
-                .then(res => {
-                    // console.log(res);
-                    if (res.data.code == 1) {
-                        this.data.last6M.xAxis.data = res.data.result.dataX;
-                        this.data.last6M.series[0].data = res.data.result.dataY;
-
-                        this.charts.last6M.hideLoading();
-                        this.charts.last6M.setOption(this.data.last6M);
-                    } else {
-                        console.log(res);
-                    }
-                })
-                .catch(err => {
-                    console.log(err);
-                });
-        },
-        // 回头客年龄分布
-        getReturnGuestAge() {
-            this.charts.agePercent = echarts.init(
-                document.getElementById("agePercent")
-            );
-            this.charts.agePercent.showLoading("default", {
-                text: "加载中...",
-                color: "#f49c00",
-                textColor: "#fff",
-                maskColor: "rgba(0, 0, 0, 0.5)",
-                zlevel: 0
-            });
-            this.$http
-                .get(this.$api.getReturnGuestAge(), {
-                    params: {
-                        token: this.token,
-                        ShopId: this.ShopId
-                    }
-                })
-                .then(res => {
-                    // console.log(res.data.result);
-                    if (res.data.code == 1) {
-                        for (let i = 0; i < res.data.result.dataX.length; i++) {
-                            this.data.returnGuestAge.series[0].data.push({
-                                value: res.data.result.dataY[i],
-                                name: res.data.result.dataX[i]
-                            });
-                        }
-                        // console.log(this.data.returnGuestAge.series)
-
-                        this.charts.agePercent.hideLoading();
-                        this.charts.agePercent.setOption(this.data.returnGuestAge);
-                    } else {
-                        console.log(res);
-                    }
-                })
-                .catch(err => {
-                    console.log(err);
-                });
-        },
-        getFloorStorePointReport(){
-               this.$http.get(this.$api.getFloorStorePointReport()+"?token="+this.$store.state.token+'&ShopId='+this.ShopId+'&FloorId='+this.floorId).then(res=>{
-                        // console.log('楼层',res);
-                        this.FloorStorePointReport = res.data.result;     
-               })
-        },
-        getFloorList(){
-             this.$http.get(this.$api.getFloorList()+"?token="+this.$store.state.token+'&ShopId='+this.ShopId).then(res=>{
-                        // console.log('楼层ID',res);
-                        this.floorlist = res.data.result;
-                        if(res.data.result.length>0)
-                        {  
-                            console.log(this.floorImg);
-                            this.floorId = res.data.result[0].FloorId;
-                            this.floorIdHot = res.data.result[0].FloorId;
-                            this.floorImg = res.data.result[0].imgPath;
-                        }
-               })
-        },
-        getbd_BusCategory(){
-            this.$http.get(this.$api.getbd_BusCategory()+"?token="+this.$store.state.token).then(res=>{
-                // console.log('类别',res.data);
-                this.busCategorylist = res.data.result;
-            })
-            this.getmalllist();
-        },
-        changeBusCat(){
-           this.getmalllist();
-           this.getFloorList();
-        },
-        chagnefloor(){
-           this.getFloorStorePointReport()
-        },
-        chagnefloorHot(){
-            console.log('切换热点图');
-        },
-        getmalllist(){
-            this.$http.get(this.$api.getmalllist()+"?token="+this.token+'&BusCategoryID='+this.BusCategoryID).then(res=>{
-                // console.log('商圈',res.data);
-                this.malllist = res.data.result;
-                if(!!res.data.result&&res.data.result.length>0){
-                this.ShopId = res.data.result[0].ShopId;
+            indicator: [
+              { name: "", max: 20 },
+              { name: "", max: 15000 },
+              { name: "", max: 50 },
+              { name: "", max: 50 },
+              { name: "", max: 20000 }
+            ]
+          },
+          series: [
+            {
+              name: "购物中心指数",
+              type: "radar",
+              data: [
+                {
+                  value: [],
+                  name: "购物中心指数"
                 }
-                this.init();
-            })
+              ]
+            }
+          ]
         },
-        init(){
-            this.getSPIndex();
-            this.getPercent();
-            this.getIndustry();
-            this.getShopCustomer();
-            this.getShopIndexTop();
-            this.getCompete();
-            this.getWeekCount();
-            this.getTop3();
-            this.getAge();
-            this.getSex();
-            this.getLast6M();
-            this.getReturnGuestAge();
-            this.getFloorStorePointReport();
-             this.getFloorList();
+        industry: {
+          tooltip: {
+            trigger: "item",
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+          },
+          calculable: true,
+          series: [
+            {
+              name: "购物中心业态",
+              type: "pie",
+              radius: [60, 220],
+              roseType: "area",
+              data: []
+            }
+          ]
         },
-        search(){
-            this.data.industry.series[0].data=[];
-            this.data.age.series[0].data=[];
-            this.data.returnGuestAge.series[0].data=[]
-            this.init();
+        weekCount: {
+          tooltip: {
+            trigger: "axis",
+            axisPointer: {
+              // 坐标轴指示器，坐标轴触发有效
+              type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
+            }
+          },
+          xAxis: {
+            splitLine: {
+              show: true
+            },
+            axisLine: {
+              lineStyle: {
+                color: "#fff"
+              }
+            },
+            axisLabel: {
+              color: "#fff",
+              fontSize: 16
+            },
+            type: "category",
+            data: [
+              "05/21",
+              "05/20",
+              "05/19",
+              "05/18",
+              "05/17",
+              "05/16",
+              "05/15"
+            ]
+          },
+          yAxis: {
+            // show:false,
+            splitLine: {
+              show: true
+            },
+            axisLine: {
+              lineStyle: {
+                color: "#fff"
+              }
+            },
+            axisLabel: {
+              color: "#fff",
+              fontSize: 16
+            },
+            type: "value"
+          },
+          series: [
+            {
+              data: [34, 34, 55, 3444, 3224, 444, 32224],
+              type: "line",
+              smooth: true
+            }
+          ]
+        },
+        last6M: {
+          tooltip: {
+            trigger: "axis",
+            axisPointer: {
+              // 坐标轴指示器，坐标轴触发有效
+              type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
+            }
+          },
+          xAxis: {
+            splitLine: {
+              show: true
+            },
+            axisLine: {
+              lineStyle: {
+                color: "#fff"
+              }
+            },
+            axisLabel: {
+              color: "#fff",
+              fontSize: 16
+            },
+            type: "category",
+            data: [
+              "05/21",
+              "05/20",
+              "05/19",
+              "05/18",
+              "05/17",
+              "05/16",
+              "05/15"
+            ]
+          },
+          yAxis: {
+            // show:false,
+            splitLine: {
+              show: true
+            },
+            axisLine: {
+              lineStyle: {
+                color: "#fff"
+              }
+            },
+            axisLabel: {
+              color: "#fff",
+              fontSize: 16
+            },
+            type: "value"
+          },
+          series: [
+            {
+              data: [34, 34, 55, 3444, 3224, 444, 32224],
+              type: "line",
+              smooth: true
+            }
+          ]
+        },
+        top3: {
+          data: [
+            { timeDesc: 0, CountPercent: 0, TopThreeCount: 0 },
+            { timeDesc: 0, CountPercent: 0, TopThreeCount: 0 },
+            { timeDesc: 0, CountPercent: 0, TopThreeCount: 0 }
+          ],
+          total: 0
+        },
+        age: {
+          color: ["#ffa9a9", "#fed971", "#80c5ff"],
+          tooltip: {
+            trigger: "item",
+            formatter: "{a} <br/>{b}: {c} ({d}%)"
+          },
+          series: [
+            {
+              name: "年龄分布",
+              type: "pie",
+              radius: ["50%", "70%"],
+              avoidLabelOverlap: false,
+              label: {
+                normal: {
+                  show: true
+                },
+                emphasis: {
+                  show: true,
+                  textStyle: {
+                    fontSize: "30",
+                    fontWeight: "bold"
+                  }
+                }
+              },
+              data: []
+            }
+          ]
+        },
+        sex: {
+          girlCountPer: "",
+          boyCountPer: ""
+        },
+        returnGuestAge: {
+          color: ["#faff81", "#e06d06", "#ffc53a"],
+          tooltip: {
+            trigger: "item",
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+          },
+          series: [
+            {
+              name: "回头客年龄分布",
+              type: "pie",
+              radius: "55%",
+              center: ["50%", "60%"],
+              data: [],
+              itemStyle: {
+                emphasis: {
+                  shadowBlur: 10,
+                  shadowOffsetX: 0,
+                  shadowColor: "rgba(0, 0, 0, 0.5)"
+                }
+              }
+            }
+          ]
         }
+      },
+      cityList: [],
+      floorlist: [],
+      FloorStorePointReport: [],
+      FloorStoreDataReport: [],
+      floorImg: "",
+      floorId: 0,
+      floorIndex: 0,
+
+      floorIdHot: 0,
+      floorHotImg: "",
+      floorHotIndex: 0,
+      BusCategoryID: 0,
+      floorMapWidth: 0,
+      floorMapWidthpro: 0,
+      charts: {},
+      ShopId: 0,
+      SPIndex: {},
+      shopCustomer: {},
+      customer: {},
+      indexTop: {
+        yearcount: {},
+        city: {},
+        rent: {},
+        instore: {}
+      },
+      compete: {},
+      busCategorylist: [],
+      malllist: []
+    };
+  },
+  methods: {
+    // 成功/繁荣指数
+    getSPIndex() {
+      this.$http
+        .get(this.$api.getSPIndex(), {
+          params: {
+            token: this.token,
+            ShopId: this.ShopId
+          }
+        })
+        .then(res => {
+          // console.log(res);
+          if (res.data.code == 1) {
+            this.SPIndex = res.data.result;
+          }
+        });
     },
-    mounted() {
-        this.token = this.$store.state.token;
-        this.getbd_BusCategory();
+    // 购物中心指数
+    getPercent() {
+      this.charts.percent = echarts.init(document.getElementById("percent"));
+      this.charts.percent.showLoading("default", {
+        text: "加载中...",
+        color: "#f49c00",
+        textColor: "#fff",
+        maskColor: "rgba(0, 0, 0, 0.5)",
+        zlevel: 0
+      });
+      this.$http
+        .get(this.$api.getPercent(), {
+          params: {
+            ShopId: this.ShopId,
+            token: this.token
+          }
+        })
+        .then(res => {
+          if (res.data.code == 1) {
+            this.data.percent.series[0].data[0].value = res.data.result.dataY;
+            res.data.result.dataX.forEach((v, i) => {
+              this.data.percent.radar.indicator[i].name = v;
+            });
+
+            // console.log(this.data.percent);
+            this.charts.percent.hideLoading();
+            this.charts.percent.setOption(this.data.percent);
+          } else if (res.data.code == -1) {
+            this.$router.push("/login");
+          } else {
+            this.charts.percent.hideLoading();
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    // 购物中心业态
+    getIndustry() {
+      this.charts.industry = echarts.init(document.getElementById("industry"));
+      this.charts.industry.showLoading("default", {
+        text: "加载中...",
+        color: "#f49c00",
+        textColor: "#fff",
+        maskColor: "rgba(0, 0, 0, 0.5)",
+        zlevel: 0
+      });
+      this.$http
+        .get(this.$api.getIndustry(), {
+          params: {
+            ShopId: this.ShopId,
+            token: this.token
+          }
+        })
+        .then(res => {
+          if (res.data.code == 1) {
+            for (let i in res.data.result) {
+              this.data.industry.series[0].data.push({
+                value: res.data.result[i],
+                name: i
+              });
+            }
+
+            this.charts.industry.hideLoading();
+            this.charts.industry.setOption(this.data.industry);
+          } else if (res.data.code == -1) {
+            this.$router.push("/login");
+          } else {
+            this.charts.industry.hideLoading();
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    // 购物中心客群
+    getShopCustomer() {
+      this.$http
+        .get(this.$api.getShopCustomer(), {
+          params: {
+            token: this.token,
+            ShopId: this.ShopId
+          }
+        })
+        .then(res => {
+          // console.log(res);
+          if (res.data.code == 1) {
+            this.shopCustomer = res.data.result;
+          } else {
+            console.log(res);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    // 购物中心关键指标
+    getShopIndexTop() {
+      this.$http
+        .get(this.$api.getShopIndexTop(), {
+          params: {
+            token: this.token,
+            ShopId: this.ShopId
+          }
+        })
+        .then(res => {
+          // console.log(res);
+          if (res.data.code == 1) {
+            this.indexTop = res.data.result;
+          } else {
+            console.log(res);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    // 竞争数据
+    getCompete() {
+      this.$http
+        .get(this.$api.getCompete(), {
+          params: {
+            token: this.token,
+            ShopId: this.ShopId
+          }
+        })
+        .then(res => {
+          // console.log(res);
+          if (res.data.code == 1) {
+            console.log("竞争数据", res);
+            this.compete = res.data.result;
+          } else {
+            console.log(res);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    // 一周客流趋势
+    getWeekCount() {
+      this.charts.weekCount = echarts.init(
+        document.getElementById("weekCount")
+      );
+      this.charts.weekCount.showLoading("default", {
+        text: "加载中...",
+        color: "#f49c00",
+        textColor: "#fff",
+        maskColor: "rgba(0, 0, 0, 0.5)",
+        zlevel: 0
+      });
+      this.$http
+        .get(this.$api.getWeekCount(), {
+          params: {
+            token: this.token,
+            ShopId: this.ShopId
+          }
+        })
+        .then(res => {
+          // console.log(res);
+          if (res.data.code == 1) {
+            this.data.weekCount.xAxis.data = res.data.result.dataX;
+            this.data.weekCount.series[0].data = res.data.result.dataY;
+
+            this.charts.weekCount.hideLoading();
+            this.charts.weekCount.setOption(this.data.weekCount);
+          } else {
+            console.log(res);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    // Top3
+    getTop3() {
+      this.$http
+        .get(this.$api.getTop3(), {
+          params: {
+            token: this.token,
+            ShopId: this.ShopId
+          }
+        })
+        .then(res => {
+          if (res.data.code == 1) {
+            this.data.top3.data = res.data.result.data;
+            this.data.top3.total = res.data.result.sum;
+          } else {
+            console.log(res);
+          }
+        })
+        .catch(err => {
+          // console.log(err);
+        });
+    },
+    // 年龄分布
+    getAge() {
+      this.charts.age = echarts.init(document.getElementById("age"));
+      this.charts.age.showLoading("default", {
+        text: "加载中...",
+        color: "#f49c00",
+        textColor: "#fff",
+        maskColor: "rgba(0, 0, 0, 0.5)",
+        zlevel: 0
+      });
+      this.$http
+        .get(this.$api.getAge(), {
+          params: {
+            token: this.token,
+            ShopId: this.ShopId
+          }
+        })
+        .then(res => {
+          // console.log(res.data.result);
+          if (res.data.code == 1) {
+            // console.log(res.data)
+
+            for (let i = 0; i < res.data.result.dataX.length; i++) {
+              this.data.age.series[0].data.push({
+                value: res.data.result.dataY[i],
+                name: res.data.result.dataX[i]
+              });
+            }
+            this.charts.age.hideLoading();
+            this.charts.age.setOption(this.data.age);
+          } else {
+            console.log(res);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    // 性别分布
+    getSex() {
+      this.$http
+        .get(this.$api.getSex(), {
+          params: {
+            token: this.token,
+            ShopId: this.ShopId
+          }
+        })
+        .then(res => {
+          // console.log('性别',res.data.result);
+          console.log(res.data);
+          if (res.data.code == 1) {
+            this.data.sex = res.data.result;
+          } else {
+            console.log(res);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    // 近6个月回头客
+    getLast6M() {
+      this.charts.last6M = echarts.init(document.getElementById("last6M"));
+      this.charts.weekCount.showLoading("default", {
+        text: "加载中...",
+        color: "#f49c00",
+        textColor: "#fff",
+        maskColor: "rgba(0, 0, 0, 0.5)",
+        zlevel: 0
+      });
+      this.$http
+        .get(this.$api.getLast6M(), {
+          params: {
+            token: this.token,
+            ShopId: this.ShopId
+          }
+        })
+        .then(res => {
+          // console.log(res);
+          if (res.data.code == 1) {
+            this.data.last6M.xAxis.data = res.data.result.dataX;
+            this.data.last6M.series[0].data = res.data.result.dataY;
+
+            this.charts.last6M.hideLoading();
+            this.charts.last6M.setOption(this.data.last6M);
+          } else {
+            console.log(res);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    // 回头客年龄分布
+    getReturnGuestAge() {
+      this.charts.agePercent = echarts.init(
+        document.getElementById("agePercent")
+      );
+      this.charts.agePercent.showLoading("default", {
+        text: "加载中...",
+        color: "#f49c00",
+        textColor: "#fff",
+        maskColor: "rgba(0, 0, 0, 0.5)",
+        zlevel: 0
+      });
+      this.$http
+        .get(this.$api.getReturnGuestAge(), {
+          params: {
+            token: this.token,
+            ShopId: this.ShopId
+          }
+        })
+        .then(res => {
+          // console.log(res.data.result);
+          if (res.data.code == 1) {
+            for (let i = 0; i < res.data.result.dataX.length; i++) {
+              this.data.returnGuestAge.series[0].data.push({
+                value: res.data.result.dataY[i],
+                name: res.data.result.dataX[i]
+              });
+            }
+            // console.log(this.data.returnGuestAge.series)
+
+            this.charts.agePercent.hideLoading();
+            this.charts.agePercent.setOption(this.data.returnGuestAge);
+          } else {
+            console.log(res);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    getFloorStorePointReport() {
+      this.FloorStorePointReport = [];
+      this.$http
+        .get(
+          this.$api.getFloorStorePointReport() +
+            "?token=" +
+            this.$store.state.token +
+            "&ShopId=" +
+            this.ShopId +
+            "&FloorId=" +
+            this.floorId
+        )
+        .then(res => {
+          this.FloorStorePointReport = res.data.result;
+          if (res.data.result.length > 0) {
+            for (var i = 0; i < this.FloorStorePointReport.length; i++) {
+              var store = this.FloorStorePointReport[i];
+              var point = store.point.split(",");
+              store.point = point;
+            }
+          }
+          console.log("楼层位置", this.FloorStorePointReport);
+        });
+    },
+    getFloorStoreDataReport() {
+      this.FloorStoreDataReport = [];
+      this.$http
+        .get(
+          this.$api.getFloorStoreDataReport() +
+            "?token=" +
+            this.$store.state.token +
+            "&ShopId=" +
+            this.ShopId +
+            "&FloorId=" +
+            this.floorId
+        )
+        .then(res => {
+          console.log("楼层", res);
+          this.FloorStoreDataReport = res.data.result;
+        });
+    },
+    getFloorList() {
+      this.floorId = 0;
+      this.$http
+        .get(
+          this.$api.getFloorList() +
+            "?token=" +
+            this.$store.state.token +
+            "&ShopId=" +
+            this.ShopId
+        )
+        .then(res => {
+          this.floorlist = res.data.result;
+
+          if (res.data.result.length > 0) {
+            this.floorId = res.data.result[0].FloorId;
+            this.floorIdHot = res.data.result[0].FloorId;
+            this.floorImg = res.data.result[0].imgPath;
+            this.floorHotImg = res.data.result[0].imgPath;
+            var img = new Image();
+            img.src = this.floorImg;
+            this.floorMapWidth = img.width;
+            this.floorMapWidthpro = img.width / 779;
+          }
+          this.getFloorStoreDataReport();
+          this.getFloorStorePointReport();
+        });
+    },
+    getbd_BusCategory() {
+      this.$http
+        .get(
+          this.$api.getbd_BusCategory() + "?token=" + this.$store.state.token
+        )
+        .then(res => {
+          this.busCategorylist = res.data.result;
+          this.BusCategoryID = res.data.result[0].BusCategoryID;
+          this.getmalllist();
+        });
+    },
+    changeBusCat() {
+      this.getmalllist();
+    },
+    chagnefloor(index) {
+      this.floorImg = this.floorlist[index].imgPath;
+      this.floorId = this.floorlist[index].FloorId;
+      var img = new Image();
+      img.src = this.floorImg;
+      this.floorMapWidth = img.width;
+      this.floorMapWidthpro = img.width / 779;
+      this.getFloorStoreDataReport();
+      this.getFloorStorePointReport();
+    },
+    chagnefloorHot(index) {
+      this.floorHotImg = this.floorlist[index].imgPath;
+    },
+    getmalllist() {
+      this.ShopId = 0;
+      this.$http
+        .get(
+          this.$api.getmalllist() +
+            "?token=" +
+            this.token +
+            "&BusCategoryID=" +
+            this.BusCategoryID
+        )
+        .then(res => {
+          this.malllist = res.data.result;
+          if (!!res.data.result && res.data.result.length > 0) {
+            this.ShopId = res.data.result[0].ShopId;
+            this.getFloorList();
+            this.init();
+          }
+        });
+    },
+    init() {
+      this.getSPIndex();
+      this.getPercent();
+      this.getIndustry();
+      this.getShopCustomer();
+      this.getShopIndexTop();
+      this.getCompete();
+      this.getWeekCount();
+      this.getTop3();
+      this.getAge();
+      this.getSex();
+      this.getLast6M();
+      this.getReturnGuestAge();
+      this.getFloorList();
+    },
+    search() {
+      this.data.industry.series[0].data = [];
+      this.data.age.series[0].data = [];
+      this.data.returnGuestAge.series[0].data = [];
+      if (this.ShopId == 0) {
+        return;
+      }
+      this.init();
     }
+  },
+  mounted() {
+    this.token = this.$store.state.token;
+    this.getbd_BusCategory();
+  }
 };
 </script>
 
@@ -1131,6 +1198,9 @@ export default {
     // background-image: url("../../../assets/images/hotMap.png");
     background-repeat: no-repeat;
     background-size: cover;
+    img {
+      width: 100%;
+    }
   }
   font-family: "Microsoft Yahei";
   color: @fontColor;
@@ -1532,15 +1602,26 @@ export default {
               height: 638px;
               #competeIMG {
                 // background-image: url("../../../assets/images/compete.png");
-                height: 574px;
-                margin-top: 36px;
+                // height: 574px;
+                // margin-top: 36px;
                 // background-repeat: no-repeat;
                 // background-position: center;
-                padding-top: 40px;
+                position: relative;
+                // padding-top: 40px;
+                margin-top: 50px;
                 text-align: center;
-                > img{
-                   
-                    width: 90%;
+                span {
+                  min-width: 140px;
+                  text-align: left;
+                  padding: 10px;
+                  line-height: 18px;
+                  position: absolute;
+                  background-color: rgba(0, 0, 0, 0.3);
+
+                  color: #fff;
+                }
+                > img {
+                  width: 90%;
                 }
               }
             }
@@ -1719,8 +1800,8 @@ export default {
   }
 }
 
-.search{
-    padding-left: 20px;
-    color:#fff;
+.search {
+  padding-left: 20px;
+  color: #fff;
 }
 </style>

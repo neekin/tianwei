@@ -185,6 +185,10 @@ var Api = {
     getFloorStorePointReport(){
         return this.getApi('/BusData/getFloorStorePointReport');
     },
+    //楼层店铺数据
+    getFloorStoreDataReport(){
+        return this.getApi('/BusData/getFloorStoreDataReport');
+    },
     getFloorList(){
         return this.getApi('/BusData/getFloorList');
     }
