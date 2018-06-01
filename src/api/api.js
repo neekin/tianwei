@@ -191,6 +191,10 @@ var Api = {
     },
     getFloorList(){
         return this.getApi('/BusData/getFloorList');
+    },
+    getShopHotChartReport(){
+        return this.getApi('/BusData/getShopHotChartReport')
     }
+
 };
 module.exports = Api;

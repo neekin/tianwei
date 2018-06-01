@@ -94,7 +94,7 @@
                                         <div style="font-size:20px">全年客流</div>
                                     </div>
                                     <div class="cs_points" style="right:50px">
-                                        <span style="font-size:36px">{{ this.shopCustomer.yearcount }}</span>
+                                        <span style="font-size:36px">{{ shopCustomer.yearcount }}</span>
                                         <span style="font-size:24px">人</span>
                                     </div>
                                 </div>
@@ -104,7 +104,7 @@
                                         <div style="font-size:20px">进店客流</div>
                                     </div>
                                     <div class="cs_points" style="right:50px">
-                                        <span style="font-size:36px">{{ this.shopCustomer.instore }}</span>
+                                        <span style="font-size:36px">{{ shopCustomer.instore }}</span>
                                         <span style="font-size:24px">人</span>
                                     </div>
                                 </div>
@@ -114,7 +114,7 @@
                                         <div style="font-size:20px">商圈租金</div>
                                     </div>
                                     <div class="cs_points" style="right:50px">
-                                        <span style="font-size:36px">{{ this.shopCustomer.rent }}/平米/月</span>
+                                        <span style="font-size:36px">{{ shopCustomer.rent }}/平米/月</span>
                                         <span style="font-size:24px">仅参考</span>
                                     </div>
                                 </div>
@@ -628,6 +628,7 @@ export default {
       floorlist: [],
       FloorStorePointReport: [],
       FloorStoreDataReport: [],
+      ShopHotChartReport:[],
       floorImg: "",
       floorId: 0,
       floorIndex: 0,
@@ -694,8 +695,6 @@ export default {
             res.data.result.dataX.forEach((v, i) => {
               this.data.percent.radar.indicator[i].name = v;
             });
-
-            // console.log(this.data.percent);
             this.charts.percent.hideLoading();
             this.charts.percent.setOption(this.data.percent);
           } else if (res.data.code == -1) {
@@ -951,6 +950,7 @@ export default {
 
             this.charts.last6M.hideLoading();
             this.charts.last6M.setOption(this.data.last6M);
+
           } else {
             console.log(res);
           }
@@ -991,6 +991,7 @@ export default {
 
             this.charts.agePercent.hideLoading();
             this.charts.agePercent.setOption(this.data.returnGuestAge);
+
           } else {
             console.log(res);
           }
@@ -1020,7 +1021,7 @@ export default {
               store.point = point;
             }
           }
-          console.log("楼层位置", this.FloorStorePointReport);
+        //   console.log("楼层位置", this.FloorStorePointReport);
         });
     },
     getFloorStoreDataReport() {
@@ -1110,6 +1111,9 @@ export default {
             this.ShopId = res.data.result[0].ShopId;
             this.getFloorList();
             this.init();
+          }else{
+              console.log('执行')
+               this.resetData();
           }
         });
     },
@@ -1129,13 +1133,262 @@ export default {
       this.getFloorList();
     },
     search() {
-      this.data.industry.series[0].data = [];
-      this.data.age.series[0].data = [];
-      this.data.returnGuestAge.series[0].data = [];
+     this.resetData();
       if (this.ShopId == 0) {
         return;
       }
       this.init();
+    },
+    resetData(){
+    
+        this.data= {
+            percent: {
+            tooltip: {},
+            radar: {
+                name: {
+                textStyle: {
+                    color: "#fff",
+                    backgroundColor: "#999",
+                    borderRadius: 3,
+                    padding: [3, 5]
+                }
+                },
+                indicator: [
+                { name: "", max: 20 },
+                { name: "", max: 15000 },
+                { name: "", max: 50 },
+                { name: "", max: 50 },
+                { name: "", max: 20000 }
+                ]
+            },
+            series: [
+                {
+                name: "购物中心指数",
+                type: "radar",
+                data: [
+                    {
+                    value: [],
+                    name: "购物中心指数"
+                    }
+                ]
+                }
+            ]
+            },
+            industry: {
+            tooltip: {
+                trigger: "item",
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            calculable: true,
+            series: [
+                {
+                name: "购物中心业态",
+                type: "pie",
+                radius: [60, 220],
+                roseType: "area",
+                data: []
+                }
+            ]
+            },
+            weekCount: {
+            tooltip: {
+                trigger: "axis",
+                axisPointer: {
+                // 坐标轴指示器，坐标轴触发有效
+                type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
+                }
+            },
+            xAxis: {
+                splitLine: {
+                show: true
+                },
+                axisLine: {
+                lineStyle: {
+                    color: "#fff"
+                }
+                },
+                axisLabel: {
+                color: "#fff",
+                fontSize: 16
+                },
+                type: "category",
+                data: [
+                
+                ]
+            },
+            yAxis: {
+                // show:false,
+                splitLine: {
+                show: true
+                },
+                axisLine: {
+                lineStyle: {
+                    color: "#fff"
+                }
+                },
+                axisLabel: {
+                color: "#fff",
+                fontSize: 16
+                },
+                type: "value"
+            },
+            series: [
+                {
+                data: [],
+                type: "line",
+                smooth: true
+                }
+            ]
+            },
+            last6M: {
+            tooltip: {
+                trigger: "axis",
+                axisPointer: {
+                // 坐标轴指示器，坐标轴触发有效
+                type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
+                }
+            },
+            xAxis: {
+                splitLine: {
+                show: true
+                },
+                axisLine: {
+                lineStyle: {
+                    color: "#fff"
+                }
+                },
+                axisLabel: {
+                color: "#fff",
+                fontSize: 16
+                },
+                type: "category",
+                data: [
+                
+                ]
+            },
+            yAxis: {
+                // show:false,
+                splitLine: {
+                show: true
+                },
+                axisLine: {
+                lineStyle: {
+                    color: "#fff"
+                }
+                },
+                axisLabel: {
+                color: "#fff",
+                fontSize: 16
+                },
+                type: "value"
+            },
+            series: [
+                {
+                data: [],
+                type: "line",
+                smooth: true
+                }
+            ]
+            },
+            top3: {
+            data: [
+                { timeDesc: 0, CountPercent: 0, TopThreeCount: 0 },
+                { timeDesc: 0, CountPercent: 0, TopThreeCount: 0 },
+                { timeDesc: 0, CountPercent: 0, TopThreeCount: 0 }
+            ],
+            total: 0
+            },
+            age: {
+            color: ["#ffa9a9", "#fed971", "#80c5ff"],
+            tooltip: {
+                trigger: "item",
+                formatter: "{a} <br/>{b}: {c} ({d}%)"
+            },
+            series: [
+                {
+                name: "年龄分布",
+                type: "pie",
+                radius: ["50%", "70%"],
+                avoidLabelOverlap: false,
+                label: {
+                    normal: {
+                    show: true
+                    },
+                    emphasis: {
+                    show: true,
+                    textStyle: {
+                        fontSize: "30",
+                        fontWeight: "bold"
+                    }
+                    }
+                },
+                data: []
+                }
+            ]
+            },
+            sex: {
+            girlCountPer: "",
+            boyCountPer: ""
+            },
+            returnGuestAge: {
+            color: ["#faff81", "#e06d06", "#ffc53a"],
+            tooltip: {
+                trigger: "item",
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            series: [
+                {
+                name: "回头客年龄分布",
+                type: "pie",
+                radius: "55%",
+                center: ["50%", "60%"],
+                data: [],
+                itemStyle: {
+                    emphasis: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: "rgba(0, 0, 0, 0.5)"
+                    }
+                }
+                }
+            ]
+            }
+        }
+        this.ShopHotChartReport=[]
+        this.cityList= []
+        this.floorlist= []
+        this.FloorStorePointReport= []
+        this.FloorStoreDataReport= []
+        this.floorImg= ""
+        this.floorId= 0
+        this.floorIndex= 0
+        this.floorIdHot= 0
+        this.floorHotImg= ""
+        this.floorHotIndex= 0
+        this.floorMapWidth= 0
+        this.floorMapWidthpro= 0
+        //   this.charts= {}
+        this.ShopId= 0
+        this.SPIndex= {}
+        this.shopCustomer= {}
+        this.customer= {}
+        this.indexTop= {
+            yearcount: {},
+            city: {},
+            rent: {},
+            instore: {}
+        }
+        this.compete= {}
+
+        this.charts.percent.setOption(this.data.percent)
+        this.charts.industry.setOption(this.data.industry)
+        this.charts.agePercent.setOption(this.data.returnGuestAge)
+        this.charts.last6M.setOption(this.data.last6M);
+        this.charts.age.setOption(this.data.age);
+        this.charts.weekCount.setOption(this.data.weekCount);
+    },
+    getShopHotChartReport(){
+           this.$http.get(this.$api.ShopHotChartReport()+'') 
     }
   },
   mounted() {
