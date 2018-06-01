@@ -380,6 +380,7 @@ var echarts = require("echarts");
 // // 引入柱状图组件
 require("echarts/lib/chart/bar");
 require("echarts/lib/chart/pie");
+require("echarts/lib/chart/heatmap");
 // // 引入提示框和title组件
 require("echarts/lib/component/tooltip");
 require("echarts/lib/component/title");
@@ -1070,6 +1071,7 @@ export default {
           }
           this.getFloorStoreDataReport();
           this.getFloorStorePointReport();
+          this.getShopHotChartReport();
         });
     },
     getbd_BusCategory() {
@@ -1103,7 +1105,7 @@ export default {
       img.src = this.floorHotImg;
       this.floorHotMapWidth = img.width;
       this.floorHotMapWidthpro = img.width / 562;
-
+     
       this.getShopHotChartReport();
     },
     getmalllist() {
@@ -1407,56 +1409,84 @@ export default {
         `?token=${this.$store.state.token}&FloorId=${this.floorIdHot}&ShopId=${
           this.ShopId
         }&start=2018-05-01&end=2018-05-31`;
-      console.log(url);
       this.$http.get(url).then(res => {
         //   console.log(res);
-        for (var i = 0; i < res.data.result.length; i++) {
-          var obj = res.data.result[i];
-          this.ShopHotChartReport[i] = [
-            obj.point.split(",")[0],
-            obj.point.split(",")[1],
-            600
-          ];
-        }
-        console.log("321312312", this.ShopHotChartReport);
-        this.charts.hot = echarts.init(document.getElementById("hotMapData"));
+        if (res.data.result.length > 0) {
+          for (var i = 0; i < res.data.result.length; i++) {
+            var point = res.data.result[i].point.split(",");
+            this.ShopHotChartReport[i] = [
+              parseInt(point[0] / this.floorHotMapWidthpro),
+              parseInt(point[1] / this.floorHotMapWidthpro),
+              res.data.result[i].countdata
+            ];
+          }
 
-        var option = {
-          title: {
-            text: "热力图自定义样式"
-          },
-          series: [
-            {
-              type: "heatmap",
-              data: this.ShopHotChartReport,
-              hoverable: false,
-              gradientColors: [
-                {
-                  offset: 0.4,
-                  color: "green"
+          this.ShopHotChartReport = this.ShopHotChartReport.map(function(item) {
+            return [item[1], item[0], item[2] || "-"];
+          });
+          // console.log("321312312", this.ShopHotChartReport);
+          this.charts.hot = echarts.init(document.getElementById("hotMapData"));
+          var xdata = new Array(562);
+
+          for (var i = 0; i <= 562; i++) {
+            xdata[i] = i;
+          }
+          var ydata = new Array(493);
+          for (var i = 0; i <= 493; i++) {
+            ydata[i] = i;
+          }
+
+          var option = {
+            tooltip: {
+              position: "top"
+            },
+            animation: false,
+            xAxis: {
+              type: "category",
+              data: xdata,
+              splitArea: {
+                show: false
+              },
+              show: false
+            },
+            yAxis: {
+              type: "category",
+              data: ydata,
+              splitArea: {
+                show: false
+              },
+              show: false
+            },
+            visualMap: {
+              min: 0,
+              max: 10,
+              calculable: false,
+              orient: "horizontal",
+              left: "center",
+              bottom: "15%"
+            },
+            series: [
+              {
+                name: "Punch Card",
+                type: "heatmap",
+                data: this.ShopHotChartReport,
+                label: {
+                  normal: {
+                    show: true
+                  }
                 },
-                {
-                  offset: 0.5,
-                  color: "yellow"
-                },
-                {
-                  offset: 0.8,
-                  color: "orange"
-                },
-                {
-                  offset: 1,
-                  color: "red"
+                itemStyle: {
+                  emphasis: {
+                    shadowBlur: 10,
+                    shadowColor: "rgba(0, 0, 0, 0.5)"
+                  }
                 }
-              ],
-              minAlpha: 0.2,
-              valueScale: 2,
-              opacity: 0.6
-            }
-          ]
-        };
+              }
+            ]
+          };
 
-        // 为echarts对象加载数据
-        this.charts.hot.setOption(option);
+          this.charts.hot.setOption(option);
+        }
       });
     }
   },
@@ -1933,8 +1963,8 @@ export default {
               #competeIMG {
                 // background-image: url("../../../assets/images/compete.png");
                 // height: 574px;
-                // margin-top: 36px;
-                // background-repeat: no-repeat;
+ // margin-top: 36px;
+ // background-repeat: no-repeat;
                 // background-position: center;
                 position: relative;
                 // padding-top: 40px;
@@ -1947,7 +1977,6 @@ export default {
                   line-height: 18px;
                   position: absolute;
                   background-color: rgba(0, 0, 0, 0.3);
-
                   color: #fff;
                 }
                 > img {
@@ -2129,7 +2158,6 @@ export default {
     }
   }
 }
-
 .search {
   padding-left: 20px;
   color: #fff;
