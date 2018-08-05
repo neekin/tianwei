@@ -11,6 +11,7 @@
          <span class="fa fa-file-text"></span> 商圈报告
        </router-link></li>
        <li><router-link to='/rtdevice'><span class="fa fa-sitemap"></span>   实时设备</router-link></li>  
+       <li><router-link to='/devicemonitor'><span class="fa fa-sitemap"></span>设备监控</router-link></li>  
    </ul>
       <p class='title'>系统管理</p>
    <ul>

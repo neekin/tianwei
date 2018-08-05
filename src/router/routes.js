@@ -10,6 +10,8 @@ import guestdata from '@/pages/bigdata/guestData'
 import bcreport from '@/pages/bigdata/busCircleReport'
 import rtdevice from '@/pages/bigdata/realTimeDevice'
 
+import deviceMonitor from '@/pages/bigdata/deviceMonitor'
+
 export default [{
         path: '/',
         redirect: '/guestdata'
@@ -62,5 +64,11 @@ export default [{
         path: '/rtdevice',
         name: 'rtdevice',
         component: rtdevice
+    }
+    ,
+    {
+        path: '/devicemonitor',
+        name: 'devicemonitor',
+        component: deviceMonitor
     }
 ]
