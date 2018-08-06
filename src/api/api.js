@@ -194,6 +194,15 @@ var Api = {
     },
     getShopHotChartReport(){
         return this.getApi('/BusData/getShopHotChartReport')
+    },
+    getDeviceList(params){
+        return this.getApi('/Device/getDeviceList')+ "?" + this.Params(params)
+    },
+    getDevice(){
+        return this.getApi('/Device/getDevice')
+    },
+    setDevice(){
+        return this.getApi('/Device/setDevice')
     }
 
 };

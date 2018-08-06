@@ -27,7 +27,7 @@
                       <div class="title">现场照片列表</div>
                       <div class="buttons">
                           <button>+抓拍现场</button>
-                          <button>修改配置</button>
+                          <button @click='show'> 修改配置</button>
                       </div>
                   </div>
                   <div class="context1">
@@ -40,20 +40,7 @@
               </div>
           </div>
         </container>
-        <div class="mask">
-        <div class="changeModal">
-            <div class='devmodel'>
-
-            </div>
-          <Tabs :animated="false">
-                <TabPane label="基本配置">标签一的内容</TabPane>
-                <TabPane label="网络配置">标签二的内容</TabPane>
-                <TabPane label="LOT配置">标签三的内容</TabPane>
-                 <TabPane label="服务器配置">标签三的内容</TabPane>
-          </Tabs>
-        </div>
-        </div>
-
+        <Modal v-if='dev' :dev='dev' @cancel='cancel' @confirm='confirm' />
     </div>
 </template>
 <script>
@@ -61,281 +48,130 @@ import headnav from "../../components/headnav.vue";
 import sidebar from "../../components/sidebar";
 import container from "../../components/container";
 import searchBox from "@/pages/components/list/search";
+import Modal from "./modal";
 export default {
   components: {
     headnav,
     sidebar,
     container,
-    searchBox
+    searchBox,
+    Modal
   },
   data() {
     return {
-      list: [
-        {
-          num: 1,
-          dev_id: "1234",
-          shop_id: 1,
-          dev_dec: "devdec-测试设置功能",
-          worktime_start: "00:25:00",
-          worktime_end: "22:55:00",
-          software_ver: "ver 5.2.7(2018-5-11)",
-          hardware_ver: "ver 1.0",
-          uid: "546325",
-          identity: "12",
-          in_enabled: 1,
-          out_enabled: 1,
-          direction: 0,
-          divline_result_in_count: 0,
-          divline_result_out_count: 48,
-          Storage_format_state: 0,
-          Reboot_state: 0,
-          Restore_state: 0,
-          Inout_clear_state: 0,
-          Img_state: 0,
-          Img_url: "http://mg.skycount.com.cn/CountImg/10005/1234.jpg"
-        },
-        {
-          num: 2,
-          dev_id: "1234",
-          shop_id: 1,
-          dev_dec: "devdec-测试设置功能",
-          worktime_start: "00:25:00",
-          worktime_end: "22:55:00",
-          software_ver: "ver 5.2.7(2018-5-11)",
-          hardware_ver: "ver 1.0",
-          uid: "546325",
-          identity: "12",
-          in_enabled: 1,
-          out_enabled: 1,
-          direction: 0,
-          divline_result_in_count: 0,
-          divline_result_out_count: 48,
-          Storage_format_state: 0,
-          Reboot_state: 0,
-          Restore_state: 0,
-          Inout_clear_state: 0,
-          Img_state: 0,
-          Img_url: "http://mg.skycount.com.cn/CountImg/10005/1234.jpg"
-        },
-        {
-          num: 3,
-          dev_id: "1234",
-          shop_id: 1,
-          dev_dec: "devdec-测试设置功能",
-          worktime_start: "00:25:00",
-          worktime_end: "22:55:00",
-          software_ver: "ver 5.2.7(2018-5-11)",
-          hardware_ver: "ver 1.0",
-          uid: "546325",
-          identity: "12",
-          in_enabled: 1,
-          out_enabled: 1,
-          direction: 0,
-          divline_result_in_count: 0,
-          divline_result_out_count: 48,
-          Storage_format_state: 0,
-          Reboot_state: 0,
-          Restore_state: 0,
-          Inout_clear_state: 0,
-          Img_state: 0,
-          Img_url: "http://mg.skycount.com.cn/CountImg/10005/1234.jpg"
-        },
-        {
-          num: 4,
-          dev_id: "1234",
-          shop_id: 1,
-          dev_dec: "devdec-测试设置功能",
-          worktime_start: "00:25:00",
-          worktime_end: "22:55:00",
-          software_ver: "ver 5.2.7(2018-5-11)",
-          hardware_ver: "ver 1.0",
-          uid: "546325",
-          identity: "12",
-          in_enabled: 1,
-          out_enabled: 1,
-          direction: 0,
-          divline_result_in_count: 0,
-          divline_result_out_count: 48,
-          Storage_format_state: 0,
-          Reboot_state: 0,
-          Restore_state: 0,
-          Inout_clear_state: 0,
-          Img_state: 0,
-          Img_url: "http://mg.skycount.com.cn/CountImg/10005/1234.jpg"
-        },
-        {
-          num: 5,
-          dev_id: "1234",
-          shop_id: 1,
-          dev_dec: "devdec-测试设置功能",
-          worktime_start: "00:25:00",
-          worktime_end: "22:55:00",
-          software_ver: "ver 5.2.7(2018-5-11)",
-          hardware_ver: "ver 1.0",
-          uid: "546325",
-          identity: "12",
-          in_enabled: 1,
-          out_enabled: 1,
-          direction: 0,
-          divline_result_in_count: 0,
-          divline_result_out_count: 48,
-          Storage_format_state: 0,
-          Reboot_state: 0,
-          Restore_state: 0,
-          Inout_clear_state: 0,
-          Img_state: 0,
-          Img_url: "http://mg.skycount.com.cn/CountImg/10005/1234.jpg"
-        },
-        {
-          num: 6,
-          dev_id: "1234",
-          shop_id: 1,
-          dev_dec: "devdec-测试设置功能",
-          worktime_start: "00:25:00",
-          worktime_end: "22:55:00",
-          software_ver: "ver 5.2.7(2018-5-11)",
-          hardware_ver: "ver 1.0",
-          uid: "546325",
-          identity: "12",
-          in_enabled: 1,
-          out_enabled: 1,
-          direction: 0,
-          divline_result_in_count: 0,
-          divline_result_out_count: 48,
-          Storage_format_state: 0,
-          Reboot_state: 0,
-          Restore_state: 0,
-          Inout_clear_state: 0,
-          Img_state: 0,
-          Img_url: "http://mg.skycount.com.cn/CountImg/10005/1234.jpg"
-        },
-        {
-          num: 7,
-          dev_id: "1234",
-          shop_id: 1,
-          dev_dec: "devdec-测试设置功能",
-          worktime_start: "00:25:00",
-          worktime_end: "22:55:00",
-          software_ver: "ver 5.2.7(2018-5-11)",
-          hardware_ver: "ver 1.0",
-          uid: "546325",
-          identity: "12",
-          in_enabled: 1,
-          out_enabled: 1,
-          direction: 0,
-          divline_result_in_count: 0,
-          divline_result_out_count: 48,
-          Storage_format_state: 0,
-          Reboot_state: 0,
-          Restore_state: 0,
-          Inout_clear_state: 0,
-          Img_state: 0,
-          Img_url: "http://mg.skycount.com.cn/CountImg/10005/1234.jpg"
-        },
-        {
-          num: 8,
-          dev_id: "1234",
-          shop_id: 1,
-          dev_dec: "devdec-测试设置功能",
-          worktime_start: "00:25:00",
-          worktime_end: "22:55:00",
-          software_ver: "ver 5.2.7(2018-5-11)",
-          hardware_ver: "ver 1.0",
-          uid: "546325",
-          identity: "12",
-          in_enabled: 1,
-          out_enabled: 1,
-          direction: 0,
-          divline_result_in_count: 0,
-          divline_result_out_count: 48,
-          Storage_format_state: 0,
-          Reboot_state: 0,
-          Restore_state: 0,
-          Inout_clear_state: 0,
-          Img_state: 0,
-          Img_url: "http://mg.skycount.com.cn/CountImg/10005/1234.jpg"
-        },
-        {
-          num: 9,
-          dev_id: "1234",
-          shop_id: 1,
-          dev_dec: "devdec-测试设置功能",
-          worktime_start: "00:25:00",
-          worktime_end: "22:55:00",
-          software_ver: "ver 5.2.7(2018-5-11)",
-          hardware_ver: "ver 1.0",
-          uid: "546325",
-          identity: "12",
-          in_enabled: 1,
-          out_enabled: 1,
-          direction: 0,
-          divline_result_in_count: 0,
-          divline_result_out_count: 48,
-          Storage_format_state: 0,
-          Reboot_state: 0,
-          Restore_state: 0,
-          Inout_clear_state: 0,
-          Img_state: 0,
-          Img_url: "http://mg.skycount.com.cn/CountImg/10005/1234.jpg"
-        },
-        {
-          num: 10,
-          dev_id: "1234",
-          shop_id: 1,
-          dev_dec: "devdec-测试设置功能",
-          worktime_start: "00:25:00",
-          worktime_end: "22:55:00",
-          software_ver: "ver 5.2.7(2018-5-11)",
-          hardware_ver: "ver 1.0",
-          uid: "546325",
-          identity: "12",
-          in_enabled: 1,
-          out_enabled: 1,
-          direction: 0,
-          divline_result_in_count: 0,
-          divline_result_out_count: 48,
-          Storage_format_state: 0,
-          Reboot_state: 0,
-          Restore_state: 0,
-          Inout_clear_state: 0,
-          Img_state: 0,
-          Img_url: "http://mg.skycount.com.cn/CountImg/10005/1234.jpg"
-        }
-      ],
+      list: [],
       configObj: {},
       search: {},
       selecteddev: 0,
-      devid: ""
+      devid: "",
+      token: "",
+      params: {
+        devid: "",
+        devdes: "",
+        pageindex: 1,
+        pagesize: 10
+      },
+      dev: null
     };
   },
   methods: {
     getlist() {
-      // http://mg.skycount.com.cn/api/mg/Device/getDeviceList?devid=&devdes=&pagesize=10&pageindex=1&token=0652655AE62007936698F683D66EB9FA94B728014A98B27E37E61E33F6F4EF29
+      this.params.token = this.token;
+      this.$http.get(this.$api.getDeviceList(this.params)).then(res => {
+        console.log("list:", res);
+        if (res.data.code === 1) {
+          this.list = res.data.result;
+        }
+      });
+    },
+    getdev() {
+      this.$http
+        .get(this.$api.getDevice(), {
+          params: {
+            devid: this.devid,
+            token: this.token
+          }
+        })
+        .then(res => {
+          if (res.data.code === 1) {
+            this.dev = res.data.result;
+          }
+        });
     },
     changeStatus(num, devid) {
-      //   console.log(el.currentTarget);
-      //   el.currentTarget.className = "active";
       this.selecteddev = num;
       this.devid = devid;
+      console.log("devid", this.devid);
     },
     isActive(num) {
       return num === this.selecteddev;
+    },
+    show() {
+      if (this.selecteddev == 0) {
+        alert("没有选中照片");
+        return;
+      }
+      this.getdev();
+    },
+    cancel() {
+      this.dev = null;
+      this.selecteddev = 0;
+    },
+    confirm() {
+      this.fitparams();
+      var params = this.dev;
+      params.token = this.token;
+      this.$http.post(this.$api.setDevice(), params).then(res => {
+        console.log(res);
+        if (res.data.code == 1) {
+          alert("修改成功");
+         this.cancel();
+        }
+      });
+    },
+    fitparams() {
+      for (var key in this.dev) {
+        if (typeof this.dev[key] === "boolean") {
+          this.dev[key] = this.dev[key] == true ? 1 : 0;
+        }
+        if (typeof this.dev[key] === "object") {
+          for (var key in this.dev[key]) {
+            if (typeof this.dev[key] === "boolean") {
+              this.dev[key] = this.dev[key] == true ? 1 : 0;
+            }
+          }
+        }
+      }
     }
   },
-  computed: {}
+  computed: {},
+  mounted() {
+    this.token = this.$store.state.token;
+    this.getlist();
+  }
 };
 </script>
 <style lang='less' scoped>
 .header {
+  background-color: #a1a1a1;
   div {
     display: inline-block;
   }
   .title {
-    color: #fff;
-    font-size: 30px;
+    color: #000;
+    font-size: 26px;
     padding-left: 20px;
+    font-weight: 600;
   }
-  .buttons {
+  .buttons{
+   position: absolute;
+   right:0;
+   padding-right: 20px;
+   button{
+     height:30px;
+     font-size: 16px;
+     margin-left:20px;
+   }
   }
   text-align: justify;
 }
@@ -355,32 +191,6 @@ export default {
   li.active {
     background-color: rgba(255, 255, 255, 0.4);
   }
-}
-.mask {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.3);
-  z-index: 999;
-}
-.changeModal{
-    position: absolute;
-    top:40px;
-    z-index: 1000;
-    left:50%;
-    width: 524px;
-    height:829px;
-    margin-left: -200px;
-    background-color: #acacac;
-    border-radius: 10px;
-    padding: 12px;
-}
-.devmodel{
-    height:208px;
-    width: 500px;
-   background: #fff;
 }
 </style>
 
