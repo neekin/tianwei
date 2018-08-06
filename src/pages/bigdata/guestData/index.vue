@@ -88,8 +88,9 @@
                         <div class="rp_echarts" id="map"></div>
                     </div>
                     <div class="report_paiming pr" style="border:none">
-                        <Col span="12" style="position:absolute;top:-40px">
-                        <DatePicker id="datePick" :value="pickDate" format="yyyy/MM/dd" type="daterange" placement="bottom-start" placeholder="选择日期" style="width: 200px;"></DatePicker></Col>
+                        <i-col span="12" style="position:absolute;top:-40px">
+                            <DatePicker id="datePick" :value="pickDate" format="yyyy/MM/dd" type="daterange" placement="bottom-start" placeholder="选择日期" style="width: 200px;"></DatePicker>
+                        </i-col>
                         <div class="rp_paiming_left fl">
                             <table width="100%">
                                 <tr>
