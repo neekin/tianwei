@@ -16,7 +16,7 @@
                         请选择
                       </option>
                     </select>
-                                   设备ID：
+                    设备ID：
                     <input type="text">
                    
          
@@ -99,9 +99,15 @@ export default {
         });
     },
     changeStatus(num, devid) {
+      if(this.selecteddev===num)
+      {
+            this.selecteddev = 0;
+            this.devid = 0;
+            return;
+      }
       this.selecteddev = num;
       this.devid = devid;
-      console.log("devid", this.devid);
+      // console.log("devid", this.devid);
     },
     isActive(num) {
       return num === this.selecteddev;
@@ -122,7 +128,7 @@ export default {
       var params = this.dev;
       params.token = this.token;
       this.$http.post(this.$api.setDevice(), params).then(res => {
-        console.log(res);
+        // console.log(res);
         if (res.data.code == 1) {
           alert("修改成功");
          this.cancel();

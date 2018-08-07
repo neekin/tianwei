@@ -5,6 +5,9 @@
               <div class="title">视频信息</div>
                   <div class="img" style='margin-left:10px;'>
                     <img :src="dev.Img_url" alt="">
+                  	<m-img :zIndex='zIndex1'></m-img>
+                    <m-img :zIndex='zIndex2' :color='"blue"'></m-img>
+                    <!-- canvas -->
                   <div class='clearfix'>
                       <span style='color:green'>in:<i v-text='dev.divline_result_in_count'>0</i></span>
                       <span>
@@ -45,8 +48,8 @@
                   <div class="info">
                        <fieldset >
                     <legend>检测区域</legend>
-                    <button style='width:140px;margin-left:20px'>检测区域</button>
-                    <button style='width:140px;margin-left:20px'>基准线</button>
+                    <button style='width:140px;margin-left:20px' @click='zIndexAdd("area")'>检测区域</button>
+                    <button @click='zIndexAdd("base")' style='width:140px;margin-left:20px'>基准线</button>
                   </fieldset>
                             <fieldset >
                     <legend>算法参数</legend>
@@ -61,16 +64,17 @@
                            </tr>
                            <tr>
                              <td align='left'>进比例:</td>
-                             <td > <Slider   show-input :max=2 input-size='small'></Slider></td>
+                             <td > <Slider  :step='0.1' show-input :max=2 input-size='small'></Slider></td>
                            </tr>
                            <tr>
                              <td align='left'>出比例:</td>
-                             <td > <Slider   :max=2 show-input input-size='small'></Slider></td>
+                             <td > <Slider  :step='0.1' :max=2 show-input input-size='small'></Slider></td>
                            </tr>
                          </table>
                   </fieldset>
+                  <br>
                   <input type="checkbox" id='zero' v-model='dev.inout_clear_state'>
-                  <label for="zero">清零</label>
+                  <label for="zero" style='font-size:18px;margin-top:10px;'>清零</label>
 
                   </div>
             </div>
@@ -366,31 +370,88 @@
                 </TabPane>
           </Tabs>
           <div class="buttons">
-            <button @click='confirm'>确认提交</button>
+            <button @click='confirm' style='margin-right:260px;' >确认提交</button>
             <button @click='cancel'>取消提交</button>
           </div>
         </div>
         </div>
 </template>
 <script>
+import mImg from "./img"
+// import myCanvas from './mycanvas';
 export default {
+  components: { mImg },
   props: ["dev"],
   data() {
     return {
-      ftp_transfer_interval: 300
+      ftp_transfer_interval: 300,
+      baseShow:false,
+      areaSHow:false
     };
   },
   methods: {
     cancel() {
       this.$emit("cancel");
     },
-    confirm(){
-        this.$emit('confirm');
+    confirm() {
+      this.$emit("confirm");
     }
   },
   watch: {
     ftp_transfer_interval(value) {
       this.dev.ftp1_config.ftp1_ftp_transfer_interval = this.dev.ftp2_config.ftp2_ftp_transfer_interval = value;
+    }
+  },
+  mounted() {
+    var canvas = document.getElementById("canv");
+    var ctx = canvas.getContext("2d");
+    var points = [];
+    var pointx = 0;
+    var pointy = 0;
+    canvas.onmousemove = function(e) {
+      ctx.clearRect(0, 0, 400, 400);
+      draw();
+      if (points.length > 0) {
+        var px = points[points.length - 2];
+        var py = points[points.length - 1];
+        var mousePos = getMousePos(canvas, e);
+        drawline(px, py, mousePos.x, mousePos.y);
+      }
+    };
+    canvas.onmouseleave = function() {
+      ctx.clearRect(0, 0, 400, 400);
+      draw();
+    };
+
+    canvas.onclick = function(e) {
+      // var rect = oGetMousePos.getBoundingClientRect();
+      var mousePos = getMousePos(canvas, e);
+      points.push(mousePos.x, mousePos.y);
+      draw();
+    };
+    function draw() {
+      ctx.clearRect(0, 0, 400, 400);
+      for (var i = 2; i < points.length; i = i + 2) {
+        var x1 = points[i - 2];
+        var y1 = points[i - 1];
+        var x2 = points[i];
+        var y2 = points[i + 1];
+        drawline(x1, y1, x2, y2);
+      }
+    }
+    //获取鼠标指针坐标
+    function getMousePos(oContext, evt) {
+      var rect = oContext.getBoundingClientRect();
+      return {
+        x: evt.clientX - rect.left,
+        y: evt.clientY - rect.top
+      };
+    }
+    function drawline(x1, y1, x2, y2) {
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x2, y2);
+      ctx.stroke();
     }
   }
 };
@@ -434,23 +495,23 @@ export default {
     border-bottom: 1px solid #000;
     color: #fff;
   }
-  .lot{
+  .lot {
     //    table>tr>td:nth-of-type(2){
     //        width: 350px;
     //    }
-        table>tr>td:nth-of-type(4){
-            width: 60px;
-        }
-         table>tr>td:nth-of-type(4)>input[type='text']{
-             width: 120px;
-         }
-      table>tr>td:nth-of-type(2),
-      table>tr>td:nth-of-type(4){
-          text-align: left;
-      }
-       table>tr>td:nth-of-type(2)>input[type='text']{
-           width: 100%;
-       }
+    table > tr > td:nth-of-type(4) {
+      width: 60px;
+    }
+    table > tr > td:nth-of-type(4) > input[type="text"] {
+      width: 120px;
+    }
+    table > tr > td:nth-of-type(2),
+    table > tr > td:nth-of-type(4) {
+      text-align: left;
+    }
+    table > tr > td:nth-of-type(2) > input[type="text"] {
+      width: 100%;
+    }
   }
   .panel-body {
     height: 490px;
@@ -468,14 +529,14 @@ export default {
       display: inline-block;
       margin: 0 10px;
       padding: 10px;
-      table td{
-          padding: 10px;
+      table td {
+        padding: 10px;
       }
     }
   }
   .buttons {
     position: absolute;
-    bottom: 20px;
+    bottom: 10px;
     width: 100%;
     text-align: center;
     button {
@@ -492,16 +553,17 @@ export default {
   width: 700px;
   background: #fff;
   overflow: hidden;
-  .title{
-      height:38px;
-      background-color: #f1f1f1;
-      line-height: 38px;
-      border:1px solid #f1f1f1;
-      color:#000;
+  .title {
+    height: 38px;
+    background-color: #f1f1f1;
+    line-height: 38px;
+    border: 1px solid #f1f1f1;
+    color: #000;
   }
   .img {
     width: 300px;
     float: left;
+    position: relative;
 
     // height:165px;
     img {
@@ -535,15 +597,15 @@ input[readonly] {
 .ftpsetting table td input[type="text"] {
   width: 140px;
 }
-.devmodel span{
-    // border:1px solid #000;
-    width: 60px;
-    float: left;
-    i{
-        width: 40px;
-        text-align: center;
-        text-align: right;
-        display: inline-block;
-    }
+.devmodel span {
+  // border:1px solid #000;
+  width: 60px;
+  float: left;
+  i {
+    width: 40px;
+    text-align: center;
+    text-align: right;
+    display: inline-block;
+  }
 }
 </style>
