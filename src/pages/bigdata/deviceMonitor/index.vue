@@ -3,7 +3,7 @@
         <headnav></headnav>
         <sidebar></sidebar>
           <container>
-            <searchBox @search='getlist'>
+            <searchBox @search='getlist' style='color:#fff'>
                               区域选择：
                     <select >
                       <option value="0">
