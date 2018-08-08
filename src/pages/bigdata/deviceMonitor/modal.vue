@@ -1,12 +1,12 @@
 <template>
-            <div class="mask" >
+            <div class="mask tabs-style" >
         <div class="changeModal">
             <div class='devmodel'>
               <div class="title">视频信息</div>
                   <div class="img" style='margin-left:10px;'>
                     <img :src="dev.Img_url" alt="">
-                  	<m-img :zIndex='zIndex1'></m-img>
-                    <m-img :zIndex='zIndex2' :color='"blue"'></m-img>
+                  	<m-img :style='{"z-index":zIndex1}' :area='dev.surveyed_area'></m-img>
+                    <m-img :style='{"z-index":zIndex2}' :color='"blue"' :base='dev.datum_line_config'></m-img>
                     <!-- canvas -->
                   <div class='clearfix'>
                       <span style='color:green'>in:<i v-text='dev.divline_result_in_count'>0</i></span>
@@ -78,7 +78,7 @@
 
                   </div>
             </div>
-          <Tabs :animated="false">
+          <Tabs :animated="false" >
                 <TabPane label="基本配置">
                          <div class="paneltitle">
                            设备信息
@@ -113,7 +113,7 @@
         stroke-color="#43a3fb">
         <div class="demo-Circle-custom">
             <h1>数据空间</h1>
-     
+           <br>
             <span>
                 空闲
                   <i v-text=' parseInt(dev.storage_config.sd_block_free / dev.storage_config.sd_block_total * 100)+"%"'></i>
@@ -385,8 +385,9 @@ export default {
   data() {
     return {
       ftp_transfer_interval: 300,
-      baseShow:false,
-      areaSHow:false
+      zIndex1:2,
+      zIndex2:1,
+      isFrist:[0,0]
     };
   },
   methods: {
@@ -395,6 +396,15 @@ export default {
     },
     confirm() {
       this.$emit("confirm");
+    },
+    zIndexAdd(type){
+      if(type=='base'){
+        this.zIndex2 = 2;
+        this.zIndex1=1;
+      }else{
+        this.zIndex1 = 2;
+        this.zIndex2=1;
+      }
     }
   },
   watch: {
@@ -402,61 +412,15 @@ export default {
       this.dev.ftp1_config.ftp1_ftp_transfer_interval = this.dev.ftp2_config.ftp2_ftp_transfer_interval = value;
     }
   },
-  mounted() {
-    var canvas = document.getElementById("canv");
-    var ctx = canvas.getContext("2d");
-    var points = [];
-    var pointx = 0;
-    var pointy = 0;
-    canvas.onmousemove = function(e) {
-      ctx.clearRect(0, 0, 400, 400);
-      draw();
-      if (points.length > 0) {
-        var px = points[points.length - 2];
-        var py = points[points.length - 1];
-        var mousePos = getMousePos(canvas, e);
-        drawline(px, py, mousePos.x, mousePos.y);
-      }
-    };
-    canvas.onmouseleave = function() {
-      ctx.clearRect(0, 0, 400, 400);
-      draw();
-    };
-
-    canvas.onclick = function(e) {
-      // var rect = oGetMousePos.getBoundingClientRect();
-      var mousePos = getMousePos(canvas, e);
-      points.push(mousePos.x, mousePos.y);
-      draw();
-    };
-    function draw() {
-      ctx.clearRect(0, 0, 400, 400);
-      for (var i = 2; i < points.length; i = i + 2) {
-        var x1 = points[i - 2];
-        var y1 = points[i - 1];
-        var x2 = points[i];
-        var y2 = points[i + 1];
-        drawline(x1, y1, x2, y2);
-      }
-    }
-    //获取鼠标指针坐标
-    function getMousePos(oContext, evt) {
-      var rect = oContext.getBoundingClientRect();
-      return {
-        x: evt.clientX - rect.left,
-        y: evt.clientY - rect.top
-      };
-    }
-    function drawline(x1, y1, x2, y2) {
-      ctx.beginPath();
-      ctx.moveTo(x1, y1);
-      ctx.lineTo(x2, y2);
-      ctx.stroke();
-    }
+  mounted(){
+    console.log(this.dev);
   }
 };
 </script>
 <style lang="less" scoped>
+input[type='text']{
+  height:28px;
+}
 .mask {
   position: fixed;
   top: 0;
@@ -485,11 +449,24 @@ export default {
   border-radius: 10px;
   padding: 12px;
   button {
-    outline: 0;
-    border-radius: 4px;
-    background-color: #0094ff;
-    color: #fff;
-    padding: 4px;
+    // outline: 0;
+    // border-radius: 4px;
+    // background-color: #0094ff;
+    // color: #fff;
+    // padding: 4px;
+
+          padding: 0;
+          width: 96px;
+          height:28px;
+    // height: 38px;
+    background: #245ee2;
+    border-radius: 3px;
+    font-family: MicrosoftYaHei;
+    font-size: 16px;
+    color: #ffffff;
+    border: none;
+    outline: none;
+    line-height: 28px;
   }
   .paneltitle {
     border-bottom: 1px solid #000;
@@ -540,11 +517,22 @@ export default {
     width: 100%;
     text-align: center;
     button {
-      height: 34px;
-      font-size: 18px;
-      padding: 5px;
-      // line-height: 34px;
-      color: #fff;
+      // height: 34px;
+      // font-size: 18px;
+      // padding: 5px;
+      // // line-height: 34px;
+      // color: #fff;
+      padding: 0;
+          width: 96px;
+    height: 38px;
+    background: #245ee2;
+    border-radius: 3px;
+    font-family: MicrosoftYaHei;
+    font-size: 16px;
+    color: #ffffff;
+    border: none;
+    outline: none;
+    line-height: 38px;
     }
   }
 }
@@ -608,4 +596,41 @@ input[readonly] {
     display: inline-block;
   }
 }
+
+
+       .ivu-tabs-card > .ivu-tabs-content {
+        height: 120px;
+        margin-top: -16px;
+    }
+
+     .ivu-tabs-card > .ivu-tabs-content > .ivu-tabs-tabpane {
+        background: #fff;
+        padding: 16px;
+    }
+
+     .ivu-tabs.ivu-tabs-card > .ivu-tabs-bar .ivu-tabs-tab {
+        border-color: transparent;
+    }
+
+     .ivu-tabs-card > .ivu-tabs-bar .ivu-tabs-tab-active {
+        border-color: #fff;
+    }
+    .tab-style > .ivu-tabs.ivu-tabs-card > .ivu-tabs-bar .ivu-tabs-tab{
+        border-radius: 0;
+        background: #fff;
+    }
+    .tab-style > .ivu-tabs.ivu-tabs-card > .ivu-tabs-bar .ivu-tabs-tab-active{
+        border-top: 1px solid #3399ff;
+    }
+    .tab-style > .ivu-tabs.ivu-tabs-card > .ivu-tabs-bar .ivu-tabs-tab-active:before{
+        content: '';
+        display: block;
+        width: 100%;
+        height: 1px;
+        background: #3399ff;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
 </style>

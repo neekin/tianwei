@@ -175,8 +175,18 @@ export default {
    padding-right: 20px;
    button{
      height:30px;
-     font-size: 16px;
+    //  font-size: 16px;
      margin-left:20px;
+         width: 96px;
+    // height: 38px;
+    background: #245ee2;
+    border-radius: 3px;
+    font-family: MicrosoftYaHei;
+    font-size: 16px;
+    color: #ffffff;
+    border: none;
+    outline: none;
+    line-height: 30px;
    }
   }
   text-align: justify;
