@@ -34,6 +34,9 @@
                        <ul>
                            <li v-for='item in list' :key='item.num' @click='changeStatus(item.num,item.dev_id)' :class={active:isActive(item.num)} >
                                <img :src="item.Img_url" alt="">
+                               <p> <span>shop_id:</span> {{item.shop_id}}</p>
+                                <p> <span>dev_id:</span> {{item.dev_id}}</p>
+                                 <p style="width:220px; text-overflow:ellipsis;  white-space:nowrap;   overflow:hidden;"><span>dev_dec:</span> {{item.dev_dec}}</p>
                            </li>
                        </ul>
                   </div>
@@ -106,7 +109,6 @@ export default {
       }
       this.selecteddev = num;
       this.devid = devid;
-      // console.log("devid", this.devid);
     },
     isActive(num) {
       return num === this.selecteddev;
@@ -138,8 +140,6 @@ export default {
       var params = this.dev;
       params.token = this.token;
       this.$http.post(this.$api.setDevice(), params).then(res => {
-
-        // console.log(res);
         if (res.data.code == 1) {
           alert(res.data.message);
           this.cancel();
@@ -218,6 +218,12 @@ export default {
     display: flex;
     margin: 10px;
     padding: 10px;
+    flex-direction: column;
+    color:#fff;
+    width: 220px;
+    p{
+      font-size: 16px;
+    }
   }
   li.active {
     background-color: rgba(255, 255, 255, 0.4);
