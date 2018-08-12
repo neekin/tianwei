@@ -1,14 +1,23 @@
 <template>
-    <canvas ref='canv' id='canvas' :width="width" :height='height' @mousemove="mousemove" @mouseleave='mouseleave' @click='click'></canvas>
+    <canvas ref='canv' id='canvas'
+            :width="width"
+            :height='height'
+            @mousemove="mousemove"
+            @mouseleave='mouseleave'
+            @click='click'
+            @contextmenu="test"
+            @dblclick="dblclick"
+
+    ></canvas>
 </template>
 <script>
 export default {
   props: {
     width: {
-      default: 230
+      default: 320
     },
     height: {
-      default: 230
+      default: 240
     },
     color: {
       default: "red"
@@ -22,19 +31,25 @@ export default {
     area:{
       default:null
     }
+
   },
   data() {
     return {
       ctx: null,
-      points: []
+      points: [],
+      isDraw:false
     };
   },
   methods: {
     init() {
+      // console.log(this.isDraw)
       if (!this.ctx) {
         this.ctx = this.$refs.canv.getContext("2d");
       }
       this.ctx.strokeStyle = this.color;
+    },
+    dblclick(){
+      this.dontDraw()
     },
     mouseleave() {
       this.init();
@@ -49,20 +64,49 @@ export default {
         var px = this.points[this.points.length - 2];
         var py = this.points[this.points.length - 1];
         var mousePos = this.getMousePos(this.$refs.canv, e);
-        this.drawline(px, py, mousePos.x, mousePos.y);
+        if(this.isDraw){
+          this.drawline(px, py, mousePos.x, mousePos.y);
+        }
+
       }
     },
     click(e) {
       var mousePos = this.getMousePos(this.$refs.canv, e);
-      this.points.push(mousePos.x, mousePos.y);
+      if(this.points.length==20 )
+      {
+        this.dontDraw()
+      }
+      if(this.points.length<20 && this.isDraw)
+      {
+        this.points.push(mousePos.x, mousePos.y);
+      }
       var count = parseInt(this.points.length/2);
-      // console.log(this.points);
        if(this.base){
-        this.base.datum_line_point_cnt =count ;
+          this.base.datum_line_point_cnt =count ;
        }else{
-            this.area.surveyed_area_point_cnt=count;
+          this.area.surveyed_area_point_cnt=count;
        }
       this.draw();
+    },
+    test(e){
+      e.preventDefault();
+      if(e.button==2)
+      {
+        this.dontDraw()
+        if(this.base){
+          this.base.datum_line_path_points= this.points=[];
+        }else{
+          this.area.surveyed_area_path_points=this.points=[];
+        }
+        this.draw();
+      }
+
+    },
+    canDraw(){
+      this.isDraw=true;
+    },
+    dontDraw(){
+      this.isDraw= false;
     },
     draw() {
       this.init();
@@ -86,7 +130,10 @@ export default {
       this.ctx.beginPath();
       this.ctx.moveTo(x1, y1);
       this.ctx.lineTo(x2, y2);
-      this.ctx.stroke();
+
+        this.ctx.stroke();
+
+
     }
   },
   mounted(){

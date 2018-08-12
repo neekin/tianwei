@@ -5,8 +5,8 @@
               <div class="title">视频信息</div>
                   <div class="img" style='margin-left:10px;'>
                     <img :src="dev.Img_url" alt="">
-                  	<m-img :style='{"z-index":zIndex1}' :area='dev.surveyed_area'></m-img>
-                    <m-img :style='{"z-index":zIndex2}' :color='"blue"' :base='dev.datum_line_config'></m-img>
+                  	<m-img :style='{"z-index":zIndex1}' :area='dev.surveyed_area' ref="area"></m-img>
+                    <m-img :style='{"z-index":zIndex2}' :color='"blue"' :base='dev.datum_line_config' ref="base"></m-img>
                     <!-- canvas -->
                   <div class='clearfix'>
                       <span style='color:green'>in:<i v-text='dev.divline_result_in_count'>0</i></span>
@@ -56,19 +56,26 @@
                          <table border='0'  cellpadding="0">
                            <tr>
                              <td align='left'>灵敏度:</td>
-                             <td width='290'> <Slider  show-input input-size='small' v-model='dev.arithmetic_param.dect_thr' :max=100></Slider></td>
+                             <td width='260'>
+                               <div class="num num1">
+                               <Slider  show-input input-size='small' v-model='dev.arithmetic_param.dect_thr' :max=100></Slider>
+                               </div>
+                             </td>
                            </tr>
                            <tr>
                              <td align='left'>人头大小:</td>
-                             <td > <Slider  show-input :max=120 input-size='small' v-model='dev.arithmetic_param.head_size'></Slider></td>
+                             <td >
+                               <div class="num num2">
+                               <Slider  show-input :max=120 input-size='small' v-model='dev.arithmetic_param.head_size'></Slider></div>
+                             </td>
                            </tr>
                            <tr>
                              <td align='left'>进比例:</td>
-                             <td > <Slider  :step='0.1' show-input :max=2 input-size='small'></Slider></td>
+                             <td ><div class="num num3"> <Slider  :step='0.1' show-input :max=2 input-size='small'></Slider></div></td>
                            </tr>
                            <tr>
                              <td align='left'>出比例:</td>
-                             <td > <Slider  :step='0.1' :max=2 show-input input-size='small'></Slider></td>
+                             <td > <div class="num num3"><Slider  :step='0.1' :max=2 show-input input-size='small'></Slider></div></td>
                            </tr>
                          </table>
                   </fieldset>
@@ -164,7 +171,8 @@
                       <br>
                       <br>
                       时区选择: <select v-model='dev.time_config.zone'>
-                          <option value="(UTC+08:00)Beijing,Shanghai">(UTC+08:00)Beijing,Shanghai</option>
+                       <option v-for="(item,index) in utc" :key="index" :value="item">{{item}}</option>
+
                       </select>
                         <br>
                       <br>
@@ -387,7 +395,156 @@ export default {
       ftp_transfer_interval: 300,
       zIndex1:2,
       zIndex2:1,
-      isFrist:[0,0]
+      isFrist:[0,0],
+      utc:["(UTC-11:00)Apia",
+        "(UTC-11:00)Samoa",
+        "(UTC-10:00)Hawaii",
+        "(UTC-09:00)Alaska",
+        "(UTC-07:00)Arizona",
+        "(UTC-07:00)Chihuahua,La Paz,Mazatlan",
+        "(UTC-07:00)Mountain Time (US & Canada)",
+        "(UTC-06:00)Belize,Belmopan",
+        "(UTC-06:00)Guatemala",
+        "(UTC-06:00)Managua",
+        "(UTC-06:00)Mexico_City",
+        "(UTC-06:00)Tegucigalpa",
+        "(UTC-05:00)Bogota",
+        "(UTC-05:00)Cuba",
+        "(UTC-05:00)Guayaquil",
+        "(UTC-05:00)Jamaica",
+        "(UTC-05:00)Lima",
+        "(UTC-05:00)Nassau",
+        "(UTC-05:00)New_York",
+        "(UTC-05:00)Panama",
+        "(UTC-05:00)Port-au-Prince",
+        "(UTC-05:00)Toronto",
+        "(UTC-04:00)Asuncion",
+        "(UTC-04:00)Caracas",
+        "(UTC-04:00)Dominica",
+        "(UTC-04:00)Guyana",
+        "(UTC-04:00)Santiago",
+        "(UTC-03:00)Buenos_Aires",
+        "(UTC-03:00)Montevideo",
+        "(UTC-03:00)Paramaribo",
+        "(UTC-01:00)Azores",
+        "(UTC-01:00)Cape Verde Is",
+        "(UTC)Accra",
+        "(UTC)Banjul,Serrekunda",
+        "(UTC)Bissau",
+        "(UTC)Casablanca",
+        "(UTC)Conakry",
+        "(UTC)Dakar",
+        "(UTC)Freetown",
+        "(UTC)Iceland,Reykjavik",
+        "(UTC)Ireland,Dublin",
+        "(UTC)Lome",
+        "(UTC)Mali,Bamako",
+        "(UTC)Monrovia,Yamoussouklo,Abidjan",
+        "(UTC)Nouakchott",
+        "(UTC)Ouagadougou",
+        "(UTC)Portugal,lisbon",
+        "(UTC)U.K,London",
+        "(UTC+01:00)Abuja,Lagos",
+        "(UTC+01:00)Andorra",
+        "(UTC+01:00)Angola,Luanda",
+        "(UTC+01:00)Austria,Vienna",
+        "(UTC+01:00)Bangui",
+        "(UTC+01:00)Belgrade",
+        "(UTC+01:00)Bern,Zurich",
+        "(UTC+01:00)Brazzaville",
+        "(UTC+01:00)Cameroon,Yaounde,Douala",
+        "(UTC+01:00)Czech,Prague",
+        "(UTC+01:00)Denmark,Copenhagen",
+        "(UTC+01:00)Germany，Berlin",
+        "(UTC+01:00)Hungary,Budapest",
+        "(UTC+01:00)Italy,Rome",
+        "(UTC+01:00)Libreville",
+        "(UTC+01:00)Liechtenstein,Vaduz,Schaan",
+        "(UTC+01:00)Ljubljana",
+        "(UTC+01:00)Luxembourg",
+        "(UTC+01:00)Malabo",
+        "(UTC+01:00)Malta,Valletta",
+        "(UTC+01:00)Monaco",
+        "(UTC+01:00)Ndjamena",
+        "(UTC+01:00)Netherlands,Amsterdam,Belgium,Bruxelles",
+        "(UTC+01:00)Niger Niamey",
+        "(UTC+01:00)Norway,Oslo",
+        "(UTC+01:00)Podgorica",
+        "(UTC+01:00)Poland",
+        "(UTC+01:00)Porto-Novo,Cotonou",
+        "(UTC+01:00)San_Marino,Serravalle",
+        "(UTC+01:00)Sarajevo",
+        "(UTC+01:00)Skopje",
+        "(UTC+01:00)Slovakia,Bratislava",
+        "(UTC+01:00)Spain,Madrid",
+        "(UTC+01:00)Sweden,Stockholm",
+        "(UTC+01:00)Tunis",
+        "(UTC+01:00)Vatican",
+        "(UTC+01:00)Warsaw",
+        "(UTC+01:00)Zagreb",
+        "(UTC+02:00)Amman",
+        "(UTC+02:00)Bulgaria,Sofia",
+        "(UTC+02:00)Chisinau",
+        "(UTC+02:00)Damascus",
+        "(UTC+02:00)Egypt,Cairo",
+        "(UTC+02:00)Finland,Helsinki",
+        "(UTC+02:00)France,Paris",
+        "(UTC+02:00)Greece,Athens",
+        "(UTC+02:00)Israel",
+        "(UTC+02:00)Istanbul",
+        "(UTC+02:00)Jerusalem",
+        "(UTC+02:00)Libya,Tripoli",
+        "(UTC+02:00)Minsk",
+        "(UTC+02:00)Nicosia",
+        "(UTC+02:00)Riga",
+        "(UTC+02:00)Romania,Bucharest",
+        "(UTC+02:00)Tallinn",
+        "(UTC+02:00)Tel_Aviv",
+        "(UTC+02:00)Turkey",
+        "(UTC+02:00)Vilnius",
+        "(UTC+03:00)Baghdad",
+        "(UTC+03:00)Bahrain",
+        "(UTC+03:00)Beirut",
+        "(UTC+03:00)Jerusalem",
+        "(UTC+03:00)Khartoum,Juba",
+        "(UTC+03:00)Moscow",
+        "(UTC+03:00)Qatar,Doha",
+        "(UTC+03:30)Tehran",
+        "(UTC+04:00)Baku",
+        "(UTC+04:00)Dubai",
+        "(UTC+04:00)Muscat",
+        "(UTC+04:00)Tbilisi",
+        "(UTC+04:00)Yerevan",
+        "(UTC+04:30)Kabul",
+        "(UTC+05:00)Dushanbe",
+        "(UTC+05:00)Karachi",
+        "(UTC+05:00)Tashkent",
+        "(UTC+05:30)Colombo",
+        "(UTC+06:00)Bishkek",
+        "(UTC+06:00)Dhaka",
+        "(UTC+06:00)Thimphu",
+        "(UTC+07:00)Bangkok",
+        "(UTC+07:00)Phnom_Penh",
+        "(UTC+07:00)Vientiane",
+        "(UTC+08:00)Beijing,Shanghai",
+        "(UTC+08:00)Kuala_Lumpur",
+        "(UTC+08:00)Manila",
+        "(UTC+08:00)Singapore",
+        "(UTC+08:00)Ulan_Bator",
+        "(UTC+09:00)Dili",
+        "(UTC+09:00)Japan",
+        "(UTC+09:00)Pyongyang",
+        "(UTC+09:00)Seoul",
+        "(UTC+09:00)Tokyo",
+        "(UTC+10:00)Canberra",
+        "(UTC+10:00)Sydney",
+        "(UTC+11:00)Magadan",
+        "(UTC+11:00)Solomon Is.,New Caledonia",
+        "(UTC+12:00)Auckland",
+        "(UTC+12:00)Funafuti",
+        "(UTC+12:00)Majuro",
+        "(UTC+12:00)Nauru",
+      ]
     };
   },
   methods: {
@@ -401,9 +558,13 @@ export default {
       if(type=='base'){
         this.zIndex2 = 2;
         this.zIndex1=1;
+        this.$refs.base.canDraw()
+        this.$refs.area.dontDraw()
       }else{
         this.zIndex1 = 2;
         this.zIndex2=1;
+        this.$refs.base.dontDraw()
+        this.$refs.area.canDraw()
       }
     }
   },
@@ -443,7 +604,7 @@ input[type='text']{
   z-index: 1000;
   left: 50%;
   width: 724px;
-  height: 929px;
+  height: 1000px;
   margin-left: -362px;
   background-color: #acacac;
   border-radius: 10px;
@@ -491,7 +652,7 @@ input[type='text']{
     }
   }
   .panel-body {
-    height: 490px;
+    height: 530px;
     background-color: #fff;
     text-align: center;
     .pie {
@@ -537,7 +698,7 @@ input[type='text']{
   }
 }
 .devmodel {
-  height: 308px;
+  height: 340px;
   width: 700px;
   background: #fff;
   overflow: hidden;
@@ -549,18 +710,18 @@ input[type='text']{
     color: #000;
   }
   .img {
-    width: 300px;
+    width: 320px;
     float: left;
     position: relative;
 
     // height:165px;
     img {
-      height: 230px;
+      height: 240px;
     }
   }
   .info {
     float: right;
-    width: 380px;
+    width: 360px;
     fieldset {
       padding: 10px;
       margin-right: 10px;
@@ -632,5 +793,46 @@ input[readonly] {
         top: 0;
         left: 0;
     }
+
+  .num{
+    position: relative;
+    color:#acacac;
+       &:before{
+         /*content: '0';*/
+         position: absolute;
+         top:6px;
+         left:0;
+       }
+      &:after{
+        /*content: '100';*/
+        position: absolute;
+        top:6px;
+        right:100px;
+      }
+  }
+  .num1{
+    &:before{
+      content: '0';
+    }
+    &:after{
+      content: '100';
+    }
+  }
+.num2{
+  &:before{
+    content: '0';
+  }
+  &:after{
+    content: '120';
+  }
+}
+.num3{
+  &:before{
+    content: '0';
+  }
+  &:after{
+    content: '2';
+  }
+}
 
 </style>

@@ -138,7 +138,14 @@ export default {
       var params = this.dev;
       params.token = this.token;
       this.$http.post(this.$api.setDevice(), params).then(res => {
-        alert(res.data.message);
+
+        // console.log(res);
+        if (res.data.code == 1) {
+          alert(res.data.message);
+          this.cancel();
+        }else{
+          alert(res.data.message)
+        }
       });
     },
     fitparams() {
