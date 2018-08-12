@@ -203,6 +203,10 @@ var Api = {
     },
     setDevice(){
         return this.getApi('/Device/setDevice')
+    },
+    setDevImg(){
+        // POST /api/mg/Device/setDevImg
+        return this.getApi('/Device/setDevImg')
     }
 
 };

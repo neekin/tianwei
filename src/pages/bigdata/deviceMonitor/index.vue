@@ -26,7 +26,7 @@
                   <div class="header">
                       <div class="title">现场照片列表</div>
                       <div class="buttons">
-                          <button>+抓拍现场</button>
+                          <button @click='setimg'>+抓拍现场</button>
                           <button @click='show'> 修改配置</button>
                       </div>
                   </div>
@@ -99,11 +99,10 @@ export default {
         });
     },
     changeStatus(num, devid) {
-      if(this.selecteddev===num)
-      {
-            this.selecteddev = 0;
-            this.devid = 0;
-            return;
+      if (this.selecteddev === num) {
+        this.selecteddev = 0;
+        this.devid = 0;
+        return;
       }
       this.selecteddev = num;
       this.devid = devid;
@@ -114,10 +113,21 @@ export default {
     },
     show() {
       if (this.selecteddev == 0) {
-        alert("没有选中照片");
+        alert("没有选中镜头");
         return;
       }
       this.getdev();
+    },
+    setimg() {
+      if (this.selecteddev == 0) {
+        alert("没有选中镜头");
+        return;
+      }
+      this.$http
+        .post(this.$api.setDevImg()+'?devid='+this.devid+'&token='+this.token)
+        .then(res => {
+            alert(res.data.message)
+        });
     },
     cancel() {
       this.dev = null;
@@ -128,11 +138,7 @@ export default {
       var params = this.dev;
       params.token = this.token;
       this.$http.post(this.$api.setDevice(), params).then(res => {
-        // console.log(res);
-        if (res.data.code == 1) {
-          alert("修改成功");
-         this.cancel();
-        }
+        alert(res.data.message);
       });
     },
     fitparams() {
@@ -159,35 +165,37 @@ export default {
 </script>
 <style lang='less' scoped>
 .header {
-  background-color: #a1a1a1;
+  border-top:1px solid #f1f1f1;
+    border-bottom:1px solid #f1f1f1;
+  padding: 10px;
   div {
     display: inline-block;
   }
   .title {
-    color: #000;
+    color: #FFF;
     font-size: 26px;
     padding-left: 20px;
     font-weight: 600;
   }
-  .buttons{
-   position: absolute;
-   right:0;
-   padding-right: 20px;
-   button{
-     height:30px;
-    //  font-size: 16px;
-     margin-left:20px;
-         width: 96px;
-    // height: 38px;
-    background: #245ee2;
-    border-radius: 3px;
-    font-family: MicrosoftYaHei;
-    font-size: 16px;
-    color: #ffffff;
-    border: none;
-    outline: none;
-    line-height: 30px;
-   }
+  .buttons {
+    position: absolute;
+    right: 0;
+    padding-right: 20px;
+    button {
+      height: 30px;
+      //  font-size: 16px;
+      margin-left: 20px;
+      width: 96px;
+      // height: 38px;
+      background: #245ee2;
+      border-radius: 3px;
+      font-family: MicrosoftYaHei;
+      font-size: 16px;
+      color: #ffffff;
+      border: none;
+      outline: none;
+      line-height: 30px;
+    }
   }
   text-align: justify;
 }
