@@ -131,7 +131,9 @@ export default {
         // console.log(res);
         if (res.data.code == 1) {
           alert("修改成功");
-         this.cancel();
+          this.cancel();
+        }else{
+          alert(res.data.message)
         }
       });
     },
