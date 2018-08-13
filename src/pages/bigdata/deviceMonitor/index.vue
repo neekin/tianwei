@@ -4,7 +4,7 @@
         <sidebar></sidebar>
           <container>
             <searchBox @search='getlist' style='color:#fff'>
-                              区域选择：
+                              <!-- 区域选择：
                     <select >
                       <option value="0">
                         请选择
@@ -15,9 +15,9 @@
                       <option value="0">
                         请选择
                       </option>
-                    </select>
+                    </select> -->
                     设备ID：
-                    <input type="text">
+                    <input type="text" v-model='search.id'>
                    
          
             </searchBox>
@@ -64,7 +64,9 @@ export default {
     return {
       list: [],
       configObj: {},
-      search: {},
+      search: {
+        id:''
+      },
       selecteddev: 0,
       devid: "",
       token: "",
@@ -80,6 +82,7 @@ export default {
   methods: {
     getlist() {
       this.params.token = this.token;
+      this.params.devid = this.search.id;
       this.$http.get(this.$api.getDeviceList(this.params)).then(res => {
         console.log("list:", res);
         if (res.data.code === 1) {
