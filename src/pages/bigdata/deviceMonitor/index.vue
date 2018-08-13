@@ -36,7 +36,7 @@
                                <img :src="item.Img_url" alt="">
                                <p> <span>shop_id:</span> {{item.shop_id}}</p>
                                 <p> <span>dev_id:</span> {{item.dev_id}}</p>
-                                 <p style="width:220px; text-overflow:ellipsis;  white-space:nowrap;   overflow:hidden;"><span>dev_dec:</span> {{item.dev_dec}}</p>
+                                 <p style="width:200px; text-overflow:ellipsis;  white-space:nowrap;   overflow:hidden;"><span>dev_dec:</span> {{item.dev_dec}}</p>
                            </li>
                        </ul>
                   </div>
@@ -215,12 +215,14 @@ export default {
     padding-right: 60px;
   }
   li {
-    display: flex;
+    display: inline-block;
     margin: 10px;
     padding: 10px;
-    flex-direction: column;
     color:#fff;
     width: 220px;
+    img{
+      width: 100%;
+    }
     p{
       font-size: 16px;
     }
