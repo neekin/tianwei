@@ -5,8 +5,8 @@
               <div class="title">视频信息</div>
                   <div class="img" style='margin-left:10px;'>
                     <img :src="dev.Img_url" alt="">
-                  	<m-img :style='{"z-index":zIndex1}' :area='dev.surveyed_area' ref="area"></m-img>
-                    <m-img :style='{"z-index":zIndex2}' :color='"blue"' :base='dev.datum_line_config' ref="base"></m-img>
+                  	<m-img :style='{"z-index":zIndex1}' :dev='dev' :base="'base'" ref="area"></m-img>
+                    <m-img :style='{"z-index":zIndex2}' :color='"blue"' :dev='dev' :area="'area'" ref="base"></m-img>
                     <!-- canvas -->
                   <div class='clearfix'>
                       <span style='color:green'>in:<i v-text='dev.divline_result_in_count'>0</i></span>

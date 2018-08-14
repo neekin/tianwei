@@ -30,6 +30,9 @@ export default {
     },
     area: {
       default: null
+    },
+    dev: {
+      default: null
     }
   },
   data() {
@@ -78,20 +81,25 @@ export default {
       }
       var count = parseInt(this.points.length / 2);
       if (this.base) {
-        this.base.datum_line_point_cnt = count;
+        this.dev.datum_line_config.datum_line_point_cnt = count;
       } else {
-        this.area.surveyed_area_point_cnt = count;
+        this.dev.surveyed_area.surveyed_area_point_cnt = count;
       }
       this.draw();
+      //   if (this.base) {
+      //     console.log(this.base.datum_line_path_points)
+      // } else {
+      //     console.log( this.area.surveyed_area_path_points)
+      // }
     },
     test(e) {
       e.preventDefault();
       if (e.button == 2) {
         this.dontDraw();
         if (this.base) {
-          this.base.datum_line_path_points = this.points = [];
+          this.dev.datum_line_config.datum_line_path_points = this.points = [];
         } else {
-          this.area.surveyed_area_path_points = this.points = [];
+          this.dev.surveyed_area.surveyed_area_path_points = this.points = [];
         }
         this.draw();
       }
@@ -124,18 +132,31 @@ export default {
       this.ctx.beginPath();
       this.ctx.moveTo(x1, y1);
       this.ctx.lineTo(x2, y2);
-
       this.ctx.stroke();
     }
   },
   mounted() {
     if (this.base) {
-      this.points = this.base.datum_line_path_points;
+      this.points = this.dev.datum_line_config.datum_line_path_points;
     } else {
-      this.points = this.area.surveyed_area_path_points;
+      this.points = this.dev.surveyed_area.surveyed_area_path_points;
     }
     if (!this.points) {
-      this.points = [];
+      if (this.base) {
+        this.dev.datum_line_config.datum_line_path_points = [];
+        this.points = this.dev.datum_line_config.datum_line_path_points 
+      } else {
+        this.dev.surveyed_area.surveyed_area_path_points = [];
+        this.points = this.dev.surveyed_area.surveyed_area_path_points ;
+      }
+
+      // this.points = [];
+
+      // if (this.base) {
+      //   this.base.datum_line_config.datum_line_path_points[];
+      // } else {
+      //   this.area.surveyed_area.surveyed_area_path_points = this.points;
+      // }
     }
     this.draw();
   }
