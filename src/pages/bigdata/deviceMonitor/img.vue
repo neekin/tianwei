@@ -25,19 +25,18 @@ export default {
     zIndex: {
       default: 0
     },
-    base:{
-      default:null
+    base: {
+      default: null
     },
-    area:{
-      default:null
+    area: {
+      default: null
     }
-
   },
   data() {
     return {
       ctx: null,
       points: [],
-      isDraw:false
+      isDraw: false
     };
   },
   methods: {
@@ -48,8 +47,8 @@ export default {
       }
       this.ctx.strokeStyle = this.color;
     },
-    dblclick(){
-      this.dontDraw()
+    dblclick() {
+      this.dontDraw();
     },
     mouseleave() {
       this.init();
@@ -64,49 +63,44 @@ export default {
         var px = this.points[this.points.length - 2];
         var py = this.points[this.points.length - 1];
         var mousePos = this.getMousePos(this.$refs.canv, e);
-        if(this.isDraw){
+        if (this.isDraw) {
           this.drawline(px, py, mousePos.x, mousePos.y);
         }
-
       }
     },
     click(e) {
       var mousePos = this.getMousePos(this.$refs.canv, e);
-      if(this.points.length==20 )
-      {
-        this.dontDraw()
+      if (this.points.length == 20) {
+        this.dontDraw();
       }
-      if(this.points.length<20 && this.isDraw)
-      {
+      if (this.points.length < 20 && this.isDraw) {
         this.points.push(mousePos.x, mousePos.y);
       }
-      var count = parseInt(this.points.length/2);
-       if(this.base){
-          this.base.datum_line_point_cnt =count ;
-       }else{
-          this.area.surveyed_area_point_cnt=count;
-       }
+      var count = parseInt(this.points.length / 2);
+      if (this.base) {
+        this.base.datum_line_point_cnt = count;
+      } else {
+        this.area.surveyed_area_point_cnt = count;
+      }
       this.draw();
     },
-    test(e){
+    test(e) {
       e.preventDefault();
-      if(e.button==2)
-      {
-        this.dontDraw()
-        if(this.base){
-          this.base.datum_line_path_points= this.points=[];
-        }else{
-          this.area.surveyed_area_path_points=this.points=[];
+      if (e.button == 2) {
+        this.dontDraw();
+        if (this.base) {
+          this.base.datum_line_path_points = this.points = [];
+        } else {
+          this.area.surveyed_area_path_points = this.points = [];
         }
         this.draw();
       }
-
     },
-    canDraw(){
-      this.isDraw=true;
+    canDraw() {
+      this.isDraw = true;
     },
-    dontDraw(){
-      this.isDraw= false;
+    dontDraw() {
+      this.isDraw = false;
     },
     draw() {
       this.init();
@@ -122,7 +116,7 @@ export default {
     getMousePos(oContext, evt) {
       var rect = oContext.getBoundingClientRect();
       return {
-        x: parseInt( evt.clientX - rect.left),
+        x: parseInt(evt.clientX - rect.left),
         y: parseInt(evt.clientY - rect.top)
       };
     },
@@ -131,16 +125,17 @@ export default {
       this.ctx.moveTo(x1, y1);
       this.ctx.lineTo(x2, y2);
 
-        this.ctx.stroke();
-
-
+      this.ctx.stroke();
     }
   },
-  mounted(){
-    if(this.base){
+  mounted() {
+    if (this.base) {
       this.points = this.base.datum_line_path_points;
-    }else{
-       this.points = this.area.surveyed_area_path_points;
+    } else {
+      this.points = this.area.surveyed_area_path_points;
+    }
+    if (!this.points) {
+      this.points = [];
     }
     this.draw();
   }

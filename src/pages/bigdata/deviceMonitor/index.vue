@@ -34,9 +34,9 @@
                        <ul>
                            <li v-for='item in list' :key='item.num' @click='changeStatus(item.num,item.dev_id)' :class={active:isActive(item.num)} >
                                <img :src="item.Img_url" alt="">
-                               <p> <span>shop_id:</span> {{item.shop_id}}</p>
-                                <p> <span>dev_id:</span> {{item.dev_id}}</p>
-                                 <p style="width:200px; text-overflow:ellipsis;  white-space:nowrap;   overflow:hidden;"><span>dev_dec:</span> {{item.dev_dec}}</p>
+                               <p> <span>SHOPID:</span> {{item.shop_id}}</p>
+                                <p> <span>设 &nbsp;备 ID:</span> {{item.dev_id}}</p>
+                                 <p style="width:200px; text-overflow:ellipsis;  white-space:nowrap;   overflow:hidden;"><span>设备描述:</span> {{item.dev_dec}}</p>
                            </li>
                        </ul>
                   </div>
@@ -99,6 +99,7 @@ export default {
           }
         })
         .then(res => {
+          console.log(res);
           if (res.data.code === 1) {
             this.dev = res.data.result;
           }
@@ -228,6 +229,13 @@ export default {
     }
     p{
       font-size: 16px;
+      line-height: 24px;
+      span{
+        display: inline-block;
+        width: 80px;
+        text-align: justify;
+        text-justify:distribute-all-lines;
+      }
     }
   }
   li.active {
