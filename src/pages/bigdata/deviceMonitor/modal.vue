@@ -566,17 +566,17 @@ export default {
       if (type == "base") {
         this.zIndex2 = 1;
         this.zIndex1 = 2;
+        this.dev.datum_line_config.datum_line_path_points=[]
         this.$refs.base.canDraw();
         this.$refs.area.dontDraw();
-        this.$refs.base.points = [];
         this.$refs.base.draw();
         // this.dev
       } else {
         this.zIndex1 = 1;
         this.zIndex2 = 2;
+        this.dev.surveyed_area.surveyed_area_path_points=[]
         this.$refs.base.dontDraw();
         this.$refs.area.canDraw();
-        this.$refs.area.points = [];
         this.$refs.area.draw();
       }
     },

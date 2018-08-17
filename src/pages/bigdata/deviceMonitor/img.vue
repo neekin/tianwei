@@ -54,7 +54,7 @@ export default {
       this.ctx.strokeStyle = this.color;
     },
     dblclick(e) {
-      this.click(e);
+      // this.click(e);
       this.dontDraw();
     },
     mouseleave() {
@@ -131,26 +131,6 @@ export default {
     }
   },
   mounted() {
-    // console.log('base',this.base)
-    // console.log('area',this.area)
-    // if (this.base) {
-    //   this.points = this.dev.datum_line_config.datum_line_path_points;
-    // } else {
-    //    console.log('区域初始化')
-    //    this.points = this.dev.surveyed_area.surveyed_area_path_points;
-    //    console.log(this.points)
-    // }
-    // if (!this.points) {
-    //   if (this.base) {
-    //     this.dev.datum_line_config.datum_line_path_points = [];
-    //     this.points = this.dev.datum_line_config.datum_line_path_points 
-    //   } else {
-    //     console.log('区域初始化')
-    //     this.dev.surveyed_area.surveyed_area_path_points = [];
-    //     this.points = this.dev.surveyed_area.surveyed_area_path_points ;
-    //      console.log(this.points)
-    //   }
-    // }
     this.draw();
   }
 };
