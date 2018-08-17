@@ -33,12 +33,15 @@ export default {
     },
     dev: {
       default: null
+    },
+    'points':{
+      default:Array
     }
   },
   data() {
     return {
       ctx: null,
-      points: [],
+      // points: [],
       isDraw: false
     };
   },
@@ -50,7 +53,8 @@ export default {
       }
       this.ctx.strokeStyle = this.color;
     },
-    dblclick() {
+    dblclick(e) {
+      this.click(e);
       this.dontDraw();
     },
     mouseleave() {
@@ -72,35 +76,26 @@ export default {
       }
     },
     click(e) {
+      //  console.log(this.points);
       var mousePos = this.getMousePos(this.$refs.canv, e);
       if (this.points.length == 20) {
         this.dontDraw();
       }
       if (this.points.length < 20 && this.isDraw) {
+        console.log(this.points);
         this.points.push(mousePos.x, mousePos.y);
       }
-      var count = parseInt(this.points.length / 2);
-      if (this.base) {
-        this.dev.datum_line_config.datum_line_point_cnt = count;
-      } else {
-        this.dev.surveyed_area.surveyed_area_point_cnt = count;
-      }
       this.draw();
-      //   if (this.base) {
-      //     console.log(this.base.datum_line_path_points)
-      // } else {
-      //     console.log( this.area.surveyed_area_path_points)
-      // }
     },
     test(e) {
       e.preventDefault();
       if (e.button == 2) {
         this.dontDraw();
-        if (this.base) {
-          this.dev.datum_line_config.datum_line_path_points = this.points = [];
-        } else {
-          this.dev.surveyed_area.surveyed_area_path_points = this.points = [];
-        }
+        // if (this.base) {
+        //   this.dev.datum_line_config.datum_line_path_points = this.points;
+        // } else {
+        //   this.dev.surveyed_area.surveyed_area_path_points = this.points ;
+        // }
         this.draw();
       }
     },
@@ -136,28 +131,26 @@ export default {
     }
   },
   mounted() {
-    if (this.base) {
-      this.points = this.dev.datum_line_config.datum_line_path_points;
-    } else {
-      this.points = this.dev.surveyed_area.surveyed_area_path_points;
-    }
-    if (!this.points) {
-      if (this.base) {
-        this.dev.datum_line_config.datum_line_path_points = [];
-        this.points = this.dev.datum_line_config.datum_line_path_points 
-      } else {
-        this.dev.surveyed_area.surveyed_area_path_points = [];
-        this.points = this.dev.surveyed_area.surveyed_area_path_points ;
-      }
-
-      // this.points = [];
-
-      // if (this.base) {
-      //   this.base.datum_line_config.datum_line_path_points[];
-      // } else {
-      //   this.area.surveyed_area.surveyed_area_path_points = this.points;
-      // }
-    }
+    // console.log('base',this.base)
+    // console.log('area',this.area)
+    // if (this.base) {
+    //   this.points = this.dev.datum_line_config.datum_line_path_points;
+    // } else {
+    //    console.log('区域初始化')
+    //    this.points = this.dev.surveyed_area.surveyed_area_path_points;
+    //    console.log(this.points)
+    // }
+    // if (!this.points) {
+    //   if (this.base) {
+    //     this.dev.datum_line_config.datum_line_path_points = [];
+    //     this.points = this.dev.datum_line_config.datum_line_path_points 
+    //   } else {
+    //     console.log('区域初始化')
+    //     this.dev.surveyed_area.surveyed_area_path_points = [];
+    //     this.points = this.dev.surveyed_area.surveyed_area_path_points ;
+    //      console.log(this.points)
+    //   }
+    // }
     this.draw();
   }
 };

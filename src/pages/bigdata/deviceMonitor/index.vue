@@ -44,6 +44,7 @@
           </div>
         </container>
         <Modal v-if='dev' :dev='dev' @cancel='cancel' @confirm='confirm' />
+        <notice ref='message'></notice>
     </div>
 </template>
 <script>
@@ -52,20 +53,22 @@ import sidebar from "../../components/sidebar";
 import container from "../../components/container";
 import searchBox from "@/pages/components/list/search";
 import Modal from "./modal";
+import notice from './notice'
 export default {
   components: {
     headnav,
     sidebar,
     container,
     searchBox,
-    Modal
+    Modal,
+    notice
   },
   data() {
     return {
       list: [],
       configObj: {},
       search: {
-        id:''
+        id: ""
       },
       selecteddev: 0,
       devid: "",
@@ -119,20 +122,30 @@ export default {
     },
     show() {
       if (this.selecteddev == 0) {
-        alert("没有选中镜头");
+        // alert("没有选中镜头");
+        this.$refs.message.show({title:'警告',text:'没有选中镜头'},'error')
+        // notice.show({title:'警告',text:'没有选中镜头'},'error')
         return;
       }
       this.getdev();
     },
     setimg() {
       if (this.selecteddev == 0) {
-        alert("没有选中镜头");
+        // alert("没有选中镜头");
+         this.$refs.message.show({title:'警告',text:'没有选中镜头'},'error')
         return;
       }
       this.$http
-        .post(this.$api.setDevImg()+'?devid='+this.devid+'&token='+this.token)
+        .post(
+          this.$api.setDevImg() +
+            "?devid=" +
+            this.devid +
+            "&token=" +
+            this.token
+        )
         .then(res => {
-            alert(res.data.message)
+          // alert(res.data.message);
+           this.$refs.message.show({title:'消息',text:res.data.message},'info')
         });
     },
     cancel() {
@@ -140,29 +153,28 @@ export default {
       this.selecteddev = 0;
     },
     confirm() {
-      this.fitparams();
+      this.fitparams(this.dev);
       var params = this.dev;
       params.token = this.token;
       this.$http.post(this.$api.setDevice(), params).then(res => {
         if (res.data.code == 1) {
-          alert(res.data.message);
-          this.cancel();
-        }else{
-          alert(res.data.message)
+          // alert(res.data.message);
+           this.$refs.message.show({title:'消息',text:res.data.message},'info')
+           this.cancel();
+        } else {
+          // alert(res.data.message);
+           this.$refs.message.show({title:'消息',text:res.data.message},'info')
         }
       });
     },
-    fitparams() {
-      for (var key in this.dev) {
-        if (typeof this.dev[key] === "boolean") {
-          this.dev[key] = this.dev[key] == true ? 1 : 0;
+    fitparams(obj) {
+      for (var key in obj) {
+        if (typeof obj[key] === "boolean") {
+          obj[key] = obj[key] == true ? 1 : 0;
         }
-        if (typeof this.dev[key] === "object") {
-          for (var key in this.dev[key]) {
-            if (typeof this.dev[key] === "boolean") {
-              this.dev[key] = this.dev[key] == true ? 1 : 0;
-            }
-          }
+        if(typeof obj[key] ==='object')
+        {
+          this.fitparams(obj[key])
         }
       }
     }
@@ -176,14 +188,14 @@ export default {
 </script>
 <style lang='less' scoped>
 .header {
-  border-top:1px solid #f1f1f1;
-    border-bottom:1px solid #f1f1f1;
+  border-top: 1px solid #f1f1f1;
+  border-bottom: 1px solid #f1f1f1;
   padding: 10px;
   div {
     display: inline-block;
   }
   .title {
-    color: #FFF;
+    color: #fff;
     font-size: 26px;
     padding-left: 20px;
     font-weight: 600;
@@ -222,19 +234,19 @@ export default {
     display: inline-block;
     margin: 10px;
     padding: 10px;
-    color:#fff;
+    color: #fff;
     width: 220px;
-    img{
+    img {
       width: 100%;
     }
-    p{
+    p {
       font-size: 16px;
       line-height: 24px;
-      span{
+      span {
         display: inline-block;
         width: 80px;
         text-align: justify;
-        text-justify:distribute-all-lines;
+        text-justify: distribute-all-lines;
       }
     }
   }

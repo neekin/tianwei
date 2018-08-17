@@ -5,8 +5,8 @@
               <div class="title">视频信息</div>
                   <div class="img" style='margin-left:10px;'>
                     <img :src="dev.Img_url" alt="">
-                  	<m-img :style='{"z-index":zIndex1}' :dev='dev' :base="'base'" ref="area"></m-img>
-                    <m-img :style='{"z-index":zIndex2}' :color='"blue"' :dev='dev' :area="'area'" ref="base"></m-img>
+                  	<m-img :style='{"z-index":zIndex1}' :color='"blue"' :dev='dev' :base="'base'" ref="base" :points='dev.datum_line_config.datum_line_path_points'></m-img>
+                    <m-img :style='{"z-index":zIndex2}'   :dev='dev' :area="'area'" ref="area" :points='dev.surveyed_area.surveyed_area_path_points'></m-img>
                     <!-- canvas -->
                   <div class='clearfix'>
                       <span style='color:green'>in:<i v-text='dev.divline_result_in_count'>0</i></span>
@@ -71,11 +71,11 @@
                            </tr>
                            <tr>
                              <td align='left'>进比例:</td>
-                             <td ><div class="num num3"> <Slider  :step='0.1' show-input :max=2 input-size='small'></Slider></div></td>
+                             <td ><div class="num num3"> <Slider  v-model='dev.arithmetic_param.in_ratio' :step='0.1' show-input :max=2 input-size='small'></Slider></div></td>
                            </tr>
                            <tr>
                              <td align='left'>出比例:</td>
-                             <td > <div class="num num3"><Slider  :step='0.1' :max=2 show-input input-size='small'></Slider></div></td>
+                             <td > <div class="num num3"><Slider v-model='dev.arithmetic_param.out_ratio' :step='0.1' :max=2 show-input input-size='small'></Slider></div></td>
                            </tr>
                          </table>
                   </fieldset>
@@ -130,9 +130,9 @@
    </div>
        <br>
                     <div style='margin-bottom:20px;'>
-                               <input type="checkbox" id="reboot" v-model='dev.reboot_state'><label style='margin-right:20px;' for="reboot">重启</label> 
-                                       <input type="checkbox" id="setdefault" v-model='dev.restore_state'><label for="setdefault" style='margin-right:80px;'>恢复默认参数</label> 
-                                         <input type="checkbox" v-model='dev.storage_format_state' id="format"><label for="format">格式化空间数据</label> 
+                               <input type="checkbox"  id="reboot" v-model='dev.reboot_state'     @click='only("reboot")'><label style='margin-right:20px;' for="reboot">重启</label> 
+                               <input type="checkbox" id="setdefault" v-model='dev.restore_state' @click='only("restore")'><label for="setdefault" style='margin-right:80px;'>恢复默认参数</label> 
+                               <input type="checkbox" v-model='dev.storage_format_state' id="format" @click='only("storage")'><label for="format">格式化空间数据</label> 
                     </div>
                     <hr>
                     <table style='margin:0 auto'>
@@ -163,7 +163,7 @@
                     </table>
                     <div style='margin:20px 20px;'>
                       时间: <input type="text" v-model='dev.time_config.time'><input type="checkbox" id='settime'>  <label for="settime">设置时间</label>
-                    <input type="checkbox" id='synctime'><label for="synctime">同步主机时间</label>
+                    <input @click='synctime' type="checkbox" id='synctime'><label for="synctime">同步主机时间</label>
                     </div>
                     <hr>
                      <div style='margin-left:30px'>
@@ -312,7 +312,7 @@
                     服务器设置
                   </div>
                   <div class="panel-body ftp">
-                     生产记录的间隔(秒为单位,ftp1,ftp2公用): <input type="text" style='margin:10px;' v-model='ftp_transfer_interval'>
+                     生产记录的间隔(秒为单位,ftp1,ftp2公用): <input type="text" style='margin:10px;' v-model='dev.ftp1_config.ftp1_ftp_transfer_interval'>
                      <hr>
                      <fieldset class="ftpsetting">
                       <legend>ftp1</legend> 
@@ -385,7 +385,7 @@
         </div>
 </template>
 <script>
-import mImg from "./img"
+import mImg from "./img";
 // import myCanvas from './mycanvas';
 export default {
   components: { mImg },
@@ -393,10 +393,11 @@ export default {
   data() {
     return {
       ftp_transfer_interval: 300,
-      zIndex1:2,
-      zIndex2:1,
-      isFrist:[0,0],
-      utc:["(UTC-11:00)Apia",
+      zIndex1: 2,
+      zIndex2: 1,
+      isFrist: [0, 0],
+      utc: [
+        "(UTC-11:00)Apia",
         "(UTC-11:00)Samoa",
         "(UTC-10:00)Hawaii",
         "(UTC-09:00)Alaska",
@@ -543,7 +544,7 @@ export default {
         "(UTC+12:00)Auckland",
         "(UTC+12:00)Funafuti",
         "(UTC+12:00)Majuro",
-        "(UTC+12:00)Nauru",
+        "(UTC+12:00)Nauru"
       ]
     };
   },
@@ -552,35 +553,78 @@ export default {
       this.$emit("cancel");
     },
     confirm() {
+      this.dev.ftp2_config.ftp2_ftp_transfer_interval = this.dev.ftp1_config.ftp1_ftp_transfer_interval;
+      this.dev.datum_line_config.datum_line_point_cnt =this.dev.datum_line_config.datum_line_path_points.length==0?0:this.dev.datum_line_config.datum_line_path_points.length/2;
+      this.dev.surveyed_area.surveyed_area_point_cnt = this.dev.surveyed_area.surveyed_area_path_points.length==0?0:this.dev.surveyed_area.surveyed_area_path_points.length/2;
+  
       this.$emit("confirm");
     },
-    zIndexAdd(type){
-      if(type=='base'){
-        this.zIndex2 = 2;
-        this.zIndex1=1;
-        this.$refs.base.canDraw()
-        this.$refs.area.dontDraw()
-      }else{
+    synctime(){
+       this.dev.time_config.time = new Date().format('yyyy-MM-dd hh:mm');
+    },
+    zIndexAdd(type) {
+      if (type == "base") {
+        this.zIndex2 = 1;
         this.zIndex1 = 2;
-        this.zIndex2=1;
-        this.$refs.base.dontDraw()
-        this.$refs.area.canDraw()
+        this.$refs.base.canDraw();
+        this.$refs.area.dontDraw();
+        this.$refs.base.points = [];
+        this.$refs.base.draw();
+        // this.dev
+      } else {
+        this.zIndex1 = 1;
+        this.zIndex2 = 2;
+        this.$refs.base.dontDraw();
+        this.$refs.area.canDraw();
+        this.$refs.area.points = [];
+        this.$refs.area.draw();
+      }
+    },
+    only(type){
+    //  dev.reboot_state'     @click='only("reboot")'>
+    //  dev.restore_state' @click='only("restore")'>
+    //  v-model='dev.storage_format_state' @click='only("storage")
+      if(type=='reboot' ){
+        this.dev.restore_state = this.dev.storage_format_state = false;
+      }else if (type=='restore' ) {
+         this.dev.reboot_state = this.dev.storage_format_state = false;
+      }else if(type=='storage' ){
+         this.dev.reboot_state =   this.dev.restore_state = false;
       }
     }
   },
-  watch: {
-    ftp_transfer_interval(value) {
-      this.dev.ftp1_config.ftp1_ftp_transfer_interval = this.dev.ftp2_config.ftp2_ftp_transfer_interval = value;
-    }
-  },
-  mounted(){
+  // watch: {
+  //   ftp_transfer_interval(value) {
+  //     this.dev.ftp1_config.ftp1_ftp_transfer_interval = this.dev.ftp2_config.ftp2_ftp_transfer_interval = value;
+  //   }
+  // },
+  mounted() {
     console.log(this.dev);
   }
 };
+Date.prototype.format = function(format)
+{
+ var o = {
+ "M+" : this.getMonth()+1, //month
+ "d+" : this.getDate(),    //day
+ "h+" : this.getHours(),   //hour
+ "m+" : this.getMinutes(), //minute
+ "s+" : this.getSeconds(), //second
+ "q+" : Math.floor((this.getMonth()+3)/3),  //quarter
+ "S" : this.getMilliseconds() //millisecond
+ }
+ if(/(y+)/.test(format)) format=format.replace(RegExp.$1,
+ (this.getFullYear()+"").substr(4 - RegExp.$1.length));
+ for(var k in o)if(new RegExp("("+ k +")").test(format))
+ format = format.replace(RegExp.$1,
+ RegExp.$1.length==1 ? o[k] :
+ ("00"+ o[k]).substr((""+ o[k]).length));
+ return format;
+}
 </script>
 <style lang="less" scoped>
-input[type='text']{
-  height:28px;
+input[type="text"] {
+  height: 28px;
 }
 .mask {
   position: fixed;
@@ -616,9 +660,9 @@ input[type='text']{
     // color: #fff;
     // padding: 4px;
 
-          padding: 0;
-          width: 96px;
-          height:28px;
+    padding: 0;
+    width: 96px;
+    height: 28px;
     // height: 38px;
     background: #245ee2;
     border-radius: 3px;
@@ -684,16 +728,16 @@ input[type='text']{
       // // line-height: 34px;
       // color: #fff;
       padding: 0;
-          width: 96px;
-    height: 38px;
-    background: #245ee2;
-    border-radius: 3px;
-    font-family: MicrosoftYaHei;
-    font-size: 16px;
-    color: #ffffff;
-    border: none;
-    outline: none;
-    line-height: 38px;
+      width: 96px;
+      height: 38px;
+      background: #245ee2;
+      border-radius: 3px;
+      font-family: MicrosoftYaHei;
+      font-size: 16px;
+      color: #ffffff;
+      border: none;
+      outline: none;
+      line-height: 38px;
     }
   }
 }
@@ -758,81 +802,82 @@ input[readonly] {
   }
 }
 
-
-       .ivu-tabs-card > .ivu-tabs-content {
-        height: 120px;
-        margin-top: -16px;
-    }
-
-     .ivu-tabs-card > .ivu-tabs-content > .ivu-tabs-tabpane {
-        background: #fff;
-        padding: 16px;
-    }
-
-     .ivu-tabs.ivu-tabs-card > .ivu-tabs-bar .ivu-tabs-tab {
-        border-color: transparent;
-    }
-
-     .ivu-tabs-card > .ivu-tabs-bar .ivu-tabs-tab-active {
-        border-color: #fff;
-    }
-    .tab-style > .ivu-tabs.ivu-tabs-card > .ivu-tabs-bar .ivu-tabs-tab{
-        border-radius: 0;
-        background: #fff;
-    }
-    .tab-style > .ivu-tabs.ivu-tabs-card > .ivu-tabs-bar .ivu-tabs-tab-active{
-        border-top: 1px solid #3399ff;
-    }
-    .tab-style > .ivu-tabs.ivu-tabs-card > .ivu-tabs-bar .ivu-tabs-tab-active:before{
-        content: '';
-        display: block;
-        width: 100%;
-        height: 1px;
-        background: #3399ff;
-        position: absolute;
-        top: 0;
-        left: 0;
-    }
-
-  .num{
-    position: relative;
-    color:#acacac;
-       &:before{
-         /*content: '0';*/
-         position: absolute;
-         top:6px;
-         left:0;
-       }
-      &:after{
-        /*content: '100';*/
-        position: absolute;
-        top:6px;
-        right:100px;
-      }
-  }
-  .num1{
-    &:before{
-      content: '0';
-    }
-    &:after{
-      content: '100';
-    }
-  }
-.num2{
-  &:before{
-    content: '0';
-  }
-  &:after{
-    content: '120';
-  }
-}
-.num3{
-  &:before{
-    content: '0';
-  }
-  &:after{
-    content: '2';
-  }
+.ivu-tabs-card > .ivu-tabs-content {
+  height: 120px;
+  margin-top: -16px;
 }
 
+.ivu-tabs-card > .ivu-tabs-content > .ivu-tabs-tabpane {
+  background: #fff;
+  padding: 16px;
+}
+
+.ivu-tabs.ivu-tabs-card > .ivu-tabs-bar .ivu-tabs-tab {
+  border-color: transparent;
+}
+
+.ivu-tabs-card > .ivu-tabs-bar .ivu-tabs-tab-active {
+  border-color: #fff;
+}
+.tab-style > .ivu-tabs.ivu-tabs-card > .ivu-tabs-bar .ivu-tabs-tab {
+  border-radius: 0;
+  background: #fff;
+}
+.tab-style > .ivu-tabs.ivu-tabs-card > .ivu-tabs-bar .ivu-tabs-tab-active {
+  border-top: 1px solid #3399ff;
+}
+.tab-style
+  > .ivu-tabs.ivu-tabs-card
+  > .ivu-tabs-bar
+  .ivu-tabs-tab-active:before {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: #3399ff;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.num {
+  position: relative;
+  color: #acacac;
+  &:before {
+    /*content: '0';*/
+    position: absolute;
+    top: 6px;
+    left: 0;
+  }
+  &:after {
+    /*content: '100';*/
+    position: absolute;
+    top: 6px;
+    right: 100px;
+  }
+}
+.num1 {
+  &:before {
+    content: "0";
+  }
+  &:after {
+    content: "100";
+  }
+}
+.num2 {
+  &:before {
+    content: "0";
+  }
+  &:after {
+    content: "120";
+  }
+}
+.num3 {
+  &:before {
+    content: "0";
+  }
+  &:after {
+    content: "2";
+  }
+}
 </style>
