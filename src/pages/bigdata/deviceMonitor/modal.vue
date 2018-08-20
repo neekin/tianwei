@@ -162,8 +162,8 @@
                       </tr>
                     </table>
                     <div style='margin:20px 20px;'>
-                      时间: <input type="text" v-model='dev.time_config.time'><input type="checkbox" id='settime'>  <label for="settime">设置时间</label>
-                    <input @click='synctime' type="checkbox" id='synctime'><label for="synctime">同步主机时间</label>
+                      时间: <input type="text" v-model='dev.time_config.time'><input type="checkbox" id='settime' ref='settime' @click='synctime("set")'>  <label for="settime">设置时间</label>
+                    <input @click='synctime("sync")' type="checkbox" id='synctime' ref='synctime'><label for="synctime">同步主机时间</label>
                     </div>
                     <hr>
                      <div style='margin-left:30px'>
@@ -322,9 +322,10 @@
                        <table>
                            <tr>
                                <td>  ftp类型:  </td>
-                               <td><input type="radio" name='ftp1' v-model='dev.ftp1_config.ftp1_use_sftp' id='ftp1_use_sftp' value='1'> <label for="ftp1_use_sftp" style='margin-right:10px;'>sftp</label> 
-                       <input type="radio"  name='ftp1' v-model='dev.ftp1_config.ftp1_use_sftp' id='ftp1_use_ftp' value='2'><label for="ftp1_use_ftp" style='margin-right:10px;'>ftp</label> 
-                       <input type="radio"  name='ftp1' v-model='dev.ftp1_config.ftp1_use_sftp' id='ftp1_use_http' value='3'><label for="ftp1_use_http">http</label></td>
+                               <td>
+                                <input type="radio" name='ftp1' v-model='dev.ftp1_config.ftp1_use_sftp' id='ftp1_use_sftp' value='1'> <label for="ftp1_use_sftp" style='margin-right:10px;'>sftp</label> 
+                                <input type="radio"  name='ftp1' v-model='dev.ftp1_config.ftp1_use_sftp' id='ftp1_use_ftp' value='0'><label for="ftp1_use_ftp" style='margin-right:10px;'>ftp</label> 
+                                <input type="radio"  name='ftp1' v-model='dev.ftp1_config.ftp1_use_sftp' id='ftp1_use_http' value='2'><label for="ftp1_use_http">http</label></td>
                            </tr>
                          <tr>
                            <td width='100'>服务器地址:</td>
@@ -352,9 +353,10 @@
                        <table>
                            <tr>
                                <td> ftp类型:</td>
-                               <td>  <input type="radio" name='ftp2' v-model='dev.ftp2_config.ftp2_use_sftp' id='ftp2_use_sftp' value='1'> <label for="ftp2_use_sftp" style='margin-right:10px;'>sftp</label> 
-                       <input type="radio"  name='ftp2' v-model='dev.ftp2_config.ftp2_use_sftp' id='ftp2_use_ftp' value='2'><label for="ftp2_use_ftp" style='margin-right:10px;'>ftp</label> 
-                       <input type="radio"  name='ftp2' v-model='dev.ftp2_config.ftp2_use_sftp' id='ftp2_use_http' value='3'><label for="ftp2_use_http">http</label> </td>
+                               <td>  
+                                <input type="radio" name='ftp2' v-model='dev.ftp2_config.ftp2_use_sftp' id='ftp2_use_sftp' value='1'> <label for="ftp2_use_sftp" style='margin-right:10px;'>sftp</label> 
+                            <input type="radio"  name='ftp2' v-model='dev.ftp2_config.ftp2_use_sftp' id='ftp2_use_ftp' value='0'><label for="ftp2_use_ftp" style='margin-right:10px;'>ftp</label> 
+                            <input type="radio"  name='ftp2' v-model='dev.ftp2_config.ftp2_use_sftp' id='ftp2_use_http' value='2'><label for="ftp2_use_http">http</label> </td>
                            </tr>
                          <tr>
                            <td width='100'>服务器地址:</td>
@@ -559,8 +561,17 @@ export default {
   
       this.$emit("confirm");
     },
-    synctime(){
-       this.dev.time_config.time = new Date().format('yyyy-MM-dd hh:mm');
+    synctime(type){
+      if(type=='sync'){
+         this.dev.time_config.time = new Date().format('yyyy-MM-dd hh:mm');
+         this.$refs.settime.checked = false;
+      }else{
+        this.$refs.synctime.checked = false;
+      }
+       
+
+          //dev.time_config.time'><input type="checkbox" id='settime'>  <label for="settime">设置时间</label>
+          //<input @click='synctime' type="checkbox" id='synctime'><label for="synctime">同步主机时间</label>
     },
     zIndexAdd(type) {
       if (type == "base") {
