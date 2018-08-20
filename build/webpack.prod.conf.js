@@ -117,6 +117,16 @@ const webpackConfig = merge(baseWebpackConfig, {
       }
     ])
   ]
+  ,
+  externals:{
+    vue:'Vue',
+    vuex:'Vuex',
+    axios:'axios',
+    'vue-router':'VueRouter',
+    iview:'iView'
+  }
+
+
 })
 
 if (config.build.productionGzip) {

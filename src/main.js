@@ -8,7 +8,6 @@ import Api from '@/api/api'
 // import "iview/dist/styles/iview.css"
 import './assets/styles/reset.css'
 import './assets/styles/base.css'
-// import './assets/styles/font-awesome/css/font-awesome.css'
 
 import iView from 'iview'
 
@@ -59,11 +58,6 @@ axios.interceptors.response.use(
         return response;
     });
 
-
-
-
-Vue.use(iView)
-
 //判断是否登录
 
 router.beforeEach((to, from, next) => {
@@ -78,6 +72,28 @@ router.beforeEach((to, from, next) => {
 
     }
 })
+
+// router.beforeEach((to, from, next) => {
+//         if (to.matched.some(record => record.meta.requiresAuth)) {
+//           // this route requires auth, check if logged in
+//           // if not, redirect to login page.
+//           if (!auth.loggedIn()) {
+//             next({
+//               path: '/login',
+//               query: { redirect: to.fullPath }//把要跳转的地址作为参数传到下一步
+//             })
+//           } else {
+//             next()
+//           }
+//         } else {
+//           next() // 确保一定要调用 next()
+//         }
+// })
+
+
+Vue.use(iView)
+
+
 
 
 Vue.config.productionTip = false

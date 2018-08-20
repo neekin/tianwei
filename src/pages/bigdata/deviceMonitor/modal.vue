@@ -1,8 +1,8 @@
 <template>
-            <div class="mask tabs-style" >
+    <div class="mask tabs-style" >
         <div class="changeModal">
             <div class='devmodel'>
-              <div class="title">视频信息</div>
+              <div class="title">视频信息  <span @click='cancel'>X</span> </div>
                   <div class="img" style='margin-left:10px;'>
                     <img :src="dev.Img_url" alt="">
                   	<m-img :style='{"z-index":zIndex1}' :color='"blue"' :dev='dev' :base="'base'" ref="base" :points='dev.datum_line_config.datum_line_path_points'></m-img>
@@ -82,18 +82,17 @@
                   <br>
                   <input type="checkbox" id='zero' v-model='dev.inout_clear_state'>
                   <label for="zero" style='font-size:18px;margin-top:10px;'>清零</label>
-
                   </div>
             </div>
           <Tabs :animated="false" >
                 <TabPane label="基本配置">
-                         <div class="paneltitle">
+                         <!-- <div class="paneltitle">
                            设备信息
-                         </div>
+                         </div> -->
                          <div class="panel-body">
       <div class="pie">
          <i-circle
-        :size="150"
+        :size="100"
         :trail-width="4"
         :stroke-width="5"
         :percent="dev.storage_config.nand_block_used / dev.storage_config.nand_block_total * 100"
@@ -112,7 +111,7 @@
       </div>
    <div class="pie">
       <i-circle
-        :size="150"
+        :size="100"
         :trail-width="4"
         :stroke-width="5"
         :percent="dev.storage_config.sd_block_used / dev.storage_config.sd_block_total * 100"
@@ -139,49 +138,48 @@
                       <tr>
                         <td width='80' align='right'>设备描述:</td>
                         <td><input type="text" v-model='dev.dev_dec'></td>
-                        <td  align='right'>设备id:</td>
+                            <td  align='right'>设备id:</td>
                         <td><input type="text" v-model='dev.dev_id' readonly></td>
+                          <td align='right'>工作时间:</td>
+                        <td><input type="text" name="" id="" style='width:60px' v-model='dev.worktime_start'>to <input type="text" style='width:60px' v-model='dev.worktime_end'></td>
+                         
                       </tr>
-                                    <tr>
-                        <td  align='right'>门店ID:</td>
+                        <tr>
+                       <td  align='right'>门店ID:</td>
                         <td><input type="text" v-model='dev.shop_id'></td>
                         <td width='80'  align='right'>硬件版本:</td>
                         <td><input type="text" readonly v-model='dev.hardware_ver'></td>
+                       
+                        <td align='right'>设备时间:</td>
+                        <td align='center'><span v-text='dev.time_config.time'></span></td>
                       </tr>
                        <tr>
                         <td align='right'>设备SN码:</td>
                         <td><input type="text" readonly v-model='dev.uid'></td>
                         <td align='right'>软件版本:</td>
                         <td><input type="text" readonly v-model='dev.hardware_ver'></td>
-                      </tr>
-                        <tr>
-                        <td align='right'>工作时间:</td>
-                        <td><input type="text" name="" id="" style='width:60px' v-model='dev.worktime_start'>to <input type="text" style='width:60px' v-model='dev.worktime_end'></td>
-                        <td align='right'>设备时间:</td>
-                        <td align='center'><span v-text='dev.time_config.time'></span></td>
+                        <td>  ntp服务器地址:</td>
+                        <td>    <input type="text" v-model='dev.time_config.ntp_svr'></td>
                       </tr>
                     </table>
                     <div style='margin:20px 20px;'>
-                      时间: <input type="text" v-model='dev.time_config.time'><input type="checkbox" id='settime' ref='settime' @click='synctime("set")'>  <label for="settime">设置时间</label>
-                    <input @click='synctime("sync")' type="checkbox" id='synctime' ref='synctime'><label for="synctime">同步主机时间</label>
+                               
                     </div>
                     <hr>
                      <div style='margin-left:30px'>
-                          ntp服务器地址: <input type="text" v-model='dev.time_config.ntp_svr'>
+       
+                               时间: <input type="text" v-model='dev.time_config.time'><input type="checkbox" id='settime' ref='settime' @click='synctime("set")'>  <label for="settime">设置时间</label>
+                    <input @click='synctime("sync")' type="checkbox" id='synctime' ref='synctime'><label for="synctime">同步主机时间</label>
                       <br>
                       <br>
                       时区选择: <select v-model='dev.time_config.zone'>
                        <option v-for="(item,index) in utc" :key="index" :value="item">{{item}}</option>
 
                       </select>
-                        <br>
-                      <br>
                       <input type="checkbox" id='ntpenable' v-model='dev.time_config.use_ntp'><label for="ntpenable">NTP Enable</label>
                      </div>
                      
                    </div>
-        
-
                 </TabPane>
                 <TabPane label="网络配置">
                   <div class="panel-body">
@@ -568,10 +566,6 @@ export default {
       }else{
         this.$refs.synctime.checked = false;
       }
-       
-
-          //dev.time_config.time'><input type="checkbox" id='settime'>  <label for="settime">设置时间</label>
-          //<input @click='synctime' type="checkbox" id='synctime'><label for="synctime">同步主机时间</label>
     },
     zIndexAdd(type) {
       if (type == "base") {
@@ -648,6 +642,21 @@ input[type="text"] {
   overflow-y: scroll;
 }
 .changeModal {
+  .title{
+    span{
+      display: inline-block;
+      height:20px;
+      width: 20px;
+      background-color: #fff;
+      color:red;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 20px;
+      position: absolute;
+      right:-2px;
+      top:0;
+    }
+  }
   input {
     vertical-align: middle;
   }
@@ -655,11 +664,10 @@ input[type="text"] {
     vertical-align: middle;
   }
   position: absolute;
-  top: 40px;
   z-index: 1000;
   left: 50%;
   width: 724px;
-  height: 1000px;
+  height: 790px;
   margin-left: -362px;
   background-color: #acacac;
   border-radius: 10px;
@@ -707,14 +715,16 @@ input[type="text"] {
     }
   }
   .panel-body {
-    height: 530px;
+    height: 340px;
     background-color: #fff;
     text-align: center;
     .pie {
       display: inline-block;
-      height: 160px;
-      width: 160px;
-      margin: 10px;
+      height: 100px;
+      width: 100px;
+      // margin: 10px;
+      margin-left:40px;
+
     }
     .ftpsetting {
       width: 308px;
@@ -729,7 +739,7 @@ input[type="text"] {
   }
   .buttons {
     position: absolute;
-    bottom: 10px;
+    bottom: 4px;
     width: 100%;
     text-align: center;
     button {

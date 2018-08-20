@@ -4,22 +4,7 @@
         <sidebar></sidebar>
           <container>
             <searchBox @search='getlist' style='color:#fff'>
-                              <!-- 区域选择：
-                    <select >
-                      <option value="0">
-                        请选择
-                      </option>
-                    </select>
-                                   位置：
-                    <select >
-                      <option value="0">
-                        请选择
-                      </option>
-                    </select> -->
-                    设备ID：
-                    <input type="text" v-model='search.id'>
-                   
-         
+                    设备ID：<input type="text" v-model='search.id'>
             </searchBox>
           <div class="container">
               <div class="list">
@@ -33,10 +18,10 @@
                   <div class="context1">
                        <ul>
                            <li v-for='item in list' :key='item.num' @click='changeStatus(item.num,item.dev_id)' :class={active:isActive(item.num)} >
-                               <img :src="item.Img_url" alt="">
-                               <p> <span>SHOPID:</span> {{item.shop_id}}</p>
+                                <img :src="item.Img_url" alt="">
+                                <p> <span>SHOPID:</span> {{item.shop_id}}</p>
                                 <p> <span>设 &nbsp;备 ID:</span> {{item.dev_id}}</p>
-                                 <p style="width:200px; text-overflow:ellipsis;  white-space:nowrap;   overflow:hidden;"><span>设备描述:</span> {{item.dev_dec}}</p>
+                                <p style="width:200px; text-overflow:ellipsis;  white-space:nowrap;   overflow:hidden;"><span>设备描述:</span> {{item.dev_dec}}</p>
                            </li>
                        </ul>
                   </div>
@@ -44,7 +29,7 @@
           </div>
         </container>
         <Modal v-if='dev' :dev='dev' @cancel='cancel' @confirm='confirm' />
-        <notice ref='message'></notice>
+      
     </div>
 </template>
 <script>
@@ -53,15 +38,14 @@ import sidebar from "../../components/sidebar";
 import container from "../../components/container";
 import searchBox from "@/pages/components/list/search";
 import Modal from "./modal";
-import notice from './notice'
+
 export default {
   components: {
     headnav,
     sidebar,
     container,
     searchBox,
-    Modal,
-    notice
+    Modal
   },
   data() {
     return {
@@ -123,8 +107,9 @@ export default {
     show() {
       if (this.selecteddev == 0) {
         // alert("没有选中镜头");
-        this.$refs.message.show({title:'警告',text:'没有选中镜头'},'error')
+        // this.$refs.message.show({title:'警告',text:'没有选中镜头'},'error')
         // notice.show({title:'警告',text:'没有选中镜头'},'error')
+         this.$Message.warning('没有选中镜头');
         return;
       }
       this.getdev();
@@ -132,7 +117,8 @@ export default {
     setimg() {
       if (this.selecteddev == 0) {
         // alert("没有选中镜头");
-         this.$refs.message.show({title:'警告',text:'没有选中镜头'},'error')
+        //  this.$refs.message.show({title:'警告',text:'没有选中镜头'},'error')
+         this.$Message.warning('没有选中镜头');
         return;
       }
       this.$http
@@ -145,7 +131,8 @@ export default {
         )
         .then(res => {
           // alert(res.data.message);
-           this.$refs.message.show({title:'消息',text:res.data.message},'info')
+          //  this.$refs.message.show({title:'消息',text:res.data.message},'info')
+           this.$Message.info(res.data.message);
         });
     },
     cancel() {
@@ -159,11 +146,13 @@ export default {
       this.$http.post(this.$api.setDevice(), params).then(res => {
         if (res.data.code == 1) {
           // alert(res.data.message);
-           this.$refs.message.show({title:'消息',text:res.data.message},'info')
+          //  this.$refs.message.show({title:'消息',text:res.data.message},'info')
+           this.$Message.info(res.data.message)
            this.cancel();
         } else {
           // alert(res.data.message);
-           this.$refs.message.show({title:'消息',text:res.data.message},'info')
+          //  this.$refs.message.show({title:'消息',text:res.data.message},'info')
+           this.$Message.info(res.data.message)
         }
       });
     },
