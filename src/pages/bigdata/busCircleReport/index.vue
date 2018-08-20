@@ -1133,19 +1133,31 @@ export default {
         });
     },
     init() {
-      this.getSPIndex();
+      setTimeout(()=>{
+         this.getSPIndex();
       this.getPercent();
       this.getIndustry();
-      this.getShopCustomer();
+      },1000)
+            setTimeout(()=>{
+          this.getShopCustomer();
       this.getShopIndexTop();
       this.getCompete();
-      this.getWeekCount();
+      },5000)
+            setTimeout(()=>{
+          this.getWeekCount();
       this.getTop3();
       this.getAge();
-      this.getSex();
+      },9000)
+            setTimeout(()=>{
+            this.getSex();
       this.getLast6M();
       this.getReturnGuestAge();
       this.getFloorList();
+      },12000)
+     
+    
+    
+  
     },
     search() {
       this.resetData();
