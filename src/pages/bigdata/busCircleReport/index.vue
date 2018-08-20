@@ -1080,9 +1080,11 @@ export default {
           this.$api.getbd_BusCategory() + "?token=" + this.$store.state.token
         )
         .then(res => {
-          this.busCategorylist = res.data.result;
-          this.BusCategoryID = res.data.result[0].BusCategoryID;
-          this.getmalllist();
+          if (res.data.code == 1) {
+            this.busCategorylist = res.data.result;
+            this.BusCategoryID = res.data.result[0].BusCategoryID;
+            this.getmalllist();
+          }
         });
     },
     changeBusCat() {
@@ -1105,7 +1107,7 @@ export default {
       img.src = this.floorHotImg;
       this.floorHotMapWidth = img.width;
       this.floorHotMapWidthpro = img.width / 562;
-     
+
       this.getShopHotChartReport();
     },
     getmalllist() {
@@ -1963,8 +1965,8 @@ export default {
               #competeIMG {
                 // background-image: url("../../../assets/images/compete.png");
                 // height: 574px;
- // margin-top: 36px;
- // background-repeat: no-repeat;
+                // margin-top: 36px;
+                // background-repeat: no-repeat;
                 // background-position: center;
                 position: relative;
                 // padding-top: 40px;
