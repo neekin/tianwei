@@ -134,39 +134,39 @@
                                <input type="checkbox" v-model='dev.storage_format_state' id="format" @click='only("storage")'><label for="format">格式化空间数据</label> 
                     </div>
                     <hr>
-                    <table style='margin:0 auto'>
+                    <table style='margin:0 auto'> 
                       <tr>
                         <td width='80' align='right'>设备描述:</td>
-                        <td><input type="text" v-model='dev.dev_dec'></td>
-                            <td  align='right'>设备id:</td>
-                        <td><input type="text" v-model='dev.dev_id' readonly></td>
-                          <td align='right'>工作时间:</td>
-                        <td><input type="text" name="" id="" style='width:60px' v-model='dev.worktime_start'>to <input type="text" style='width:60px' v-model='dev.worktime_end'></td>
+                        <td width='130'><input type="text" style='width:80px' v-model='dev.dev_dec'></t>
+                            <td  align='right' width='80'>设备id:</td>
+                        <td><input type="text" style='width:80px;' v-model='dev.dev_id' readonly></td>
+                        <td align='right' width='80'>工作时间:</td>
+                        <td><input type="text"  name="" id="" style='width:50px' v-model='dev.worktime_start'>to <input type="text" style='width:50px' v-model='dev.worktime_end'></td>
                          
                       </tr>
                         <tr>
                        <td  align='right'>门店ID:</td>
-                        <td><input type="text" v-model='dev.shop_id'></td>
+                        <td><input type="text" style='width:80px' v-model='dev.shop_id'></td>
                         <td width='80'  align='right'>硬件版本:</td>
-                        <td><input type="text" readonly v-model='dev.hardware_ver'></td>
+                        <td><input type="text" style='width:80px;' readonly v-model='dev.hardware_ver'></td>
                        
                         <td align='right'>设备时间:</td>
                         <td align='center'><span v-text='dev.time_config.time'></span></td>
                       </tr>
                        <tr>
                         <td align='right'>设备SN码:</td>
-                        <td><input type="text" readonly v-model='dev.uid'></td>
+                        <td><input type="text" style='width:80px' readonly v-model='dev.uid'></td>
                         <td align='right'>软件版本:</td>
-                        <td><input type="text" readonly v-model='dev.hardware_ver'></td>
-                        <td>  ntp服务器地址:</td>
-                        <td>    <input type="text" v-model='dev.time_config.ntp_svr'></td>
+                        <td width='130'><input type="text" style='width:80px;' readonly v-model='dev.hardware_ver'></td>
+                        <td align='right'> ntp地址:</td>
+                        <td> <input style='width:120px;' type="text" v-model='dev.time_config.ntp_svr'></td>
                       </tr>
                     </table>
                     <div style='margin:20px 20px;'>
                                
                     </div>
                     <hr>
-                     <div style='margin-left:30px'>
+                     <div style='margin-left:40px;text-align:justify;'>
        
                                时间: <input type="text" v-model='dev.time_config.time'><input type="checkbox" id='settime' ref='settime' @click='synctime("set")'>  <label for="settime">设置时间</label>
                     <input @click='synctime("sync")' type="checkbox" id='synctime' ref='synctime'><label for="synctime">同步主机时间</label>
@@ -185,7 +185,7 @@
                   <div class="panel-body">
                     <Tabs :animated="false">
                         <TabPane label="有线网络">
-                          <table align='center' width='300' style='margin:0 auto;'>
+                          <table align='center' width='300' style='margin:0 auto'>
                             <tr>
                               <td align='right'>IP地址:</td>
                               <td><input type="text" v-model='dev.network_config.ip'></td>
@@ -213,7 +213,7 @@
                         </TabPane>
                         <TabPane label="无线网络">
 
-                            <table align='center' width='300' style='margin:0 auto;'>
+                            <table align='center' width='300' style='margin:-10px auto 0'>
                             <tr>
                               <td align='right'>IP地址:</td>
                               <td><input type="text" v-model='dev.wifi_config.wifi_ip'></td>
@@ -306,9 +306,6 @@
                   </div>
                 </TabPane>
                 <TabPane label="服务器配置">
-                  <div class="paneltitle">
-                    服务器设置
-                  </div>
                   <div class="panel-body ftp">
                      生产记录的间隔(秒为单位,ftp1,ftp2公用): <input type="text" style='margin:10px;' v-model='dev.ftp1_config.ftp1_ftp_transfer_interval'>
                      <hr>

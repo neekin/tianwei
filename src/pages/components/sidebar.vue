@@ -27,7 +27,7 @@ export default {
   name: "sidebar"
 };
 </script>
-<style>
+<style scoped>
 .logo {
   padding-top: 10px;
   height: 54px;
