@@ -135,7 +135,7 @@ export default {
       } else {
         params.ids = this.ids;
       }
-      if(!this.ids.length || !params.ids.length)
+      if(!params.ids.length)
       {
              return;
       }
@@ -148,7 +148,7 @@ export default {
         if (!params.ids.length) {
           return;
         }
-        _this.$http.post(_this.$api.delrole(), params).then(res => {
+        _this.$http.post(_this.$api.deluser(), params).then(res => {
           if (res.data.code == 1) {
             _this.success();
           }
@@ -164,8 +164,6 @@ export default {
         pageindex: this.pageindex,
         token: this.$store.state.token
       };
-      console.log(params);
-    debugger;
       this.$http.get(this.$api.exportuserlist(params)).then(res => {
         if (res.data.code === 1) {
           var a = document.createElement('a');  

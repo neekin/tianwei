@@ -107,6 +107,7 @@ export default {
     {
       console.log('user',this.edit);
       this.addParams = this.edit;
+      this.addParams.RePwd = this.edit.UserPwd;
     }
     this.init();
   }

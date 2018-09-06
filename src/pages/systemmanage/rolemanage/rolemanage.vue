@@ -151,6 +151,7 @@ export default {
       this.next = null;
     },
     delitems(ids) {
+      console.log(ids);
       var params = {
         ids: [],
         token: this.$store.state.token
@@ -160,9 +161,10 @@ export default {
       } else {
         params.ids = this.ids;
       }
-      if (!this.ids.length || !params.ids.length) {
+      if (!params.ids.length) {
         return;
       }
+      console.log('删除参数');
       this.del(params);
     },
     del(params) {

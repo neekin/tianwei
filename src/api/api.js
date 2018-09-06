@@ -94,6 +94,9 @@ var Api = {
     deluser() {
         return this.getApi("/User/DelUser");
     },
+    delbase(){
+          return this.getApi("/MBase/DelShop");
+    },
     Params(params) {
         var par = "";
         if (params) {

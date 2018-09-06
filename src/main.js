@@ -12,6 +12,27 @@ import './assets/styles/base.css'
 import iView from 'iview'
 
 import store from './store'
+if(store.state.token=='')
+{
+    router.push('/login')
+}
+
+//判断是否登录
+router.beforeEach((to, from, next) => {
+    if (to.matched.some(m => m.meta.noauth)) {
+        next()
+    } else {
+        if (store.state.token == '') {
+            next('/login');
+        } else {
+            next();
+        }
+
+    }
+})
+
+
+
 
 //axios请求超时处理
 axios.defaults.retry = 3;
@@ -58,20 +79,24 @@ axios.interceptors.response.use(
         return response;
     });
 
-//判断是否登录
 
-router.beforeEach((to, from, next) => {
-    if (to.matched.some(m => m.meta.noauth)) {
-        next()
-    } else {
-        if (store.state.token == '') {
-            next('/login');
-        } else {
-            next();
-        }
 
-    }
-})
+// router.beforeEach((to, from, next) => {
+//     if (to.meta.noauth) {  // 判断该路由是否需要登录权限
+//         if (store.state.token) {  // 通过vuex state获取当前的token是否存在
+//             next();
+//         }
+//         else {
+//             next({
+//                 path: '/login',
+//                 query: {redirect: to.fullPath}  // 将跳转的路由path作为参数，登录成功后跳转到该路由
+//             })
+//         }
+//     }
+//     else {
+//         next();
+//     }
+// })
 
 // router.beforeEach((to, from, next) => {
 //         if (to.matched.some(record => record.meta.requiresAuth)) {

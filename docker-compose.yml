@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+    web:
+      build: .
+      command: npm run dev
+      volumes:
+          - .:/myapp
+      ports:
+          - '8080:8080'

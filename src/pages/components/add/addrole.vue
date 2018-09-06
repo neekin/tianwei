@@ -15,13 +15,19 @@ export default {
     return {
       menus: [],
       checkedmenus: [],
-      name: "",
+      name: ""
     };
   },
   methods: {
     getlist() {
       this.$http
-        .get(this.$api.getmenuAllListRole() + "?token=" + this.$store.state.token+'&RoleId='+this.edit.RoleId)
+        .get(
+          this.$api.getmenuAllListRole() +
+            "?token=" +
+            this.$store.state.token +
+            "&RoleId=" +
+            this.edit.RoleId
+        )
         .then(res => {
           var arr = [];
           if (res.data.code == 1) {
@@ -34,7 +40,7 @@ export default {
                 obj.children = [];
                 for (var j = 0; j < menus.length; j++) {
                   if (obj.MenuId == menus[j].PMenuId) {
-                    if (obj.IsChecked != 0) {
+                    if (menus[j].IsChecked != 0) {
                       menus[j].checked = true;
                     }
                     obj.children.push(menus[j]);
@@ -44,7 +50,6 @@ export default {
               }
             }
             this.menus = arr;
-            console.log(this.menus);
           }
         });
     },
@@ -90,8 +95,9 @@ export default {
   mounted() {
     if (this.edit.RoleId != 0) {
       this.name = this.edit.RoleName;
+      console.log("123123", this.checkedmenus);
       this.checkedmenus = this.edit.MenuName.split(",");
-      console.log(this.checkedmenus);
+      console.log("123123333", this.checkedmenus);
     }
     this.getlist();
   }

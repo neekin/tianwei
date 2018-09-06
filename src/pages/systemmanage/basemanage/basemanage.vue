@@ -60,18 +60,18 @@
               <td>{{item.Remark}}</td>
               <td>
                   <a class='edit' @click='edititem(item)'><span class="fa fa-refresh"></span>修改</a>
-                  <a class='del'><span class="fa fa-trash"></span> 删除</a>
+                  <a class='del'  @click='delitems(item.ShopId)'><span class="fa fa-trash"></span> 删除</a>
               </td>
         </tr>
       </slot>
     </list>
-    <notice :noticeshow='noticeshow'></notice>
+     <notice :notice='noticeshow' :next='next'  @hide='hide'></notice>
   </div>
 </template>
 <script>
 import add from "@/pages/components/add/add";
 import list from "@/pages/components/list/list";
-import notice from '@/pages/components/notice'
+import notice from "@/pages/components/notice";
 export default {
   name: "baseinfo",
   data() {
@@ -79,43 +79,70 @@ export default {
       form: "addbase",
       show: false,
       newBtn: true,
-      noticeshow:false,
-      next:null,
+      noticeshow: false,
+      next: null,
       exportBtn: true,
       delBtn: false,
-      edit:null,
+      edit: null,
       search: {
         GroupName: "",
         BusCategoryID: "",
         Operation: ""
       },
-      GropList:[],
-      BusCategory:[],
+      GropList: [],
+      BusCategory: [],
       pagesize: 10,
       pageindex: 1,
-      
+
       result: []
     };
   },
-  methods: { 
+  methods: {
+    delitems(ids) {
+      var params = {
+        ids: [],
+        token: this.$store.state.token
+      };
+        params.ids.push(ids);
+        // params.ids = JSON.stringify(params.ids)
+        this.del(params);
+    },
+    del(params) {
+       console.log(params);
+      this.noticeshow = true;
+      var _this = this;
+      this.next = function() {
+        if (!params.ids.length) {
+          return;
+        }
+        _this.$http.post(_this.$api.delbase(), params).then(res => {
+          if (res.data.code == 1) {
+            _this.success();
+          }
+        });
+      };
+    },
     goPage(num) {
       this.pageindex = num;
       this.getlist();
     },
     createnew() {
-      this.edit=null;
+      this.edit = null;
       this.show = true;
     },
-    edititem(item){
+    edititem(item) {
       this.edit = item;
-      this.show=true;
+      this.show = true;
     },
-    success(){
-      this.show=false;
+    success() {
+      this.noticeshow = false;
+      this.show = false;
       this.getlist();
     },
     hide() {
       this.show = false;
+      this.noticeshow = false;
+      this.next = null;
     },
     getlist() {
       // http://121.201.14.250:83/MBase/getShopList?GroupName=&BusCategoryID=&Operation=&pagesize=10&pageindex=1&token=FBFF067233A31ED094FB7B6EA306C8ACACA46950308B6920DFD3046477DB5BA1
@@ -137,29 +164,35 @@ export default {
       var params = {
         token: this.$store.state.token,
         pageindex: this.pageindex,
-        pagesize: this.pagesize,
+        pagesize: this.result.length,
         BusCategoryID: this.search.BusCategoryID,
         GroupName: this.search.GroupName,
         Operation: this.search.Operation
       };
       this.$http.get(this.$api.exportshoplist(params)).then(res => {
         if (res.data.code === 1) {
-          var a = document.createElement('a');  
-          a.href = res.data.result;  
-          a.click();  
+          var a = document.createElement("a");
+          a.href = res.data.result;
+          a.click();
         }
       });
     },
-    getgroplist(){
-      this.$http.get(this.$api.getgroplist()+'?token='+this.$store.state.token).then(res=>{
-            console.log(res);
-            this.GropList = res.data.result;
-      })
+    getgroplist() {
+      this.$http
+        .get(this.$api.getgroplist() + "?token=" + this.$store.state.token)
+        .then(res => {
+          console.log(res);
+          this.GropList = res.data.result;
+        });
     },
-    getbd_BusCategory(){
-      this.$http.get(this.$api.getbd_BusCategory()+'?token='+this.$store.state.token).then(res=>{
-        this.BusCategory = res.data.result;
-      })
+    getbd_BusCategory() {
+      this.$http
+        .get(
+          this.$api.getbd_BusCategory() + "?token=" + this.$store.state.token
+        )
+        .then(res => {
+          this.BusCategory = res.data.result;
+        });
     }
   },
   mounted() {
@@ -175,5 +208,4 @@ export default {
 };
 </script>
 <style>
-
 </style>
