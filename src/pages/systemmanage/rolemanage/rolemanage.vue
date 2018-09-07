@@ -151,7 +151,7 @@ export default {
       this.next = null;
     },
     delitems(ids) {
-      console.log(ids);
+      // console.log(ids);
       var params = {
         ids: [],
         token: this.$store.state.token
@@ -164,7 +164,7 @@ export default {
       if (!params.ids.length) {
         return;
       }
-      console.log('删除参数');
+      // console.log('删除参数');
       this.del(params);
     },
     del(params) {

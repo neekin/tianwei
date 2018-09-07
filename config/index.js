@@ -14,7 +14,7 @@ module.exports = {
         proxyTable: {
             '/api': {
                 // target: 'http://121.201.14.250:83',
-                target:'http://mg.skycount.com.cn/api/mg',
+                target:'http://mg.skycount.com.cn:81/api/mg',
                 changeOrigin: true,
                 pathRewrite: {
                     '^/api': '/'

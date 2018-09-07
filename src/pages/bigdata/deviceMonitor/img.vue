@@ -82,7 +82,7 @@ export default {
         this.dontDraw();
       }
       if (this.points.length < 20 && this.isDraw) {
-        console.log(this.points);
+        // console.log(this.points);
         this.points.push(mousePos.x, mousePos.y);
       }
       this.draw();

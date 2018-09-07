@@ -707,7 +707,7 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err);
+          // console.log(err);
         });
     },
     // 购物中心业态
@@ -745,7 +745,7 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err);
+          // console.log(err);
         });
     },
     // 购物中心客群
@@ -762,11 +762,11 @@ export default {
           if (res.data.code == 1) {
             this.shopCustomer = res.data.result;
           } else {
-            console.log(res);
+            // console.log(res);
           }
         })
         .catch(err => {
-          console.log(err);
+          // console.log(err);
         });
     },
     // 购物中心关键指标
@@ -783,11 +783,11 @@ export default {
           if (res.data.code == 1) {
             this.indexTop = res.data.result;
           } else {
-            console.log(res);
+            // console.log(res);
           }
         })
         .catch(err => {
-          console.log(err);
+          // console.log(err);
         });
     },
     // 竞争数据
@@ -802,14 +802,14 @@ export default {
         .then(res => {
           // console.log(res);
           if (res.data.code == 1) {
-            console.log("竞争数据", res);
+            // console.log("竞争数据", res);
             this.compete = res.data.result;
           } else {
-            console.log(res);
+            // console.log(res);
           }
         })
         .catch(err => {
-          console.log(err);
+          // console.log(err);
         });
     },
     // 一周客流趋势
@@ -840,11 +840,11 @@ export default {
             this.charts.weekCount.hideLoading();
             this.charts.weekCount.setOption(this.data.weekCount);
           } else {
-            console.log(res);
+            // console.log(res);
           }
         })
         .catch(err => {
-          console.log(err);
+          // console.log(err);
         });
     },
     // Top3
@@ -861,7 +861,7 @@ export default {
             this.data.top3.data = res.data.result.data;
             this.data.top3.total = res.data.result.sum;
           } else {
-            console.log(res);
+            // console.log(res);
           }
         })
         .catch(err => {
@@ -903,7 +903,7 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err);
+          // console.log(err);
         });
     },
     // 性别分布
@@ -917,15 +917,15 @@ export default {
         })
         .then(res => {
           // console.log('性别',res.data.result);
-          console.log(res.data);
+          // console.log(res.data);
           if (res.data.code == 1) {
             this.data.sex = res.data.result;
           } else {
-            console.log(res);
+            // console.log(res);
           }
         })
         .catch(err => {
-          console.log(err);
+          // console.log(err);
         });
     },
     // 近6个月回头客
@@ -954,11 +954,11 @@ export default {
             this.charts.last6M.hideLoading();
             this.charts.last6M.setOption(this.data.last6M);
           } else {
-            console.log(res);
+            // console.log(res);
           }
         })
         .catch(err => {
-          console.log(err);
+          // console.log(err);
         });
     },
     // 回头客年龄分布
@@ -994,11 +994,11 @@ export default {
             this.charts.agePercent.hideLoading();
             this.charts.agePercent.setOption(this.data.returnGuestAge);
           } else {
-            console.log(res);
+            // console.log(res);
           }
         })
         .catch(err => {
-          console.log(err);
+          // console.log(err);
         });
     },
     getFloorStorePointReport() {
@@ -1037,7 +1037,7 @@ export default {
             this.floorId
         )
         .then(res => {
-          console.log("楼层", res);
+          // console.log("楼层", res);
           this.FloorStoreDataReport = res.data.result;
         });
     },
@@ -1127,7 +1127,7 @@ export default {
             this.getFloorList();
             this.init();
           } else {
-            console.log("执行");
+            // console.log("执行");
             this.resetData();
           }
         });

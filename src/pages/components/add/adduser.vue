@@ -105,7 +105,7 @@ export default {
   mounted() {
     if(this.edit.UserId!=0)
     {
-      console.log('user',this.edit);
+      // console.log('user',this.edit);
       this.addParams = this.edit;
       this.addParams.RePwd = this.edit.UserPwd;
     }

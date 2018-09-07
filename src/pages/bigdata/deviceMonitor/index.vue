@@ -71,7 +71,7 @@ export default {
       this.params.token = this.token;
       this.params.devid = this.search.id;
       this.$http.get(this.$api.getDeviceList(this.params)).then(res => {
-        console.log("list:", res);
+        // console.log("list:", res);
         if (res.data.code === 1) {
           this.list = res.data.result;
         }
@@ -86,7 +86,7 @@ export default {
           }
         })
         .then(res => {
-          console.log(res);
+          // console.log(res);
           if (res.data.code === 1) {
             this.dev = res.data.result;
           }

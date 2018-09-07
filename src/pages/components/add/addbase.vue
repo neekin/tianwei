@@ -109,7 +109,7 @@ export default {
         // this.addParams.CityDistID= 0
         // this.addParams.BusCircleCharID= 0
         // this.addParams.BusCategoryID= 0
-      console.log('修改基础信息',this.addParams)
+      // console.log('修改基础信息',this.addParams)
     }
  
   }

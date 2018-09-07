@@ -99,7 +99,7 @@ export default {
         token: this.$store.state.token
       };
       this.$http.get(this.$api.getReTimeDeviceList(params)).then(res => {
-        console.log(res);
+        // console.log(res);
         this.result = res.data.result;
       });
     },
@@ -251,7 +251,7 @@ export default {
       this.$http
         .get(this.$api.getMapArea() + "?token=" + this.$store.state.token)
         .then(res => {
-          console.log("区域信息", res);
+          // console.log("区域信息", res);
           this.area = res.data.result;
         });
     },
@@ -262,7 +262,7 @@ export default {
           this.$api.getbd_DeviceStatus() + "?token=" + this.$store.state.token
         )
         .then(res => {
-          console.log("设备", res);
+          // console.log("设备", res);
           this.DeviceStatus = res.data.result;
         });
     },
@@ -275,7 +275,7 @@ export default {
             this.$store.state.token
         )
         .then(res => {
-          console.log("流量", res);
+          // console.log("流量", res);
           this.DeviceStatusFlow = res.data.result;
         });
     }

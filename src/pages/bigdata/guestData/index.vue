@@ -534,7 +534,7 @@ export default {
                     }
                 })
                 .catch(err => {
-                    console.log(err);
+                    // console.log(err);
                 });
         },
         getPeople() {
@@ -573,7 +573,7 @@ export default {
                     }
                 })
                 .catch(err => {
-                    console.log(err);
+                    // console.log(err);
                 });
         },
         getMap() {
@@ -593,11 +593,11 @@ export default {
                     } else if (res.data.code == -1) {
                         this.$router.push("/login");
                     } else {
-                        console.log(this.countRP);
+                        // console.log(this.countRP);
                     }
                 })
                 .catch(err => {
-                    console.log(err);
+                    // console.log(err);
                 });
         },
         // 前10商业体绩效
@@ -614,11 +614,11 @@ export default {
                     } else if (res.data.code == -1) {
                         this.$router.push("/login");
                     } else {
-                        console.log(res);
+                        // console.log(res);
                     }
                 })
                 .catch(err => {
-                    console.log(err);
+                    // console.log(err);
                 });
         },
         //前10业态绩效
@@ -635,11 +635,11 @@ export default {
                     } else if (res.data.code == -1) {
                         this.$router.push("/login");
                     } else {
-                        console.log(res);
+                        // console.log(res);
                     }
                 })
                 .catch(err => {
-                    console.log(err);
+                    // console.log(err);
                 });
         },
         //品牌客流排名
@@ -658,11 +658,11 @@ export default {
                     } else if (res.data.code == -1) {
                         this.$router.push("/login");
                     } else {
-                        console.log(res);
+                        // console.log(res);
                     }
                 })
                 .catch(err => {
-                    console.log(err);
+                    // console.log(err);
                 });
         },
         // 购物中心客流排名
@@ -681,11 +681,11 @@ export default {
                     } else if (res.data.code == -1) {
                         this.$router.push("/login");
                     } else {
-                        console.log(res);
+                        // console.log(res);
                     }
                 })
                 .catch(err => {
-                    console.log(err);
+                    // console.log(err);
                 });
         }
     },

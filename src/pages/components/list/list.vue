@@ -41,7 +41,7 @@ export default {
   props:['newBtn','exportBtn','delBtn','pageCount'],
   methods: {
     goPage(num) {
-      console.log(num);
+      // console.log(num);
       this.$emit("goPage", num);
     },
     createnew() {

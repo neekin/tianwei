@@ -108,7 +108,7 @@ export default {
         this.del(params);
     },
     del(params) {
-       console.log(params);
+      //  console.log(params);
       this.noticeshow = true;
       var _this = this;
       this.next = function() {
@@ -181,7 +181,7 @@ export default {
       this.$http
         .get(this.$api.getgroplist() + "?token=" + this.$store.state.token)
         .then(res => {
-          console.log(res);
+          // console.log(res);
           this.GropList = res.data.result;
         });
     },

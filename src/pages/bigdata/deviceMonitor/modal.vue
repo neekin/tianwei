@@ -601,7 +601,7 @@ export default {
   //   }
   // },
   mounted() {
-    console.log(this.dev);
+    // console.log(this.dev);
   }
 };
 Date.prototype.format = function(format)

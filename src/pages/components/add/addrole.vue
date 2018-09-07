@@ -83,7 +83,7 @@ export default {
       }
 
       this.$http.post(this.$api.addrole(), params).then(res => {
-        console.log(res);
+        // console.log(res);
         if (res.data.code === 1) {
           this.$emit("success");
         } else {
@@ -95,9 +95,9 @@ export default {
   mounted() {
     if (this.edit.RoleId != 0) {
       this.name = this.edit.RoleName;
-      console.log("123123", this.checkedmenus);
+      // console.log("123123", this.checkedmenus);
       this.checkedmenus = this.edit.MenuName.split(",");
-      console.log("123123333", this.checkedmenus);
+      // console.log("123123333", this.checkedmenus);
     }
     this.getlist();
   }
