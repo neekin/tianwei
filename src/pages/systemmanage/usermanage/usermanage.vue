@@ -14,6 +14,7 @@
          :delBtn='delBtn'
          :exportBtn='exportBtn'
          @goPage='goPage'
+         :pageCount='pageCount'
          >
       <slot slot='list-title'>
           <tr>
@@ -84,8 +85,9 @@ export default {
         JobName: ""
       },
       pagesize: 10,
+      pageCount: 0,
       pageindex: 1,
-      total: 0
+      total:0,
     };
   },
   methods: {
@@ -122,6 +124,7 @@ export default {
         if (res.data.code === 1) {
           this.result = res.data.result;
           this.total = res.data.total;
+          this.pageCount = Math.ceil(this.total / this.pagesize);
         }
       });
     },
@@ -137,6 +140,8 @@ export default {
       }
       if(!params.ids.length)
       {
+         this.$Message.warning("没有选中数据");
+             
              return;
       }
       this.del(params);
@@ -146,6 +151,7 @@ export default {
       var _this = this;
       this.next = function() {
         if (!params.ids.length) {
+          this.$Message.warning("没有选中数据");
           return;
         }
         _this.$http.post(_this.$api.deluser(), params).then(res => {

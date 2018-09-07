@@ -162,6 +162,7 @@ export default {
         params.ids = this.ids;
       }
       if (!params.ids.length) {
+        this.$Message.warning("没有选中数据");
         return;
       }
       // console.log('删除参数');
@@ -172,6 +173,7 @@ export default {
       var _this = this;
       this.next = function() {
         if (!params.ids.length) {
+          this.$Message.warning("没有选中数据");
           return;
         }
         _this.$http.post(_this.$api.delrole(), params).then(res => {

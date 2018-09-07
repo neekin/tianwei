@@ -18,12 +18,15 @@
                   <div class="context1">
                        <ul>
                            <li v-for='item in list' :key='item.num' @click='changeStatus(item.num,item.dev_id)' :class={active:isActive(item.num)} >
-                                <img :src="item.Img_url" alt="">
+                                <img :src="item.Img_url | disImg" >
                                 <p> <span>SHOPID:</span> {{item.shop_id}}</p>
                                 <p> <span>设 &nbsp;备 ID:</span> {{item.dev_id}}</p>
                                 <p style="width:200px; text-overflow:ellipsis;  white-space:nowrap;   overflow:hidden;"><span>设备描述:</span> {{item.dev_dec}}</p>
                            </li>
                        </ul>
+                          <template>
+                              <Page :total="params.total" @on-page-size-change='changePagesize' @on-change='changePage' show-sizer />
+                          </template>
                   </div>
               </div>
           </div>
@@ -61,21 +64,42 @@ export default {
         devid: "",
         devdes: "",
         pageindex: 1,
-        pagesize: 10
+        pagesize: 10,
+        pageCount: 0,
+        total: 0
       },
+      defaultimg:'/static/carma.png',
       dev: null
     };
+  },
+  filters:{
+    disImg:function(value){
+         console.log(value);
+            if(value==null)
+            {
+               return '/static/carma.png';
+            }
+            return value;
+    }
   },
   methods: {
     getlist() {
       this.params.token = this.token;
       this.params.devid = this.search.id;
       this.$http.get(this.$api.getDeviceList(this.params)).then(res => {
-        // console.log("list:", res);
         if (res.data.code === 1) {
           this.list = res.data.result;
+          this.params.total = res.data.total;
         }
       });
+    },
+    changePage(pageindex){
+      this.params.pageindex = pageindex;
+      this.getlist();
+    },
+    changePagesize(pagesize){
+      this.params.pagesize= pagesize;
+      this.getlist();
     },
     getdev() {
       this.$http
@@ -106,19 +130,14 @@ export default {
     },
     show() {
       if (this.selecteddev == 0) {
-        // alert("没有选中镜头");
-        // this.$refs.message.show({title:'警告',text:'没有选中镜头'},'error')
-        // notice.show({title:'警告',text:'没有选中镜头'},'error')
-         this.$Message.warning('没有选中镜头');
+        this.$Message.warning("没有选中镜头");
         return;
       }
       this.getdev();
     },
     setimg() {
       if (this.selecteddev == 0) {
-        // alert("没有选中镜头");
-        //  this.$refs.message.show({title:'警告',text:'没有选中镜头'},'error')
-         this.$Message.warning('没有选中镜头');
+        this.$Message.warning("没有选中镜头");
         return;
       }
       this.$http
@@ -130,9 +149,7 @@ export default {
             this.token
         )
         .then(res => {
-          // alert(res.data.message);
-          //  this.$refs.message.show({title:'消息',text:res.data.message},'info')
-           this.$Message.info(res.data.message);
+          this.$Message.info(res.data.message);
         });
     },
     cancel() {
@@ -147,12 +164,12 @@ export default {
         if (res.data.code == 1) {
           // alert(res.data.message);
           //  this.$refs.message.show({title:'消息',text:res.data.message},'info')
-           this.$Message.info(res.data.message)
-           this.cancel();
+          this.$Message.info(res.data.message);
+          this.cancel();
         } else {
           // alert(res.data.message);
           //  this.$refs.message.show({title:'消息',text:res.data.message},'info')
-           this.$Message.info(res.data.message)
+          this.$Message.info(res.data.message);
         }
       });
     },
@@ -161,9 +178,8 @@ export default {
         if (typeof obj[key] === "boolean") {
           obj[key] = obj[key] == true ? 1 : 0;
         }
-        if(typeof obj[key] ==='object')
-        {
-          this.fitparams(obj[key])
+        if (typeof obj[key] === "object") {
+          this.fitparams(obj[key]);
         }
       }
     }
@@ -216,18 +232,22 @@ export default {
   ul {
     display: flex;
     width: 100%;
-    overflow-y: hidden;
+    // overflow-y: hidden;
+    flex-flow: wrap;
     padding-right: 60px;
   }
   li {
-    display: inline-block;
+    // display: inline-block;
     margin: 10px;
     padding: 10px;
     color: #fff;
     width: 220px;
     img {
       width: 100%;
+      height:150px;
+     
     }
+
     p {
       font-size: 16px;
       line-height: 24px;

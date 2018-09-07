@@ -12,6 +12,7 @@
     @goPage='goPage'
     :newBtn='newBtn'
     :exportBtn='exportBtn'
+    :pageCount='pageCount'
     >
       <div slot='search'>
         集团：<select v-model='search.GroupName'>
@@ -92,7 +93,9 @@ export default {
       GropList: [],
       BusCategory: [],
       pagesize: 10,
+      pageCount: 0,
       pageindex: 1,
+      total:0,
 
       result: []
     };
@@ -157,6 +160,8 @@ export default {
       this.$http.get(this.$api.getshoplist(params)).then(res => {
         if (res.data.code == 1) {
           this.result = res.data.result;
+          this.total = res.data.total;
+          this.pageCount = Math.ceil(this.total / this.pagesize);
         }
       });
     },
