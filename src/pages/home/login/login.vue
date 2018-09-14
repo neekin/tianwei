@@ -63,7 +63,7 @@ export default {
                         this.$store.commit("updateToken", res.data.token);
                         // console.log(this.username);
                         this.$store.commit('updateUserName',this.username);
-                        this.$router.push("/");
+                        this.$router.push("/guestdata");
                     }
                     this.msg = res.data.message;
                 })
@@ -97,7 +97,7 @@ export default {
                         this.statu = res.data.code;
                         this.$store.commit("updateToken", res.data.token);
                         this.$store.commit('updateUserName',this.username);
-                        this.$router.push("/");
+                        this.$router.push("/guestdata");
                     }
                     this.msg = res.data.message;
                 })
@@ -107,7 +107,7 @@ export default {
         }
     },
     mounted(){
-        //  this.autoLogin()
+         this.autoLogin()
     }
 
     

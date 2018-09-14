@@ -210,6 +210,12 @@ var Api = {
     setDevImg(){
         // POST /api/mg/Device/setDevImg
         return this.getApi('/Device/setDevImg')
+    },
+    getWarningStatistics(){
+        return this.getApi('/Warn/getWarningStatistics')
+    },
+    getWaringList(params){
+        return this.getApi('/Warn/getWaringList')+'?'+this.Params(params)
     }
 
 };

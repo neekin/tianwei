@@ -12,10 +12,8 @@ import './assets/styles/base.css'
 import iView from 'iview'
 
 import store from './store'
-if(store.state.token=='')
-{
-    router.push('/login')
-}
+
+Vue.use(iView)
 
 //判断是否登录
 router.beforeEach((to, from, next) => {
@@ -116,7 +114,7 @@ axios.interceptors.response.use(
 // })
 
 
-Vue.use(iView)
+
 
 
 

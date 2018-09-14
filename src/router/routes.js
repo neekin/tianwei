@@ -12,9 +12,11 @@ import rtdevice from '@/pages/bigdata/realTimeDevice'
 
 import deviceMonitor from '@/pages/bigdata/deviceMonitor'
 
+import devWarning from '@/pages/bigdata/devwarning'
+
 export default [{
         path: '/',
-        redirect: '/guestdata'
+        redirect: '/login'
             // name: 'home',
             // component: home
     },
@@ -70,5 +72,11 @@ export default [{
         path: '/devicemonitor',
         name: 'devicemonitor',
         component: deviceMonitor
+    }
+    ,
+    {
+        path: '/devwarning',
+        name: 'devwarning',
+        component: devWarning
     }
 ]
