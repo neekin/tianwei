@@ -26,7 +26,6 @@
                <div class="infomsg">
                  <div class="icon">
                          <img src="/static/lastweek.png" alt="">
-                     </span>
                  </div>
                  <div class="infotext">
                            <div class="title">上周(个)</div>
