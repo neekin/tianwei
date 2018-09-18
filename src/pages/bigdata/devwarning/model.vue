@@ -90,6 +90,7 @@ export default {
     margin-bottom:10px;
     padding-bottom: 10px;
     padding-top: 10px;
+    padding-left:10px;
   }
   .info {
     .first {

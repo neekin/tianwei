@@ -126,7 +126,7 @@
     }
     
     .hidesidbar .sidebar {
-        left: -210px;
+        left: -210px !important;
     }
     
     .hidesidbar .container .context {

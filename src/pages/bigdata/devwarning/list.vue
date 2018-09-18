@@ -105,6 +105,7 @@ export default {
     div {
       width: 25%;
       height: 50px;
+      padding-left:20px;
       button {
         width: 96px;
         height: 38px;
